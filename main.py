@@ -127,28 +127,34 @@ You must return ONLY a valid JSON object (no markdown code blocks, no explanatio
                 contents=prompt
             )
             raw_response_text = response.text or ""
-            logger.info(f"✅ Generated content using google-genai SDK ({model_name}).")
-            break
+            if raw_response_text:
+                logger.info(f"✅ Generated content using google-genai SDK ({model_name}).")
+                break
         except Exception as e_genai:
             logger.info(f"Model {model_name} attempt: {e_genai}")
-        logger.info(f"Trying google-generativeai SDK fallback (Reason: {e_genai})")
-        # Strategy B: Use google-generativeai SDK
+
+    # Strategy B: Fallback to google-generativeai SDK if needed
+    if not raw_response_text:
+        logger.info("Trying google-generativeai SDK fallback...")
         try:
             import google.generativeai as legacy_genai
             legacy_genai.configure(api_key=GEMINI_API_KEY)
-            # Try 1.5-flash or 2.0-flash
-            try:
-                model = legacy_genai.GenerativeModel("gemini-1.5-flash")
-                response = model.generate_content(prompt)
-            except Exception:
-                model = legacy_genai.GenerativeModel("gemini-2.0-flash")
-                response = model.generate_content(prompt)
-            raw_response_text = response.text or ""
-            logger.info("✅ Generated content using google-generativeai SDK.")
+            for legacy_model in ["gemini-1.5-flash", "gemini-2.0-flash"]:
+                try:
+                    model = legacy_genai.GenerativeModel(legacy_model)
+                    response = model.generate_content(prompt)
+                    raw_response_text = response.text or ""
+                    if raw_response_text:
+                        logger.info(f"✅ Generated content using google-generativeai SDK ({legacy_model}).")
+                        break
+                except Exception:
+                    continue
         except Exception as e_legacy:
-            logger.error(f"❌ Failed to generate with Gemini API: {e_legacy}")
-            logger.warning("🔄 Reverting to curated fallback cyber security tip.")
-            return random.choice(FALLBACK_TIPS)
+            logger.error(f"❌ Failed to generate with legacy Gemini API: {e_legacy}")
+
+    if not raw_response_text:
+        logger.warning("🔄 Reverting to curated fallback cyber security tip.")
+        return random.choice(FALLBACK_TIPS)
 
     # Clean and parse JSON from response
     try:
