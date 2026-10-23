@@ -118,16 +118,19 @@ You must return ONLY a valid JSON object (no markdown code blocks, no explanatio
     raw_response_text = ""
 
     # Strategy A: Use modern google-genai SDK if available
-    try:
-        from google import genai
-        client = genai.Client(api_key=GEMINI_API_KEY)
-        response = client.models.generate_content(
-            model="gemini-2.5-flash",
-            contents=prompt
-        )
-        raw_response_text = response.text or ""
-        logger.info("✅ Generated content using google-genai SDK (gemini-2.5-flash).")
-    except Exception as e_genai:
+    for model_name in ["gemini-3.8-flash", "gemini-3.5-flash-lite", "gemini-2.5-flash"]:
+        try:
+            from google import genai
+            client = genai.Client(api_key=GEMINI_API_KEY)
+            response = client.models.generate_content(
+                model=model_name,
+                contents=prompt
+            )
+            raw_response_text = response.text or ""
+            logger.info(f"✅ Generated content using google-genai SDK ({model_name}).")
+            break
+        except Exception as e_genai:
+            logger.info(f"Model {model_name} attempt: {e_genai}")
         logger.info(f"Trying google-generativeai SDK fallback (Reason: {e_genai})")
         # Strategy B: Use google-generativeai SDK
         try:
