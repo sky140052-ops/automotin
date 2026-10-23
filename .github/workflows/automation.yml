@@ -1,15 +1,20 @@
-name: Daily Cyber Security Social Media Bot
+name: Daily 3x Cyber Security Social Media Bot (Hindi)
 
 on:
-  # Automated 24/7 Daily Schedule (04:30 UTC = 10:00 AM IST)
+  # Automated 3x Daily Schedule:
+  # 1. 03:30 UTC -> 09:00 AM IST (Morning Tip)
+  # 2. 09:00 UTC -> 02:30 PM IST (Afternoon Tip)
+  # 3. 15:00 UTC -> 08:30 PM IST (Evening Tip)
   schedule:
-    - cron: '30 4 * * *'
+    - cron: '30 3 * * *'
+    - cron: '0 9 * * *'
+    - cron: '0 15 * * *'
 
   # Manual Trigger Button in GitHub Actions Tab
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Run in Dry-Run mode? (Generates image without posting)'
+        description: 'Run in Dry-Run mode? (Generates media without posting)'
         required: false
         default: 'false'
         type: choice
@@ -17,15 +22,20 @@ on:
           - 'false'
           - 'true'
 
+permissions:
+  contents: write
+
 jobs:
   generate-and-publish:
-    name: Generate Cyber Tip & Publish to Meta
+    name: Generate Hindi Tip & Multi-Format Publish (Post + Story + Reel)
     runs-on: ubuntu-latest
 
     steps:
       # 1. Checkout Repository
       - name: Checkout Code
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       # 2. Setup Python 3.11 Runtime
       - name: Set up Python 3.11
@@ -34,11 +44,11 @@ jobs:
           python-version: '3.11'
           cache: 'pip'
 
-      # 3. Install System Fonts for High-Quality Visual Typography
-      - name: Install System Fonts
+      # 3. Install System Multimedia & Hindi Devanagari Fonts
+      - name: Install System Multimedia & Fonts
         run: |
           sudo apt-get update
-          sudo apt-get install -y --no-install-recommends fonts-dejavu-core fonts-liberation
+          sudo apt-get install -y --no-install-recommends ffmpeg fonts-noto-core fonts-dejavu-core
 
       # 4. Install Python Dependencies
       - name: Install Dependencies
@@ -47,23 +57,27 @@ jobs:
           pip install -r requirements.txt
 
       # 5. Run Automation Pipeline
-      - name: Execute Daily Social Media Bot
+      - name: Execute Multi-Format Bot
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
-          CREATOR_HANDLE: ${{ secrets.CREATOR_HANDLE || '@CyberSecurityIntel' }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_REPOSITORY: ${{ github.repository }}
+          CREATOR_HANDLE: ${{ secrets.CREATOR_HANDLE || '@rauth_jee' }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |
           python main.py
 
-      # 6. Save & Upload Generated Graphic as Workflow Artifact
-      - name: Upload Daily Graphic Artifact
+      # 6. Save & Upload Generated Media Artifacts
+      - name: Upload Media Artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: daily-cyber-graphic
-          path: output/daily_tip.png
+          name: daily-hindi-cyber-media
+          path: |
+            output/daily_tip.png
+            output/daily_reel.mp4
           retention-days: 7
