@@ -8,6 +8,9 @@ pillow>=10.2.0
 # Video & Reel Generation
 imageio-ffmpeg>=0.5.0
 
+# Text to Speech (Hindi Neural Voiceover)
+gTTS>=2.5.0
+
 # HTTP Requests & Meta Graph API Communication
 requests>=2.31.0
 
