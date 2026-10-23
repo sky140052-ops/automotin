@@ -1,0 +1,12 @@
+# Core Google Gemini AI SDKs (Supports both modern and legacy imports)
+google-generativeai>=0.8.3
+google-genai>=2.0.0
+
+# Visual Generation & Image Processing
+pillow>=10.2.0
+
+# HTTP Requests & Meta Graph API Communication
+requests>=2.31.0
+
+# Local Environment Variables Support
+python-dotenv>=1.0.1
