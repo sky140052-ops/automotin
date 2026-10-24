@@ -87,6 +87,7 @@ DRY_RUN = os.getenv("DRY_RUN", "false").lower() in ("true", "1", "yes")
 
 POSTED_TOPICS_FILE = "output/posted_topics.json"
 REPLIED_COMMENTS_FILE = "output/replied_comments.json"
+STORY_HISTORY_FILE = "output/story_history.json"
 
 VIRAL_HASHTAGS = [
     "#rauth_jee", "#BiharNews", "#BPSCTRE4", "#BiharEducation", "#DainikJagran",
@@ -227,6 +228,93 @@ FALLBACK_NEWS_DATABASE = [
             {"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
         ],
         "caption": "🚆 पटना मेट्रो की बड़ी प्रगति: अगले साल से दौड़ेगी ट्रेन!\n\nराजधानीवासियों को जाम से मिलेगी मुक्ति।\n\nफॉलो करें: @rauth_jee"
+    },
+    {
+        "newspaper_title": "दैनिक जागरण",
+        "tagline": "सत्य के साथ हर कदम",
+        "dateline": "पटना / बिहार | कृषि विशेषांक / पृष्ठ 01",
+        "headline_red": "कृषि विभाग का बड़ा फैसला:",
+        "headline_black": "किसानों को फसल बीमा और नए बीज पर 80% अनुदान",
+        "lead_city": "पटना",
+        "lead_summary": "कृषि विभाग ने आगामी रबी सत्र के लिए किसानों को प्रमाणित बीज और आधुनिक कृषि यंत्रों पर 80% तक सब्सिडी देने का आदेश जारी कर दिया है।",
+        "ai_image_prompt": "indian farmers inspecting healthy green crop fields with modern agricultural tractor in bihar, bright sunlight, cinematic photojournalism",
+        "key_highlights": [
+            "रबी फसलों के प्रमाणित बीजों पर 80% तक की भारी सब्सिडी मंजूर।",
+            "प्रत्येक पंचायत में विशेष किसान चौपाल लगाकर दिए जाएंगे परमिट।",
+            "डीबीटी (DBT) कृषि पोर्टल पर ऑनलाइन आवेदन की प्रक्रिया शुरू।",
+            "फसल क्षति होने पर 72 घंटे के भीतर बीमा राशि का होगा भुगतान।",
+            "आधुनिक सिंचाई यंत्रों और ड्रिप इरिगेशन पर अतिरिक्त अनुदान।"
+        ],
+        "detailed_report": [
+            "राज्य सरकार ने किसानों की आय बढ़ाने और आधुनिक खेती को प्रोत्साहित करने",
+            "के लिए विशेष पैकेज स्वीकृत किया है। पोर्टल पर पंजीकरण अनिवार्य है।"
+        ],
+        "reel_script": "किसान भाइयों के लिए बड़ी खुशखबरी! कृषि विभाग ने रबी सत्र के बीजों पर अस्सी प्रतिशत तक सब्सिडी देने का आदेश दिया है। पूरी जानकारी के लिए पोस्ट पढ़ें और ताज़ा अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें!",
+        "reel_phrases": [
+            {"hook": "🌾 बड़ी खुशखबरी!", "white": "किसानों को बीजों पर", "punch": "80% तक सब्सिडी!"},
+            {"hook": "📢 कृषि विभाग का फैसला", "white": "डीबीटी पोर्टल पर", "punch": "आवेदन शुरू!"},
+            {"hook": "⚡ तुरंत चेक करें", "white": "किसान चौपाल में", "punch": "मिलेगा लाभ!"},
+            {"hook": "📰 रोज़ाना कृषि अपडेट के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+        ],
+        "caption": "🌾 कृषि विभाग का बड़ा फैसला: किसानों को बीजों पर 80% अनुदान!\n\nपूरी जानकारी आधिकारिक पोर्टल पर उपलब्ध। फॉलो करें: @rauth_jee"
+    },
+    {
+        "newspaper_title": "दैनिक भास्कर",
+        "tagline": "सत्यमेव जयते",
+        "dateline": "पटना / बिहार | भर्ती बुलेटिन / पृष्ठ 01",
+        "headline_red": "बिहार पुलिस सिपाही व दरोगा भर्ती:",
+        "headline_black": "21,391 पदों पर नया शेड्यूल, फिजिकल टेस्ट जल्द शुरू",
+        "lead_city": "पटना",
+        "lead_summary": "केंद्रीय चयन पर्षद (CSBC) और बिहार पुलिस आयोग ने सिपाही व दारोगा के रिक्त 21,391 पदों पर भर्ती के लिए शारीरिक दक्षता परीक्षा (PET) की समय-सारिणी जारी कर दी है।",
+        "ai_image_prompt": "young indian men and women candidates practicing physical running training on running track for police recruitment exam, realistic news photo",
+        "key_highlights": [
+            "सिपाही और दारोगा के 21,391 पदों पर चयन प्रक्रिया अंतिम चरण में।",
+            "दौड़, ऊंची कूद और गोला फेंक के लिए पटना गर्दनीबाग में प्रबंध।",
+            "बायोमेट्रिक जांच और चेहरे की पहचान के जरिए फर्जीवाड़े पर पूरी रोक।",
+            "अभ्यर्थी आधिकारिक वेबसाइट से डाउनलोड कर सकेंगे अपना ई-प्रवेश पत्र।",
+            "पारदर्शिता बनाए रखने के लिए पूरे ग्राउंड पर सीसीटीवी कैमरे तैनात।"
+        ],
+        "detailed_report": [
+            "पर्षद के अध्यक्ष ने बताया कि शारीरिक दक्षता परीक्षा पूरी तरह निष्पक्ष होगी।",
+            "सभी अभ्यर्थियों को समय पर निर्धारित स्थल पर पहुंचने का निर्देश दिया गया है।"
+        ],
+        "reel_script": "बिहार पुलिस अभ्यर्थियों के लिए बड़ी खबर! सिपाही और दारोगा के 21,391 पदों के लिए फिजिकल टेस्ट का नया शेड्यूल जारी हो चुका है। पूरी रिपोर्ट के लिए पोस्ट देखें और ताज़ा जानकारियों के लिए हमारे पेज राउत जी को फॉलो करें!",
+        "reel_phrases": [
+            {"hook": "🚨 बिहार पुलिस अपडेट!", "white": "सिपाही व दारोगा भर्ती", "punch": "21,391 पदों पर!"},
+            {"hook": "🏃 फिजिकल टेस्ट", "white": "गर्दनीबाग में जल्द", "punch": "शुरू होगी दौड़!"},
+            {"hook": "📌 ई-प्रवेश पत्र", "white": "आधिकारिक पोर्टल से", "punch": "तुरंत डाउनलोड करें!"},
+            {"hook": "📰 हर भर्ती अपडेट के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+        ],
+        "caption": "👮 बिहार पुलिस 21,391 भर्ती: फिजिकल टेस्ट का शेड्यूल जारी!\n\nतैयारी जारी रखें। रोज़ाना अपडेट्स के लिए फॉलो करें: @rauth_jee"
+    },
+    {
+        "newspaper_title": "दैनिक जागरण",
+        "tagline": "सत्य के साथ हर कदम",
+        "dateline": "पटना / बिहार | विशेष सर्वेक्षण / पृष्ठ 01",
+        "headline_red": "बिहार विशेष भूमि सर्वे 2026:",
+        "headline_black": "खतियान और वंशावली के नियमों में मिली बड़ी राहत",
+        "lead_city": "पटना",
+        "lead_summary": "राजस्व एवं भूमि सुधार विभाग ने चल रहे विशेष भूमि सर्वेक्षण में आम जनता की सहूलियत को देखते हुए कागजात और स्वघोषणा पत्र जमा करने की समय सीमा और नियमों को आसान किया है।",
+        "ai_image_prompt": "indian revenue land survey officers with maps measuring land in rural bihar village, official revenue inspection, realistic photojournalism",
+        "key_highlights": [
+            "वंशावली बनवाने के लिए अब किसी जटिल न्यायिक प्रक्रिया की आवश्यकता नहीं।",
+            "ऑनलाइन पोर्टल 'परिमार्जन प्लस' पर सीधे अपलोड किए जा सकेंगे दस्तावेज।",
+            "बिना किसी विवाद के रैयत सीधे अपनी जमीन का दावा प्रस्तुत कर सकते हैं।",
+            "पंचायत स्तर पर विशेष राजस्व शिविर आयोजित किए जाएंगे।",
+            "फर्जीवाड़े से बचने के लिए डिजिटल जमाबंदी को आधार से लिंक किया गया।"
+        ],
+        "detailed_report": [
+            "राजस्व मंत्री ने स्पष्ट किया है कि सर्वे का उद्देश्य किसी की जमीन छीनना नहीं,",
+            "बल्कि भू-अभिलेखों को आधुनिक और पारदर्शी बनाकर विवाद खत्म करना है।"
+        ],
+        "reel_script": "बिहार जमीन सर्वे पर बड़ी राहत! सरकार ने खतियान और वंशावली जमा करने के नियमों को आसान कर दिया है। अब परिमार्जन पोर्टल पर सीधे कागजात जमा होंगे। पूरी जानकारी के लिए पोस्ट पढ़ें और ताज़ा अपडेट्स के लिए फॉलो करें पेज राउत जी!",
+        "reel_phrases": [
+            {"hook": "📜 जमीन सर्वे राहत!", "white": "खतियान व वंशावली के", "punch": "नियम हुए आसान!"},
+            {"hook": "📢 राजस्व विभाग का फैसला", "white": "परिमार्जन पोर्टल पर", "punch": "ऑनलाइन अपलोड!"},
+            {"hook": "⚡ विवाद होंगे खत्म", "white": "पंचायत स्तर पर", "punch": "लगेंगे विशेष शिविर!"},
+            {"hook": "📰 ताज़ा सरकारी अपडेट के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+        ],
+        "caption": "📜 बिहार विशेष भूमि सर्वे: वंशावली व खतियान के नियमों में बड़ी राहत!\n\nसभी किसान और रैयत ध्यान दें। फॉलो करें: @rauth_jee"
     }
 ]
 
@@ -267,15 +355,18 @@ def fetch_unique_live_news() -> Optional[Dict[str, str]]:
     logger.info("📡 Scanning Google News RSS for fresh, unposted breaking news...")
     posted_topics = load_posted_topics()
 
-    # 7 Diverse, high-interest news search categories
+    # 10 Diverse government departments and public sectors (Rotating)
     queries = [
-        ("बिहार शिक्षा भर्ती शिक्षक परीक्षा रिजल्ट", "बिहार शिक्षा व भर्ती"),
-        ("भारत सरकार बड़ी घोषणा नया नियम योजना", "राष्ट्रीय बड़ी खबर"),
-        ("साइबर सुरक्षा डिजिटल फ्रॉड ऑनलाइन अलर्ट", "डिजिटल सुरक्षा अलर्ट"),
-        ("भारतीय रेलवे वंदे भारत नया रूट ट्रेन", "भारतीय रेलवे"),
-        ("इसरो विज्ञान अंतरिक्ष नया मिशन टेक्नोलॉजी", "विज्ञान व अंतरिक्ष"),
-        ("आरबीआई बैंक नया नियम यूपीआई वित्तीय अलर्ट", "बैंकिंग व वित्त"),
-        ("बिहार विकास योजना पटना मेट्रो बड़ी खबर", "बिहार विकास")
+        ("बिहार शिक्षा भर्ती शिक्षक परीक्षा रिजल्ट", "बिहार शिक्षा व शिक्षक भर्ती"),
+        ("बिहार पुलिस सिपाही दरोगा भर्ती अधिसूचना", "पुलिस एवं रक्षा बल भर्ती"),
+        ("भारतीय रेलवे वंदे भारत नया रूट ट्रेन", "भारतीय रेलवे व परिवहन"),
+        ("बिहार कृषि किसान योजना फसल बीमा सब्सिडी", "कृषि एवं किसान कल्याण"),
+        ("स्वास्थ्य विभाग अस्पताल नई भर्ती डॉक्टर नर्स", "स्वास्थ्य एवं चिकित्सा विभाग"),
+        ("आरबीआई बैंक नया नियम यूपीआई वित्तीय अलर्ट", "बैंकिंग एवं वित्तीय अलर्ट"),
+        ("महिला विकास कन्या उत्थान योजना जीविका दीदी", "महिला, बाल विकास व कल्याण"),
+        ("बिहार राजस्व भूमि सर्वे नया नियम दाखिल खारिज", "राजस्व, भूमि एवं पंचायत"),
+        ("साइबर सुरक्षा डिजिटल फ्रॉड ऑनलाइन अलर्ट", "डिजिटल सुरक्षा व फ्रॉड अलर्ट"),
+        ("बिहार मुख्यमंत्री उद्यमी योजना स्टार्टअप MSME रोजगार", "उद्योग, रोज़गार व कौशल विकास")
     ]
     random.shuffle(queries)
 
@@ -722,11 +813,11 @@ def create_newspaper_graphic(
             pass
 
     # 6. SIGNATURE YELLOW HIGHLIGHT BOX ("मामले की मुख्य बातें")
-    box_y = photo_top + photo_h + 20
-    box_h = 390
+    box_y = photo_top + photo_h + 15
+    box_h = 360
     draw.rounded_rectangle([40, box_y, w - 40, box_y + box_h], radius=16, fill=(254, 249, 195), outline=(217, 119, 6), width=3)
-    draw.rounded_rectangle([70, box_y + 16, 420, box_y + 68], radius=25, fill=(220, 38, 38))
-    draw.text((245, box_y + 42), "📌 मामले की मुख्य बातें", font=font_bold_md, fill=(255, 255, 255), anchor="mm")
+    draw.rounded_rectangle([70, box_y + 14, 420, box_y + 62], radius=24, fill=(220, 38, 38))
+    draw.text((245, box_y + 38), "📌 मामले की मुख्य बातें", font=font_bold_md, fill=(255, 255, 255), anchor="mm")
 
     points = news_data.get("key_highlights", [
         "विभाग ने सभी नियमों को स्पष्ट करते हुए दिशा-निर्देश जारी किए।",
@@ -735,47 +826,94 @@ def create_newspaper_graphic(
         "अनजान या फर्जी सूचनाओं से सावधान रहने की अपील।",
         "रोज़ाना नई जानकारी के लिए जुड़े रहें।"
     ])
-    py = box_y + 92
+    py = box_y + 80
     for pt in points[:5]:
         draw.ellipse([(75, py + 8), (89, py + 22)], fill=(220, 38, 38))
         draw.text((105, py), pt, font=font_bold_md, fill=(15, 23, 42))
-        py += 56
+        py += 54
 
-    # 7. DETAILED STORY CARD & FOUNDER AVATAR
-    card_y = box_y + box_h + 20
-    card_h = h - 140 - card_y
-    draw.rounded_rectangle([40, card_y, w - 40, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(203, 213, 225), width=2)
-    draw.text((70, card_y + 20), "विस्तृत रिपोर्ट एवं मुख्य विश्लेषण", font=font_bold_lg, fill=(15, 23, 42))
-    draw.line([(70, card_y + 62), (430, card_y + 62)], fill=(220, 38, 38), width=3)
+    # 7. DETAILED STORY SUMMARY CARD & FOUNDER AVATAR
+    card_y = box_y + box_h + 15
+    card_h = 190
+    draw.rounded_rectangle([40, card_y, w - 40, card_y + card_h], radius=14, fill=(255, 255, 255), outline=(203, 213, 225), width=2)
+    draw.text((65, card_y + 15), "विस्तृत रिपोर्ट एवं मुख्य विश्लेषण", font=font_bold_lg, fill=(15, 23, 42))
+    draw.line([(65, card_y + 54), (430, card_y + 54)], fill=(220, 38, 38), width=3)
 
     # Embed Founder Face
     if os.path.exists(face_path):
         try:
-            fimg = Image.open(face_path).convert("RGBA").resize((110, 110), Image.Resampling.LANCZOS)
-            mask = Image.new("L", (110, 110), 0)
-            ImageDraw.Draw(mask).ellipse((0, 0, 110, 110), fill=255)
-            img.paste(fimg, (w - 180, card_y + 18), mask)
-            draw.ellipse((w - 184, card_y + 14, w - 66, card_y + 132), outline=(10, 37, 64), width=3)
-            draw.text((w - 125, card_y + 142), CREATOR_HANDLE, font=font_reg_sm, fill=(10, 37, 64), anchor="mm")
+            fimg = Image.open(face_path).convert("RGBA").resize((95, 95), Image.Resampling.LANCZOS)
+            mask = Image.new("L", (95, 95), 0)
+            ImageDraw.Draw(mask).ellipse((0, 0, 95, 95), fill=255)
+            img.paste(fimg, (w - 165, card_y + 18), mask)
+            draw.ellipse((w - 169, card_y + 14, w - 66, card_y + 117), outline=(10, 37, 64), width=3)
+            draw.text((w - 117, card_y + 128), CREATOR_HANDLE, font=get_devanagari_font(16, bold=True), fill=(10, 37, 64), anchor="mm")
         except Exception:
             pass
 
     body_list = news_data.get("detailed_report", [
         "संबंधित विभाग ने आगामी चरणों के लिए पूरी रूपरेखा तैयार कर ली है।",
-        "सभी जिलों से रोस्टर और पदों की गणना पूरी होने के बाद आगे की कार्रवाई शुरू होगी।",
-        "अभ्यर्थियों को सलाह दी गई है कि वे केवल आधिकारिक पोर्टल से ही जानकारी प्राप्त करें।"
+        "सभी पात्र नागरिकों और अभ्यर्थियों से अपील है कि वे आधिकारिक पोर्टल पर विवरण देखें।"
     ])
-    by = card_y + 80
-    for line in body_list[:4]:
+    by = card_y + 70
+    for line in body_list[:2]:
         if line:
-            wrapped = wrap_text_lines(line, font_reg_md, w - 280)
+            wrapped = wrap_text_lines(line, font_reg_md, w - 310)
             for wl in wrapped:
-                draw.text((70, by), wl, font=font_reg_md, fill=(51, 65, 85))
-                by += 38
-        else:
-            by += 15
+                draw.text((65, by), wl, font=font_reg_md, fill=(51, 65, 85))
+                by += 34
 
-    # 8. BOTTOM NAVY FOOTER
+    # 8. TWO REALISTIC NEWSPAPER ADVERTISEMENT BOXES (SIDE-BY-SIDE)
+    ad_y = card_y + card_h + 15
+    ad_h = 275
+    box_w = 485
+    font_badge_sm = get_devanagari_font(16, bold=True)
+    font_bold_sm = get_devanagari_font(20, bold=True)
+    font_ad_desc = get_devanagari_font(18, bold=False)
+
+    # --- AD BOX 1: BBCC SKILL HUB (ONLINE COACHING REGISTRATION) ---
+    b1_x1, b1_y1 = 40, ad_y
+    b1_x2, b1_y2 = 40 + box_w, ad_y + ad_h
+    draw.rounded_rectangle([b1_x1, b1_y1, b1_x2, b1_y2], radius=14, fill=(240, 247, 255), outline=(30, 58, 138), width=2)
+    # Header Badge
+    draw.rounded_rectangle([b1_x1 + 15, b1_y1 + 12, b1_x1 + 250, b1_y1 + 42], radius=8, fill=(220, 38, 38))
+    draw.text((b1_x1 + 132, b1_y1 + 27), "📢 विज्ञापन: BBCC SKILL HUB", font=font_badge_sm, fill=(255, 255, 255), anchor="mm")
+    # Punchline & Subtitle
+    draw.text((b1_x1 + 18, b1_y1 + 52), "अपने कोचिंग का रजिस्ट्रेशन करें!", font=font_bold_sm, fill=(10, 37, 64))
+    draw.text((b1_x1 + 18, b1_y1 + 82), "अपने कोचिंग को ले जाएं 100% ऑनलाइन", font=get_devanagari_font(19, bold=True), fill=(185, 28, 28))
+    # Details
+    ad1_text = "Google पर सर्च करें 'BBCC SKILL HUB' और तुरंत रजिस्ट्रेशन करें। डिजिटल क्लास, ऑनलाइन टेस्ट और स्टूडेंट मैनेजमेंट।"
+    ad1_wrapped = wrap_text_lines(ad1_text, font_ad_desc, box_w - 36)
+    ad_ty = b1_y1 + 115
+    for l in ad1_wrapped:
+        draw.text((b1_x1 + 18, ad_ty), l, font=font_ad_desc, fill=(51, 65, 85))
+        ad_ty += 28
+    # Bottom Yellow CTA
+    draw.rounded_rectangle([b1_x1 + 15, b1_y2 - 50, b1_x2 - 15, b1_y2 - 12], radius=8, fill=(255, 222, 3))
+    draw.text(((b1_x1 + b1_x2) // 2, b1_y2 - 31), "👉 Google पर सर्च करें: BBCC SKILL HUB", font=get_devanagari_font(18, bold=True), fill=(10, 37, 64), anchor="mm")
+
+    # --- AD BOX 2: PTCC + BBCC (CHAKDAH CHOWK, MADHUBANI) ---
+    b2_x1, b2_y1 = 555, ad_y
+    b2_x2, b2_y2 = 555 + box_w, ad_y + ad_h
+    draw.rounded_rectangle([b2_x1, b2_y1, b2_x2, b2_y2], radius=14, fill=(240, 253, 244), outline=(4, 120, 87), width=2)
+    # Header Badge
+    draw.rounded_rectangle([b2_x1 + 15, b2_y1 + 12, b2_x1 + 250, b2_y1 + 42], radius=8, fill=(4, 120, 87))
+    draw.text((b2_x1 + 132, b2_y1 + 27), "🎓 शैक्षणिक विज्ञापन: PTCC+BBCC", font=font_badge_sm, fill=(255, 255, 255), anchor="mm")
+    # Punchline & Subtitle
+    draw.text((b2_x1 + 18, b2_y1 + 52), "Class 1st to 10th (All Subjects)", font=font_bold_sm, fill=(6, 78, 59))
+    draw.text((b2_x1 + 18, b2_y1 + 82), "📍 चकदाह चौक, मधुबनी (Chakdah Chowk)", font=get_devanagari_font(19, bold=True), fill=(185, 28, 28))
+    # Details
+    ad2_text = "अनुभवी शिक्षकों द्वारा सभी विषयों की संपूर्ण तैयारी। नया सत्र 2026-27 के लिए नए बैच शुरू। कमज़ोर छात्रों पर विशेष ध्यान।"
+    ad2_wrapped = wrap_text_lines(ad2_text, font_ad_desc, box_w - 36)
+    ad_ty2 = b2_y1 + 115
+    for l in ad2_wrapped:
+        draw.text((b2_x1 + 18, ad_ty2), l, font=font_ad_desc, fill=(51, 65, 85))
+        ad_ty2 += 28
+    # Bottom Green CTA
+    draw.rounded_rectangle([b2_x1 + 15, b2_y2 - 50, b2_x2 - 15, b2_y2 - 12], radius=8, fill=(187, 247, 208))
+    draw.text(((b2_x1 + b2_x2) // 2, b2_y2 - 31), "📞 प्रवेश प्रारंभ | चकदाह चौक, मधुबनी", font=get_devanagari_font(18, bold=True), fill=(6, 78, 59), anchor="mm")
+
+    # 9. BOTTOM NAVY FOOTER
     draw.rectangle([(0, h - 120), (w, h)], fill=(10, 37, 64))
     draw.text((40, h - 85), f"BBCC SKILL HUB | अपने करियर और ज्ञान की सही दिशा", font=font_bold_md, fill=(255, 255, 255))
     draw.text((40, h - 45), f"रोज़ाना ताज़ा अपडेट के लिए हमारे पेज राउत जी को फॉलो करें (@rauth_jee)", font=font_reg_sm, fill=(203, 213, 225))
@@ -987,9 +1125,13 @@ def create_news_reel_video(
         # Summary description
         draw.text((45, h - 215), f"{lead_summary}...", font=font_desc, fill=(203, 213, 225))
 
-        # 3. BOTTOM TICKER BAR
+        # 3. BOTTOM TICKER BAR (Alternates between News Alert & Sponsor Ads)
         draw.rectangle([(0, h - 95), (w, h)], fill=(220, 38, 38))
-        draw.text((w // 2, h - 48), "⚡ ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें", font=font_ticker, fill=(255, 255, 255), anchor="mm")
+        if idx < (total_frames // 2):
+            ticker_msg = "⚡ ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें (@rauth_jee)"
+        else:
+            ticker_msg = "📢 BBCC SKILL HUB: कोचिंग ऑनलाइन ले जाएं | PTCC+BBCC (Class 1-10) चकदाह चौक, मधुबनी"
+        draw.text((w // 2, h - 48), ticker_msg, font=font_ticker, fill=(255, 255, 255), anchor="mm")
 
         frame.save(f"{frames_dir}/f_{idx:04d}.jpg", quality=85)
 
@@ -1080,6 +1222,47 @@ def persist_github_file(file_path: str, commit_msg: str):
 def persist_posted_topics_to_github():
     persist_github_file(POSTED_TOPICS_FILE, "Sync posted topics history")
     persist_github_file(REPLIED_COMMENTS_FILE, "Sync replied comments history")
+    persist_github_file(STORY_HISTORY_FILE, "Sync story history")
+
+def should_publish_story() -> bool:
+    """Ensures stories are published at most 6 times in a 24-hour window."""
+    now = time.time()
+    history = []
+    if os.path.exists(STORY_HISTORY_FILE):
+        try:
+            with open(STORY_HISTORY_FILE, "r", encoding="utf-8") as f:
+                history = json.load(f)
+        except Exception:
+            pass
+    recent = [t for t in history if (now - t) < 86400]
+    if len(recent) >= 6:
+        logger.info(f"⏭️ Story quota reached ({len(recent)}/6 in last 24h). Skipping story.")
+        return False
+    if recent:
+        elapsed = now - max(recent)
+        if elapsed < (3.5 * 3600):
+            logger.info(f"⏭️ Story interval not reached ({elapsed/3600:.1f}h since last story, min 3.5h). Skipping story.")
+            return False
+    return True
+
+def record_story_published():
+    now = time.time()
+    history = []
+    if os.path.exists(STORY_HISTORY_FILE):
+        try:
+            with open(STORY_HISTORY_FILE, "r", encoding="utf-8") as f:
+                history = json.load(f)
+        except Exception:
+            pass
+    recent = [t for t in history if (now - t) < 86400]
+    recent.append(now)
+    os.makedirs(os.path.dirname(STORY_HISTORY_FILE), exist_ok=True)
+    try:
+        with open(STORY_HISTORY_FILE, "w", encoding="utf-8") as f:
+            json.dump(recent, f, indent=2)
+        logger.info(f"💾 Story timestamp saved. Count in last 24h: {len(recent)}/6")
+    except Exception as e:
+        logger.warning(f"Could not save story history: {e}")
 
 def auto_reply_to_instagram_comments(access_token: str, ig_user_id: str):
     """Automatically scans recent Instagram posts and replies to new user comments."""
@@ -1159,25 +1342,53 @@ class InstagramMultiPublisher:
             logger.error(f"Feed post error: {e}")
         return None
 
-    def publish_story(self, image_url: str) -> Optional[str]:
-        logger.info("🚀 2/3 Publishing Story to Instagram...")
+    def publish_story(self, media_url: str, is_video: bool = True) -> Optional[str]:
+        logger.info(f"🚀 Publishing {'Video' if is_video else 'Image'} Story to Instagram...")
         try:
-            r1 = requests.post(f"{self.graph_base}/{self.ig_user_id}/media", data={
+            data = {
                 "media_type": "STORIES",
-                "image_url": image_url,
                 "access_token": self.access_token
-            }, timeout=45).json()
-            if "id" not in r1: return None
-            time.sleep(6)
+            }
+            if is_video:
+                data["video_url"] = media_url
+            else:
+                data["image_url"] = media_url
+
+            r1 = requests.post(f"{self.graph_base}/{self.ig_user_id}/media", data=data, timeout=45).json()
+            if "id" not in r1:
+                logger.warning(f"Story container creation notice: {r1}")
+                if is_video:
+                    logger.info("Retrying story with poster image...")
+                    return self.publish_story(media_url, is_video=False)
+                return None
+            creation_id = r1["id"]
+
+            if is_video:
+                logger.info("⏳ Waiting for Meta story video processing...")
+                for _ in range(16):
+                    time.sleep(4)
+                    status = requests.get(
+                        f"{self.graph_base}/{creation_id}?fields=status_code&access_token={self.access_token}",
+                        timeout=30
+                    ).json().get("status_code")
+                    if status == "FINISHED": break
+                    elif status == "ERROR":
+                        logger.warning("Story video processing error.")
+                        return None
+            else:
+                time.sleep(5)
+
             r2 = requests.post(f"{self.graph_base}/{self.ig_user_id}/media_publish", data={
-                "creation_id": r1["id"],
+                "creation_id": creation_id,
                 "access_token": self.access_token
             }, timeout=45).json()
             if "id" in r2:
                 logger.info(f"🎉 News Story Published! ID: {r2['id']}")
                 return r2["id"]
+            else:
+                logger.warning(f"Story publish notice: {r2}")
         except Exception as e:
-            logger.error(f"Story post error: {e}")
+            logger.error(f"Story publish error: {e}")
         return None
 
     def publish_reel(self, video_url: str, caption: str) -> Optional[str]:
@@ -1271,14 +1482,33 @@ def main():
         ig_user_id=IG_USER_ID
     )
 
-    # 7A. Feed Post
-    post_id = ig_publisher.publish_feed_post(public_img_url, full_caption)
-    # 7B. Story
-    story_id = ig_publisher.publish_story(public_img_url)
-    # 7C. 3D Reel
+    # 7. Publish to Instagram (Reel-Only Mode + 6x Daily Story)
+    ig_publisher = InstagramMultiPublisher(
+        access_token=FB_ACCESS_TOKEN,
+        ig_user_id=IG_USER_ID
+    )
+
+    # 7A. Feed Image Post: SKIPPED (User mandate: "only reel samjhe")
+    post_id = None
+    logger.info("ℹ️ Feed image post skipped (Policy: Only Reels mode active)")
+
+    # 7B. Breaking News Reel (Published to Instagram Reels & Grid Feed)
     reel_id = None
     if public_video_url:
         reel_id = ig_publisher.publish_reel(public_video_url, full_caption)
+
+    # 7C. Story (Uses same video reel, strictly up to 6 times per 24 hours)
+    story_id = None
+    if should_publish_story():
+        # User requirement: "jo reel me lagega vahi story lagana hai"
+        if public_video_url:
+            story_id = ig_publisher.publish_story(public_video_url, is_video=True)
+        if not story_id and public_img_url:
+            story_id = ig_publisher.publish_story(public_img_url, is_video=False)
+        if story_id:
+            record_story_published()
+    else:
+        logger.info("⏭️ Story skipped to respect 24-hour limit (Max 6 stories per 24 hours).")
 
     # 8. Auto-Reply to Comments on Instagram
     auto_reply_to_instagram_comments(FB_ACCESS_TOKEN, IG_USER_ID)
@@ -1288,11 +1518,10 @@ def main():
     logger.info("📊 MULTI-FORMAT NEWS EXECUTION SUMMARY")
     logger.info(f"• Creator:          {CREATOR_HANDLE}")
     logger.info(f"• News Headline:    '{news_data.get('headline_red')} {news_data.get('headline_black')}'")
-    logger.info(f"• Voice Engine:     {'ElevenLabs Studio Neural' if ELEVENLABS_API_KEY else 'gTTS Fallback'}")
+    logger.info(f"• Voice Engine:     Option B (Cinematic News Music Theme, No Voice)")
     logger.info(f"• AI Photo Engine:  FLUX.1 8K Photorealistic")
-    logger.info(f"• Newspaper Post:   {'✅ SUCCESS (ID: ' + post_id + ')' if post_id else '❌ FAILED'}")
-    logger.info(f"• News Story:       {'✅ SUCCESS (ID: ' + story_id + ')' if story_id else '❌ FAILED'}")
-    logger.info(f"• News Reel:        {'✅ SUCCESS (ID: ' + reel_id + ')' if reel_id else '❌ FAILED'}")
+    logger.info(f"• Reel Publishing:  {'✅ SUCCESS (ID: ' + reel_id + ')' if reel_id else '❌ FAILED'}")
+    logger.info(f"• Story Publishing: {'✅ SUCCESS (ID: ' + story_id + ')' if story_id else '⏭️ SKIPPED / QUOTA OK'}")
     logger.info(f"• Comment Auto-Bot: ✅ ACTIVE (Scanning & Replying to comments)")
     logger.info(f"• FB Auto-Mirror:   ✅ ACTIVE via Meta Accounts Center / Make.com")
     logger.info("================================================================================")
