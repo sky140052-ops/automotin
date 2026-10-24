@@ -1,18 +1,14 @@
-# Core Google Gemini AI SDKs
+# Core Google Gemini SDKs retained for legacy main.py compatibility
 google-generativeai>=0.8.3
 google-genai>=2.0.0
 
-# Visual Generation & Image Processing
-pillow>=10.2.0
-
-# Video & Reel Generation
+# Image and video generation
+Pillow>=10.2.0
 imageio-ffmpeg>=0.5.0
 
-# Text to Speech (Hindi Neural Voiceover)
+# Hindi text-to-speech
 gTTS>=2.5.0
 
-# HTTP Requests & Meta Graph API Communication
+# HTTP and environment configuration
 requests>=2.31.0
-
-# Environment Variables Support
 python-dotenv>=1.0.1

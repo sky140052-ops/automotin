@@ -1,73 +1,99 @@
-name: BBCC Skill Hub Breaking News & Reels Automation Bot
+name: BBCC Skill Hub Daily AI News Automation
 
 on:
-  # Automated Schedule: Runs every 15 minutes (main.py enforces 6:00 AM - 6:00 PM IST window)
   schedule:
-    - cron: '*/15 * * * *'
-
-  # Manual Trigger Button in GitHub Actions Tab & External Webhook
+    # 08:00 India Standard Time (02:30 UTC), once daily
+    - cron: '30 2 * * *'
   workflow_dispatch:
     inputs:
       dry_run:
-        description: 'Run in Dry-Run mode? (Generates media without posting)'
-        required: false
-        default: 'false'
+        description: 'Generate poster/reel only; do not publish'
+        required: true
+        default: 'true'
         type: choice
         options:
-          - 'false'
           - 'true'
+          - 'false'
 
 permissions:
-  contents: write
+  contents: read
+
+concurrency:
+  group: bbcc-daily-news
+  cancel-in-progress: false
 
 jobs:
   generate-and-publish:
-    name: Generate Hindi Tip & Multi-Format Publish (Post + Story + Reel)
     runs-on: ubuntu-latest
-
+    timeout-minutes: 15
     steps:
-      # 1. Checkout Repository
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
-      # 2. Setup Python 3.11 Runtime
-      - name: Set up Python 3.11
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-          cache: 'pip'
+          cache: pip
 
-      # 3. Install Python Dependencies
-      - name: Install Dependencies
+      - name: Restore publication history
+        uses: actions/cache/restore@v4
+        with:
+          path: output/state.json
+          key: bbcc-news-state-${{ github.run_id }}
+          restore-keys: |
+            bbcc-news-state-
+
+      - name: Install system fonts and dependencies
         run: |
+          sudo apt-get update
+          sudo apt-get install -y fonts-noto-core
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      # 4. Run Automation Pipeline
-      - name: Execute Multi-Format Bot
+      - name: Run automated smoke tests
+        run: python -m unittest discover -s tests -v
+
+      - name: Validate required configuration
         env:
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
           FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          DRY_RUN_INPUT: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
+        run: |
+          test -n "$GEMINI_API_KEY" || (echo "::error::Add GEMINI_API_KEY in repository Actions secrets"; exit 1)
+          if [ "$DRY_RUN_INPUT" != "true" ]; then
+            test -n "$FB_ACCESS_TOKEN" || (echo "::error::FB_ACCESS_TOKEN is required for live publishing"; exit 1)
+            test -n "$FB_PAGE_ID" || (echo "::error::FB_PAGE_ID is required for live publishing"; exit 1)
+          fi
+
+      - name: Generate news poster and reel
+        env:
+          GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
+          GEMINI_MODEL: ${{ vars.GEMINI_MODEL || 'gemini-2.5-flash' }}
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
           IG_USER_ID: ${{ secrets.IG_USER_ID }}
           IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GITHUB_REPOSITORY: ${{ github.repository }}
-          CREATOR_HANDLE: ${{ secrets.CREATOR_HANDLE || '@rauth_jee' }}
-          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-          DRY_RUN: ${{ inputs.dry_run || 'false' }}
-        run: |
-          python main.py
+          DRY_RUN: ${{ github.event_name == 'schedule' && 'false' || inputs.dry_run }}
+        run: python bbcc_news_bot.py
 
-      # 5. Save & Upload Generated Media Artifacts
-      - name: Upload Media Artifacts
+      - name: Save publication history
+        if: success() && github.event_name == 'schedule' && hashFiles('output/state.json') != ''
+        uses: actions/cache/save@v4
+        with:
+          path: output/state.json
+          key: bbcc-news-state-${{ github.run_id }}
+
+      - name: Upload generated media and report
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: daily-hindi-cyber-media
+          name: bbcc-skill-hub-daily-news
           path: |
             output/daily_tip.png
             output/daily_reel.mp4
-          retention-days: 7
+            output/daily_story.json
+            output/state.json
+          if-no-files-found: warn
+          retention-days: 14
