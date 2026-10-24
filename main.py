@@ -1023,17 +1023,15 @@ def create_news_reel_video(
     output_video_path: str = "output/daily_reel.mp4"
 ) -> Optional[str]:
     """
-    Renders Google Flow / TV News Channel video reel (Option B: Pure Cinematic Soundtrack):
-    - Duration: 12.0 seconds punchy news bulletin reel
-    - Audio: Powerful cinematic news theme (Drums + Sub-Bass + Strings), NO robotic bleeps, NO voice
-    - Top Masthead: BBCC SKILL HUB in gold & white with pulsing 🔴 LIVE NEWS broadcast badge
-    - Full-Screen Visual: 8K Photorealistic AI Press Photo with smooth cinematic Ken Burns zoom
-    - Authentic TV News Channel Lower-Third:
-      * Red Breaking Bar: 🔴 BREAKING NEWS
-      * Main Headline Plate: Headline Line 1 (Gold) + Headline Line 2 (White) + Summary
-      * Bottom News Ticker Bar: ⚡ ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें
+    Renders the printed Hindi Newspaper Page directly as an Instagram Video Reel:
+    - Visual: The authentic Dainik Jagran style printed newspaper page (Dainik Jagran masthead,
+      red/black headline, 8K press photo, signature yellow highlight box, analysis card, and
+      both BBCC Skill Hub & PTCC+BBCC Coaching advertisements).
+    - 100% Unobstructed & Readable: No TV graphics or lower-thirds covering the text.
+    - Motion: Subtle high-retention slow breathing zoom (1.00 to 1.035) with top progress bar.
+    - Audio: 12.0s broadcast cinematic news soundtrack (Taiko drums, 50Hz sub-bass heartbeat, strings pad).
     """
-    logger.info("🎬 Rendering TV News Channel (BBCC Skill Hub - Option B Music Reel)...")
+    logger.info("🎬 Rendering Printed Newspaper Page directly as Instagram Video Reel...")
     ffmpeg = get_ffmpeg_binary()
 
     duration = 12.0
@@ -1041,104 +1039,51 @@ def create_news_reel_video(
     total_frames = int(duration * fps)
     w, h = 1080, 1920
 
-    # 1. Generate Cinematic News Soundtrack (Music only, no voice, no 'chiyu chiyu')
+    # 1. Generate Cinematic News Soundtrack
     music_wav = "output/cinematic_music.wav"
     generate_cinematic_news_soundtrack(music_wav, duration=duration)
 
-    # 2. Setup Visual Components (TV News Layout)
-    photo_file = ai_photo_path if (ai_photo_path and os.path.exists(ai_photo_path)) else "output/news_photo.jpg"
-    if not os.path.exists(photo_file):
-        photo_file = newspaper_img_path
+    # 2. Ensure Newspaper Graphic is Ready
+    if not os.path.exists(newspaper_img_path):
+        create_newspaper_graphic(news_data, ai_photo_path=ai_photo_path, output_path=newspaper_img_path, face_path=face_path)
 
     try:
-        base_photo = Image.open(photo_file).convert("RGB")
+        base_newspaper = Image.open(newspaper_img_path).convert("RGB")
     except Exception:
-        base_photo = Image.new("RGB", (w, 1200), (15, 23, 42))
-
-    font_logo = get_devanagari_font(46, bold=True)
-    font_sub = get_devanagari_font(22, bold=False)
-    font_badge = get_devanagari_font(26, bold=True)
-    font_hl_1 = get_devanagari_font(42, bold=True)
-    font_hl_2 = get_devanagari_font(38, bold=True)
-    font_desc = get_devanagari_font(24, bold=False)
-    font_ticker = get_devanagari_font(26, bold=True)
-
-    hl_red = news_data.get("headline_red", "🔴 बड़ी खबर: ताज़ा आदेश जारी")
-    hl_black = news_data.get("headline_black", "नियमों में हुआ बड़ा बदलाव")
-    lead_summary = news_data.get("lead_summary", "विभागीय पोर्टल पर आधिकारिक अधिसूचना जारी")[:80]
+        base_newspaper = Image.new("RGB", (w, h), (248, 249, 250))
 
     frames_dir = "output/reel_frames"
     if os.path.exists(frames_dir):
         shutil.rmtree(frames_dir)
     os.makedirs(frames_dir, exist_ok=True)
 
-    logger.info(f"🎞️ Rendering {total_frames} TV News Channel frames ({duration:.1f}s @ {fps}fps)...")
+    logger.info(f"🎞️ Rendering {total_frames} Printed Newspaper Reel frames ({duration:.1f}s @ {fps}fps)...")
     t_start = time.time()
 
     for idx in range(total_frames):
         progress = idx / total_frames
 
-        # Create canvas
-        frame = Image.new("RGB", (w, h), (10, 20, 35))
+        # Gentle cinematic slow breathing zoom (1.00 to 1.035) keeping text 100% readable
+        zoom = 1.0 + 0.035 * progress
+        target_w = int(w * zoom)
+        target_h = int(h * zoom)
 
-        # Slow cinematic Ken Burns zoom on the press photo (middle area)
-        zoom = 1.0 + 0.12 * progress
-        pw_target = int(w * zoom)
-        ph_target = int(1220 * zoom)
-        photo_resized = base_photo.resize((pw_target, ph_target), Image.Resampling.BILINEAR)
-        crop_x = (pw_target - w) // 2
-        crop_y = int((ph_target - 1220) * 0.5)
-        photo_crop = photo_resized.crop((crop_x, crop_y, crop_x + w, crop_y + 1220))
-        frame.paste(photo_crop, (0, 160))
+        resized = base_newspaper.resize((target_w, target_h), Image.Resampling.BILINEAR)
+        crop_x = (target_w - w) // 2
+        crop_y = (target_h - h) // 2
+        frame = resized.crop((crop_x, crop_y, crop_x + w, crop_y + h))
 
+        # Sleek top reading progress indicator (Red & Gold)
         draw = ImageDraw.Draw(frame)
+        draw.rectangle([(0, 0), (int(w * progress), 8)], fill=(220, 38, 38))
+        draw.rectangle([(0, 8), (int(w * progress), 10)], fill=(255, 222, 3))
 
-        # 1. TOP TV NEWS CHANNEL MASTHEAD (BBCC SKILL HUB)
-        draw.rectangle([(0, 0), (w, 160)], fill=(10, 25, 47))
-        draw.rectangle([(0, 154), (w, 160)], fill=(220, 38, 38)) # red accent line
-
-        draw.text((45, 35), "BBCC SKILL HUB", font=font_logo, fill=(255, 222, 3))
-        draw.text((45, 98), "दैनिक समाचार बुलेटिन • देश और बिहार की बड़ी खबरें", font=font_sub, fill=(203, 213, 225))
-
-        # Flashing Live Badge (Pulses every second)
-        is_live_pulse = (int(idx / (fps * 0.5)) % 2) == 0
-        badge_bg = (220, 38, 38) if is_live_pulse else (185, 28, 28)
-        draw.rounded_rectangle([w - 240, 45, w - 45, 115], radius=12, fill=badge_bg)
-        draw.text((w - 142, 80), "🔴 LIVE NEWS", font=font_badge, fill=(255, 255, 255), anchor="mm")
-
-        # Top Red/Yellow Progress Bar
-        draw.rectangle([(0, 0), (int(w * progress), 10)], fill=(255, 222, 3))
-
-        # 2. TV NEWS CHANNEL LOWER THIRD (BOTTOM NEWS OVERLAY)
-        # Red Breaking Header Plate
-        draw.rectangle([(0, h - 460), (440, h - 395)], fill=(220, 38, 38))
-        draw.text((220, h - 428), "🔴 BREAKING NEWS", font=font_badge, fill=(255, 255, 255), anchor="mm")
-
-        # Main Headline Card (Deep Navy Glass with Gold Border)
-        draw.rectangle([(0, h - 395), (w, h - 95)], fill=(10, 25, 47))
-        draw.line([(0, h - 395), (w, h - 395)], fill=(255, 222, 3), width=4)
-
-        # Headline Line 1 (Gold #FFDE03)
-        draw.text((45, h - 350), hl_red[:45], font=font_hl_1, fill=(255, 222, 3))
-        # Headline Line 2 (Crisp White #FFFFFF)
-        draw.text((45, h - 280), hl_black[:50], font=font_hl_2, fill=(255, 255, 255))
-        # Summary description
-        draw.text((45, h - 215), f"{lead_summary}...", font=font_desc, fill=(203, 213, 225))
-
-        # 3. BOTTOM TICKER BAR (Alternates between News Alert & Sponsor Ads)
-        draw.rectangle([(0, h - 95), (w, h)], fill=(220, 38, 38))
-        if idx < (total_frames // 2):
-            ticker_msg = "⚡ ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें (@rauth_jee)"
-        else:
-            ticker_msg = "📢 BBCC SKILL HUB: कोचिंग ऑनलाइन ले जाएं | PTCC+BBCC (Class 1-10) चकदाह चौक, मधुबनी"
-        draw.text((w // 2, h - 48), ticker_msg, font=font_ticker, fill=(255, 255, 255), anchor="mm")
-
-        frame.save(f"{frames_dir}/f_{idx:04d}.jpg", quality=85)
+        frame.save(f"{frames_dir}/f_{idx:04d}.jpg", quality=88)
 
     logger.info(f"✅ Rendered {total_frames} frames in {time.time() - t_start:.2f}s.")
 
-    # 3. Assemble Video + Audio (Directly mux with cinematic news soundtrack)
-    logger.info("🎥 Encoding TV news channel MP4 with FFmpeg...")
+    # 3. Assemble Video + Audio
+    logger.info("🎥 Encoding Printed Newspaper MP4 with FFmpeg...")
     cmd_assemble = [
         ffmpeg, "-y",
         "-framerate", str(fps),
@@ -1156,7 +1101,7 @@ def create_news_reel_video(
     shutil.rmtree(frames_dir, ignore_errors=True)
 
     if os.path.exists(output_video_path):
-        logger.info(f"✅ TV News Channel Reel rendered: {output_video_path} (Duration: {duration:.1f}s)")
+        logger.info(f"✅ Printed Newspaper Reel rendered: {output_video_path} (Duration: {duration:.1f}s)")
         return output_video_path
     return None
 
@@ -1431,7 +1376,24 @@ class InstagramMultiPublisher:
 # 10. MAIN EXECUTION PIPELINE
 # ==============================================================================
 
+def is_within_publishing_hours() -> bool:
+    """
+    Checks if current time in IST (UTC+5:30) is between 06:00 AM and 06:00 PM.
+    Allows execution anytime if manually triggered (workflow_dispatch or DRY_RUN).
+    """
+    if os.getenv("GITHUB_EVENT_NAME") == "workflow_dispatch" or DRY_RUN:
+        return True
+    utc_now = datetime.datetime.now(datetime.timezone.utc)
+    ist_now = utc_now + datetime.timedelta(hours=5, minutes=30)
+    hour_float = ist_now.hour + ist_now.minute / 60.0
+    # 06:00 AM to 06:00 PM IST (with small buffer: 5:45 AM to 6:15 PM)
+    return 5.75 <= hour_float <= 18.25
+
 def main():
+    if not is_within_publishing_hours():
+        logger.info("🌙 Outside daytime publishing window (06:00 AM to 06:00 PM IST). Sleeping.")
+        return
+
     logger.info("================================================================================")
     logger.info(f"📰 STARTING PREMIUM NEWS ENGINE (FLUX AI + ELEVENLABS) FOR {CREATOR_HANDLE}")
     logger.info("================================================================================")
