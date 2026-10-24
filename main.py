@@ -798,31 +798,84 @@ def get_ffmpeg_binary() -> str:
     except Exception:
         return "ffmpeg"
 
-def generate_news_synth_music(music_path: str = "assets/music.wav", duration: float = 14.0) -> str:
-    if os.path.exists(music_path) and os.path.getsize(music_path) > 10000:
-        return music_path
-    os.makedirs(os.path.dirname(music_path), exist_ok=True)
+def generate_cinematic_news_soundtrack(output_path: str = "assets/music.wav", duration: float = 12.0) -> str:
+    """
+    Synthesizes a broadcast-grade cinematic TV news soundtrack:
+    - Deep Taiko drum impacts & rhythmic snare hits (no cheesy high bleeps)
+    - Dark orchestral D-minor / Bb-major strings pad
+    - Sub-bass heartbeat pulse (55 Hz)
+    - Tension whoosh / riser
+    """
+    os.makedirs(os.path.dirname(output_path), exist_ok=True)
     sr = 44100
     ns = int(sr * duration)
-    bpm = 126
-    bl = sr * 60 / bpm
-    notes = [130.81, 155.56, 174.61, 196.00, 233.08, 261.63, 293.66, 349.23]
-    with wave.open(music_path, "w") as wf:
+    bpm = 120
+    beat_samples = int(sr * 60 / bpm)  # 0.5s per beat
+
+    # Chord frequencies (D Minor dramatic news pad: D3, F3, A3, D4 & Bb Major)
+    chord_d_minor = [146.83, 174.61, 220.00, 293.66]
+    chord_bb_major = [116.54, 146.83, 174.61, 233.08]
+
+    frames = bytearray()
+    for i in range(ns):
+        t = i / sr
+        bar = int(t / 2.0) % 2  # alternates every 2 seconds
+        chord = chord_d_minor if bar == 0 else chord_bb_major
+
+        # 1. Cinematic Heavy News Drum (Taiko impact on beat 0 and beat 2)
+        drum_hit = 0.0
+
+        # Beat 0: Big Impact
+        t_hit_0 = (i % (beat_samples * 4)) / sr
+        if t_hit_0 < 0.6:
+            pitch_0 = 45.0 + 75.0 * math.exp(-t_hit_0 * 18.0)
+            drum_hit += 0.85 * math.sin(2 * math.pi * pitch_0 * t_hit_0) * math.exp(-t_hit_0 * 4.5)
+            drum_hit += 0.3 * (random.random() * 2.0 - 1.0) * math.exp(-t_hit_0 * 40.0)
+
+        # Beat 2: Snare / Clap Hit
+        t_hit_2 = ((i - beat_samples * 2) % (beat_samples * 4)) / sr
+        if 0 <= t_hit_2 < 0.3:
+            drum_hit += 0.45 * (random.random() * 2.0 - 1.0) * math.exp(-t_hit_2 * 25.0)
+            drum_hit += 0.4 * math.sin(2 * math.pi * 90.0 * t_hit_2) * math.exp(-t_hit_2 * 12.0)
+
+        # Beat 3.5: Rhythmic pre-hit
+        t_hit_3 = ((i - int(beat_samples * 3.5)) % (beat_samples * 4)) / sr
+        if 0 <= t_hit_3 < 0.2:
+            drum_hit += 0.35 * math.sin(2 * math.pi * 65.0 * t_hit_3) * math.exp(-t_hit_3 * 15.0)
+
+        # 2. Dramatic Deep Orchestral Strings / News Pad (Smooth, dark, serious)
+        pad = 0.0
+        for f in chord:
+            pad += (0.15 * math.sin(2 * math.pi * f * t) +
+                    0.08 * math.sin(2 * math.pi * (f * 2.0) * t) +
+                    0.04 * math.sin(2 * math.pi * (f * 0.5) * t))
+        pad *= (0.7 + 0.3 * math.sin(2 * math.pi * 0.5 * t))
+
+        # 3. News Heartbeat Sub-Bass Pulse (55Hz)
+        sub_pulse = 0.4 * math.sin(2 * math.pi * 55.0 * t) * (1.0 if (i % beat_samples) < (beat_samples * 0.35) else 0.1)
+
+        # 4. Cinematic Tension Riser / Whoosh
+        riser = 0.0
+        t_riser = t % 4.0
+        if t_riser > 2.5:
+            r_prog = (t_riser - 2.5) / 1.5
+            riser = 0.25 * (random.random() * 2.0 - 1.0) * (r_prog ** 2)
+
+        # Total mix (Balanced, powerful, NO high bleeps)
+        total = drum_hit * 0.65 + pad * 0.35 + sub_pulse * 0.3 + riser * 0.15
+        total = max(-0.95, min(0.95, total))
+        sample_val = int(total * 32000)
+
+        frames.extend(struct.pack("<hh", sample_val, sample_val))
+
+    with wave.open(output_path, "w") as wf:
         wf.setnchannels(2)
         wf.setsampwidth(2)
         wf.setframerate(sr)
-        frames = bytearray()
-        for i in range(ns):
-            t = i / sr
-            bp = (i % int(bl)) / bl
-            kick = math.sin(2 * math.pi * (160 * math.exp(-bp * 16) + 42) * t) * math.exp(-bp * 9) if bp < 0.5 else 0
-            bass = 0.5 * math.sin(2 * math.pi * 65.41 * t)
-            step = int(i // (bl / 4)) % len(notes)
-            arp = math.sin(2 * math.pi * notes[step] * t) * math.exp(-((i % int(bl / 4)) / (bl / 4)) * 6) * 0.35
-            s = max(-32767, min(32767, int((kick * 0.7 + bass * 0.5 + arp * 0.4) * 22000)))
-            frames.extend(struct.pack("<hh", s, s))
         wf.writeframes(frames)
-    return music_path
+
+    logger.info(f"✅ Cinematic TV news soundtrack generated: {output_path} ({duration}s)")
+    return output_path
 
 def create_news_reel_video(
     news_data: Dict[str, Any],
@@ -832,51 +885,29 @@ def create_news_reel_video(
     output_video_path: str = "output/daily_reel.mp4"
 ) -> Optional[str]:
     """
-    Renders Google Flow / TV News Channel video reel:
-    - Top Masthead: BBCC SKILL HUB in gold & white with 🔴 LIVE NEWS broadcast badge.
-    - Full-Screen Visual: 8K Photorealistic AI Press Photo with smooth cinematic Ken Burns zoom.
-    - NO popup caption boxes (completely clean TV broadcast view).
+    Renders Google Flow / TV News Channel video reel (Option B: Pure Cinematic Soundtrack):
+    - Duration: 12.0 seconds punchy news bulletin reel
+    - Audio: Powerful cinematic news theme (Drums + Sub-Bass + Strings), NO robotic bleeps, NO voice
+    - Top Masthead: BBCC SKILL HUB in gold & white with pulsing 🔴 LIVE NEWS broadcast badge
+    - Full-Screen Visual: 8K Photorealistic AI Press Photo with smooth cinematic Ken Burns zoom
     - Authentic TV News Channel Lower-Third:
-      * Red Breaking Bar: 🔴 बड़ी खबर / ब्रेकिंग न्यूज़
-      * Main Headline Plate: Headline Line 1 (Gold) + Headline Line 2 (White) + Subtitle
+      * Red Breaking Bar: 🔴 BREAKING NEWS
+      * Main Headline Plate: Headline Line 1 (Gold) + Headline Line 2 (White) + Summary
       * Bottom News Ticker Bar: ⚡ ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें
-    - ElevenLabs Studio Voiceover: Clear Hindi ending with 'हमारे पेज राउत जी को फॉलो करें!'
     """
-    logger.info("🎬 Rendering TV News Channel (Google Flow / BBCC Skill Hub) Video Reel...")
+    logger.info("🎬 Rendering TV News Channel (BBCC Skill Hub - Option B Music Reel)...")
     ffmpeg = get_ffmpeg_binary()
 
-    # 1. Voiceover Script Formatting
-    voice_script = news_data.get("reel_script", "")
-    if not voice_script:
-        voice_script = f"ब्रेकिंग न्यूज़! {news_data.get('headline_red', '')} {news_data.get('headline_black', '')}। पूरी जानकारी के लिए पोस्ट पढ़ें और ताज़ा अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें!"
-
-    # Ensure ending strictly has: "हमारे पेज राउत जी को फॉलो करें"
-    voice_script = voice_script.replace("@rauth_jee", "हमारे पेज राउत जी").replace("rauth_jee", "राउत जी")
-    if "हमारे पेज राउत जी" not in voice_script:
-        voice_script = voice_script.rstrip("!। ") + "। ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें!"
-
-    voice_path, duration = generate_elevenlabs_voiceover(voice_script, "output/voiceover.mp3")
-
-    # 2. Mix Voiceover + Music
-    music_path = generate_news_synth_music("assets/music.wav", duration=float(duration + 2.0))
-    mixed_audio = "output/final_audio.aac"
-    mix_cmd = [
-        ffmpeg, "-y",
-        "-i", voice_path,
-        "-i", music_path,
-        "-filter_complex", "[0:a]volume=2.4[a0];[1:a]volume=0.18[a1];[a0][a1]amix=inputs=2:duration=first:dropout_transition=2[outa]",
-        "-map", "[outa]",
-        "-c:a", "aac",
-        mixed_audio
-    ]
-    subprocess.run(mix_cmd, capture_output=True)
-
-    # 3. Setup Visual Components (TV News Layout)
+    duration = 12.0
     fps = 24
     total_frames = int(duration * fps)
     w, h = 1080, 1920
 
-    # Base background photo
+    # 1. Generate Cinematic News Soundtrack (Music only, no voice, no 'chiyu chiyu')
+    music_wav = "output/cinematic_music.wav"
+    generate_cinematic_news_soundtrack(music_wav, duration=duration)
+
+    # 2. Setup Visual Components (TV News Layout)
     photo_file = ai_photo_path if (ai_photo_path and os.path.exists(ai_photo_path)) else "output/news_photo.jpg"
     if not os.path.exists(photo_file):
         photo_file = newspaper_img_path
@@ -964,13 +995,13 @@ def create_news_reel_video(
 
     logger.info(f"✅ Rendered {total_frames} frames in {time.time() - t_start:.2f}s.")
 
-    # 4. Assemble Video + Audio
+    # 3. Assemble Video + Audio (Directly mux with cinematic news soundtrack)
     logger.info("🎥 Encoding TV news channel MP4 with FFmpeg...")
     cmd_assemble = [
         ffmpeg, "-y",
         "-framerate", str(fps),
         "-i", f"{frames_dir}/f_%04d.jpg",
-        "-i", mixed_audio,
+        "-i", music_wav,
         "-c:v", "libx264",
         "-pix_fmt", "yuv420p",
         "-preset", "fast",
