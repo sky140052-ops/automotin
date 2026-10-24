@@ -69,6 +69,7 @@ def generate_story(candidate):
     if not key:
         raise RuntimeError("GEMINI_API_KEY is required; refusing to create unverified/fallback news.")
     model = os.getenv("GEMINI_MODEL", "gemini-2.5-flash").strip()
+    base = "https://generativelanguage.googleapis.com/v1beta"
     prompt = f"""आप BBCC Skill Hub के हिंदी न्यूज़ संपादक हैं। नीचे दिए गए स्रोत शीर्षक के आधार पर पोस्ट तैयार करें।
 तथ्य, संख्या, तारीख, भर्ती पद, आवेदन शुरू होने की बात या सरकारी आदेश खुद से न जोड़ें।
 अगर शीर्षक से कोई दावा सत्यापित नहीं होता, उसे निश्चित तथ्य की तरह न लिखें; स्रोत-आधारित सीमित भाषा रखें।
@@ -77,12 +78,43 @@ def generate_story(candidate):
 स्रोत: {candidate['source']}
 लिंक: {candidate['url']}
 केवल valid JSON लौटाएँ, keys: headline (अधिकतम 90 अक्षर), summary (60-90 शब्द, हिंदी), bullets (3 छोटे बिंदु), narration (लगभग 70-100 हिंदी शब्द), caption (हिंदी, स्रोत लिंक शामिल), category (छोटा हिंदी शब्द)."""
-    url = f"https://generativelanguage.googleapis.com/v1beta/models/{model}:generateContent"
-    resp = requests.post(url, params={"key": key}, json={
-        "contents": [{"parts": [{"text": prompt}]}],
-        "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}
-    }, timeout=45)
-    resp.raise_for_status()
+
+    def request_model(name):
+        return requests.post(
+            f"{base}/models/{name}:generateContent",
+            params={"key": key},
+            json={"contents": [{"parts": [{"text": prompt}]}],
+                  "generationConfig": {"temperature": 0.2, "responseMimeType": "application/json"}},
+            timeout=45,
+        )
+
+    resp = request_model(model)
+    if resp.status_code == 404:
+        # Model availability differs by API project; discover models for this key.
+        catalog = requests.get(f"{base}/models", params={"key": key}, timeout=20)
+        if catalog.ok:
+            available = [
+                item.get("name", "").removeprefix("models/")
+                for item in catalog.json().get("models", [])
+                if "generateContent" in item.get("supportedGenerationMethods", [])
+                and "gemini" in item.get("name", "").lower()
+            ]
+            available.sort(key=lambda n: (0 if n == "gemini-2.5-flash" else
+                                          1 if "2.5-flash" in n else
+                                          2 if "flash" in n.lower() else 3, n))
+            alternate = next((name for name in available if name and name != model), None)
+            if alternate:
+                LOG.warning("Configured Gemini model returned 404; retrying discovered model %s", alternate)
+                model = alternate
+                resp = request_model(model)
+        else:
+            LOG.error("Gemini model list request failed with HTTP %s", catalog.status_code)
+    if not resp.ok:
+        try:
+            detail = resp.json().get("error", {}).get("message", resp.text)
+        except ValueError:
+            detail = resp.text
+        raise RuntimeError(f"Gemini API HTTP {resp.status_code} for model {model}: {detail[:1200]}")
     data = resp.json()
     text = data["candidates"][0]["content"]["parts"][0]["text"]
     story = json.loads(text)
