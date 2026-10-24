@@ -61,6 +61,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           CREATOR_HANDLE: ${{ secrets.CREATOR_HANDLE || '@rauth_jee' }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
         run: |
           python main.py
