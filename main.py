@@ -696,12 +696,13 @@ def probe_audio_duration(audio_path: str) -> float:
 
 def get_devanagari_font(size: int, bold: bool = False) -> ImageFont.ImageFont:
     candidates = (
-        ["NotoSansDevanagari-Bold.ttf", "NirmalaB.ttf", "mangal.ttf", "aparajb.ttf", "DejaVuSans-Bold.ttf"]
+        ["Mukta-Bold.ttf", "NotoSansDevanagari-Bold.ttf", "NirmalaB.ttf", "mangal.ttf", "aparajb.ttf", "DejaVuSans-Bold.ttf", "arialbd.ttf"]
         if bold
-        else ["NotoSansDevanagari-Regular.ttf", "Nirmala.ttf", "mangal.ttf", "aparaj.ttf", "DejaVuSans.ttf"]
+        else ["Mukta-Regular.ttf", "NotoSansDevanagari-Regular.ttf", "Nirmala.ttf", "mangal.ttf", "aparaj.ttf", "DejaVuSans.ttf", "arial.ttf"]
     )
     search_dirs = [
         os.path.join("assets", "fonts"),
+        "assets/fonts",
         "C:/Windows/Fonts",
         "/usr/share/fonts/truetype/noto",
         "/usr/share/fonts/truetype/dejavu",
@@ -808,7 +809,7 @@ def create_newspaper_graphic(
             draw.rounded_rectangle([(40, photo_top), (w - 40, photo_top + photo_h)], radius=15, outline=(15, 23, 42), width=2)
             # Photo badge
             draw.rounded_rectangle([55, photo_top + photo_h - 40, 380, photo_top + photo_h - 10], radius=8, fill=(10, 37, 64))
-            draw.text((65, photo_top + photo_h - 36), "📷 विशेष रिपोर्ट • फोटो: ब्यूरो / AI प्रेस", font=font_reg_sm, fill=(255, 255, 255))
+            draw.text((65, photo_top + photo_h - 36), "विशेष रिपोर्ट • फोटो: ब्यूरो / AI प्रेस", font=font_reg_sm, fill=(255, 255, 255))
         except Exception:
             pass
 
@@ -817,7 +818,7 @@ def create_newspaper_graphic(
     box_h = 360
     draw.rounded_rectangle([40, box_y, w - 40, box_y + box_h], radius=16, fill=(254, 249, 195), outline=(217, 119, 6), width=3)
     draw.rounded_rectangle([70, box_y + 14, 420, box_y + 62], radius=24, fill=(220, 38, 38))
-    draw.text((245, box_y + 38), "📌 मामले की मुख्य बातें", font=font_bold_md, fill=(255, 255, 255), anchor="mm")
+    draw.text((245, box_y + 38), "मामले की मुख्य बातें", font=font_bold_md, fill=(255, 255, 255), anchor="mm")
 
     points = news_data.get("key_highlights", [
         "विभाग ने सभी नियमों को स्पष्ट करते हुए दिशा-निर्देश जारी किए।",
@@ -877,7 +878,7 @@ def create_newspaper_graphic(
     draw.rounded_rectangle([b1_x1, b1_y1, b1_x2, b1_y2], radius=14, fill=(240, 247, 255), outline=(30, 58, 138), width=2)
     # Header Badge
     draw.rounded_rectangle([b1_x1 + 15, b1_y1 + 12, b1_x1 + 250, b1_y1 + 42], radius=8, fill=(220, 38, 38))
-    draw.text((b1_x1 + 132, b1_y1 + 27), "📢 विज्ञापन: BBCC SKILL HUB", font=font_badge_sm, fill=(255, 255, 255), anchor="mm")
+    draw.text((b1_x1 + 132, b1_y1 + 27), "विशेष विज्ञापन: BBCC SKILL HUB", font=font_badge_sm, fill=(255, 255, 255), anchor="mm")
     # Punchline & Subtitle
     draw.text((b1_x1 + 18, b1_y1 + 52), "अपने कोचिंग का रजिस्ट्रेशन करें!", font=font_bold_sm, fill=(10, 37, 64))
     draw.text((b1_x1 + 18, b1_y1 + 82), "अपने कोचिंग को ले जाएं 100% ऑनलाइन", font=get_devanagari_font(19, bold=True), fill=(185, 28, 28))
@@ -890,7 +891,7 @@ def create_newspaper_graphic(
         ad_ty += 28
     # Bottom Yellow CTA
     draw.rounded_rectangle([b1_x1 + 15, b1_y2 - 50, b1_x2 - 15, b1_y2 - 12], radius=8, fill=(255, 222, 3))
-    draw.text(((b1_x1 + b1_x2) // 2, b1_y2 - 31), "👉 Google पर सर्च करें: BBCC SKILL HUB", font=get_devanagari_font(18, bold=True), fill=(10, 37, 64), anchor="mm")
+    draw.text(((b1_x1 + b1_x2) // 2, b1_y2 - 31), "Google सर्च: BBCC SKILL HUB", font=get_devanagari_font(18, bold=True), fill=(10, 37, 64), anchor="mm")
 
     # --- AD BOX 2: PTCC + BBCC (CHAKDAH CHOWK, MADHUBANI) ---
     b2_x1, b2_y1 = 555, ad_y
@@ -898,10 +899,10 @@ def create_newspaper_graphic(
     draw.rounded_rectangle([b2_x1, b2_y1, b2_x2, b2_y2], radius=14, fill=(240, 253, 244), outline=(4, 120, 87), width=2)
     # Header Badge
     draw.rounded_rectangle([b2_x1 + 15, b2_y1 + 12, b2_x1 + 250, b2_y1 + 42], radius=8, fill=(4, 120, 87))
-    draw.text((b2_x1 + 132, b2_y1 + 27), "🎓 शैक्षणिक विज्ञापन: PTCC+BBCC", font=font_badge_sm, fill=(255, 255, 255), anchor="mm")
+    draw.text((b2_x1 + 132, b2_y1 + 27), "शैक्षणिक विज्ञापन: PTCC+BBCC", font=font_badge_sm, fill=(255, 255, 255), anchor="mm")
     # Punchline & Subtitle
     draw.text((b2_x1 + 18, b2_y1 + 52), "Class 1st to 10th (All Subjects)", font=font_bold_sm, fill=(6, 78, 59))
-    draw.text((b2_x1 + 18, b2_y1 + 82), "📍 चकदाह चौक, मधुबनी (Chakdah Chowk)", font=get_devanagari_font(19, bold=True), fill=(185, 28, 28))
+    draw.text((b2_x1 + 18, b2_y1 + 82), "चकदाह चौक, मधुबनी (Chakdah Chowk)", font=get_devanagari_font(19, bold=True), fill=(185, 28, 28))
     # Details
     ad2_text = "अनुभवी शिक्षकों द्वारा सभी विषयों की संपूर्ण तैयारी। नया सत्र 2026-27 के लिए नए बैच शुरू। कमज़ोर छात्रों पर विशेष ध्यान।"
     ad2_wrapped = wrap_text_lines(ad2_text, font_ad_desc, box_w - 36)
@@ -911,7 +912,7 @@ def create_newspaper_graphic(
         ad_ty2 += 28
     # Bottom Green CTA
     draw.rounded_rectangle([b2_x1 + 15, b2_y2 - 50, b2_x2 - 15, b2_y2 - 12], radius=8, fill=(187, 247, 208))
-    draw.text(((b2_x1 + b2_x2) // 2, b2_y2 - 31), "📞 प्रवेश प्रारंभ | चकदाह चौक, मधुबनी", font=get_devanagari_font(18, bold=True), fill=(6, 78, 59), anchor="mm")
+    draw.text(((b2_x1 + b2_x2) // 2, b2_y2 - 31), "प्रवेश प्रारंभ | चकदाह चौक, मधुबनी", font=get_devanagari_font(18, bold=True), fill=(6, 78, 59), anchor="mm")
 
     # 9. BOTTOM NAVY FOOTER
     draw.rectangle([(0, h - 120), (w, h)], fill=(10, 37, 64))
