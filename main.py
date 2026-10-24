@@ -120,7 +120,7 @@ FALLBACK_NEWS_DATABASE = [
             "आयोग ने अभ्यर्थियों से अपील की है कि वे आवेदन से पूर्व सभी शैक्षणिक प्रमाण पत्रों",
             "को तैयार रखें तथा केवल आधिकारिक वेबसाइट की सूचना पर ही विश्वास करें।"
         ],
-        "reel_script": "ब्रेकिंग न्यूज़! बिहार में चौथे चरण की शिक्षक भर्ती का आधिकारिक नोटिफिकेशन जारी हो चुका है! कुल 32,388 पदों पर प्राथमिक और माध्यमिक शिक्षकों की बंपर बहाली होगी। पूरी रिपोर्ट और मुख्य बातें जानने के लिए पोस्ट पढ़ें और रोज़ाना ताज़ा न्यूज़ के लिए अभी फॉलो करें @rauth_jee को!",
+        "reel_script": "ब्रेकिंग न्यूज़! बिहार में चौथे चरण की शिक्षक भर्ती का आधिकारिक नोटिफिकेशन जारी हो चुका है! कुल 32,388 पदों पर प्राथमिक और माध्यमिक शिक्षकों की बंपर बहाली होगी। पूरी रिपोर्ट और मुख्य बातें जानने के लिए पोस्ट पढ़ें और ताज़ा न्यूज़ के लिए हमारे पेज राउत जी को फॉलो करें!",
         "reel_phrases": [
             {"hook": "🚨 ब्रेकिंग न्यूज़!", "white": "बिहार शिक्षक भर्ती (TRE-4)", "punch": "32,388 पदों पर बंपर बहाली!"},
             {"hook": "📢 BPSC का बड़ा फैसला", "white": "प्राथमिक व माध्यमिक स्तर पर", "punch": "नोटिफिकेशन जारी!"},
@@ -155,7 +155,7 @@ FALLBACK_NEWS_DATABASE = [
             "",
             "साइबर एक्सपर्ट्स की सलाह है कि घबराने की बजाय तुरंत 1930 पर कॉल करें।"
         ],
-        "reel_script": "सावधान! गृह मंत्रालय ने डिजिटल अरेस्ट और ऑनलाइन फ्रॉड पर बड़ी चेतावनी जारी की है! पुलिस या जज कभी भी वीडियो कॉल पर डिजिटल अरेस्ट नहीं करते। फ्रॉड होने पर तुरंत 1930 पर कॉल करें। सुरक्षित रहने के लिए अभी फॉलो करें @rauth_jee को!",
+        "reel_script": "सावधान! गृह मंत्रालय ने डिजिटल अरेस्ट और ऑनलाइन फ्रॉड पर बड़ी चेतावनी जारी की है! पुलिस या जज कभी भी वीडियो कॉल पर डिजिटल अरेस्ट नहीं करते। फ्रॉड होने पर तुरंत 1930 पर कॉल करें। सुरक्षित रहने के लिए हमारे पेज राउत जी को फॉलो करें!",
         "reel_phrases": [
             {"hook": "🚨 सावधान इंडिया!", "white": "डिजिटल अरेस्ट के नाम पर", "punch": "हैकर्स का नया जाल!"},
             {"hook": "❌ बड़ा सच", "white": "कानून में डिजिटल अरेस्ट", "punch": "जैसा कुछ भी नहीं होता!"},
@@ -187,7 +187,7 @@ FALLBACK_NEWS_DATABASE = [
             "",
             "सभी कोचों में आधुनिक सुरक्षा उपकरण और सीसीटीवी कैमरे स्थापित किए जाएंगे।"
         ],
-        "reel_script": "ब्रेकिंग न्यूज़! भारतीय रेलवे ने 50 नई सुपरफास्ट ट्रेनें चलाने का बड़ा ऐलान किया है! किराया भी सस्ता होगा और टिकट भी आसानी से मिलेगा। पूरी खबर जानने के लिए पोस्ट पढ़ें और ताज़ा अपडेट्स के लिए अभी फॉलो करें @rauth_jee को!",
+        "reel_script": "ब्रेकिंग न्यूज़! भारतीय रेलवे ने 50 नई सुपरफास्ट ट्रेनें चलाने का बड़ा ऐलान किया है! किराया भी सस्ता होगा और टिकट भी आसानी से मिलेगा। पूरी खबर जानने के लिए पोस्ट पढ़ें और ताज़ा अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें!",
         "reel_phrases": [
             {"hook": "🚨 रेलवे का बड़ा फैसला!", "white": "50 नई सुपरफास्ट ट्रेनें", "punch": "रूट्स का हुआ ऐलान!"},
             {"hook": "📢 आम जनता को राहत", "white": "किराया होगा सस्ता", "punch": "कन्फर्म टिकट मिलेगा!"},
@@ -218,7 +218,7 @@ FALLBACK_NEWS_DATABASE = [
             "",
             "पटनावासियों के लिए यह परियोजना यातायात के क्षेत्र में ऐतिहासिक मील का पत्थर बनेगी।"
         ],
-        "reel_script": "बड़ी खुशखबरी! पटना मेट्रो का काम पूरा होने के करीब है! अगले साल से प्राथमिक रूट पर मेट्रो दौड़ने लगेगी जिससे जाम से पूरी राहत मिलेगी। पूरी रिपोर्ट पढ़ने के लिए पोस्ट देखें और रोज़ाना ताज़ा खबरों के लिए फॉलो करें @rauth_jee को!",
+        "reel_script": "बड़ी खुशखबरी! पटना मेट्रो का काम पूरा होने के करीब है! अगले साल से प्राथमिक रूट पर मेट्रो दौड़ने लगेगी जिससे जाम से पूरी राहत मिलेगी। पूरी रिपोर्ट पढ़ने के लिए पोस्ट देखें और ताज़ा खबरों के लिए हमारे पेज राउत जी को फॉलो करें!",
         "reel_phrases": [
             {"hook": "🚨 पटना मेट्रो अपडेट!", "white": "टनलिंग का काम पूरा", "punch": "ट्रायल रन जल्द शुरू!"},
             {"hook": "🚆 जाम से मिलेगी मुक्ति", "white": "मीठापुर से ISBT तक", "punch": "सबसे पहले दौड़ेगी मेट्रो!"},
@@ -403,12 +403,12 @@ def dynamically_format_live_news(raw_news: Dict[str, str]) -> Dict[str, Any]:
             "",
             "सभी नागरिकों से अपील की गई है कि वे केवल आधिकारिक सूचनाओं पर ही भरोसा करें।"
         ],
-        "reel_script": f"ब्रेकिंग न्यूज़! {headline_red} {headline_black}! पूरी रिपोर्ट जानने के लिए इस पोस्ट को ध्यान से पढ़ें और रोज़ाना ताज़ा खबरों के लिए अभी फॉलो करें @rauth_jee को!",
+        "reel_script": f"ब्रेकिंग न्यूज़! {headline_red} {headline_black}! पूरी रिपोर्ट जानने के लिए इस पोस्ट को ध्यान से पढ़ें और रोज़ाना ताज़ा खबरों के लिए हमारे पेज राउत जी को फॉलो करें!",
         "reel_phrases": [
             {"hook": "🚨 ब्रेकिंग न्यूज़!", "white": headline_red.replace(":", ""), "punch": headline_black[:30]},
             {"hook": "📢 बड़ा फैसला", "white": "आधिकारिक सूचना जारी", "punch": "नियम लागू!"},
             {"hook": "📌 मुख्य बातें", "white": "पूरी जानकारी के लिए", "punch": "पोस्ट पढ़ें!"},
-            {"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+            {"hook": "📰 ताज़ा खबरों के लिए", "white": "अभी फॉलो करें", "punch": "पेज राउत जी"}
         ],
         "caption": f"📢 दैनिक जागरण ब्रेकिंग: {title}\n\n📌 मुख्य बातें:\n• पूरी रिपोर्ट जारी\n• आधिकारिक पोर्टल पर अधिसूचना उपलब्ध\n\nऐसी ही हर ताज़ा खबर के लिए फॉलो करें: @rauth_jee",
         "hashtags": VIRAL_HASHTAGS
@@ -456,13 +456,13 @@ IMPORTANT RULES:
     "",
     "Paragraph 3 giving advisory to readers."
   ],
-  "reel_script": "News anchor voiceover in Hindi under 30 words starting with 'ब्रेकिंग न्यूज़!' and ending with 'फॉलो करें @rauth_jee को!'",
+  "reel_script": "News anchor voiceover in Hindi under 30 words starting with 'ब्रेकिंग न्यूज़!' and ending strictly with 'हमारे पेज राउत जी को फॉलो करें!'",
   "reel_phrases": [
     {{"hook": "🚨 ब्रेकिंग न्यूज़!", "white": "खबर का मुख्य विषय", "punch": "बड़ा फैसला जारी!"}},
     {{"hook": "📢 नया अपडेट", "white": "नियम या प्रक्रिया", "punch": "लाखों लोगों को राहत!"}},
     {{"hook": "📌 मुख्य बातें", "white": "पात्रता और शर्तें", "punch": "विभागीय पोर्टल पर उपलब्ध!"}},
     {{"hook": "⚡ ज़रूरी निर्देश", "white": "तुरंत चेक करें", "punch": "और तैयार रहें!"}},
-    {{"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}}
+    {{"hook": "📰 ताज़ा खबरों के लिए", "white": "अभी फॉलो करें", "punch": "पेज राउत जी"}}
   ],
   "caption": "Detailed Instagram caption with headlines, bullet points, hashtags, and call to action."
 }}
@@ -666,14 +666,14 @@ def create_newspaper_graphic(
     font_reg_md = get_devanagari_font(24, bold=False)
     font_reg_sm = get_devanagari_font(20, bold=False)
 
-    # 1. TOP NAVY BLUE BAR (BBCC SKILL HUB STYLE)
-    draw.rectangle([(0, 0), (w, 110)], fill=(10, 37, 64))
-    draw.text((40, 22), "RAUTH JEE", font=get_devanagari_font(38, bold=True), fill=(255, 222, 3))
-    draw.text((250, 30), "SKILL & NEWS HUB", font=font_bold_md, fill=(255, 255, 255))
-    draw.text((40, 72), "Learn • Grow • Build Your Future", font=font_reg_sm, fill=(203, 213, 225))
+    # 1. TOP NAVY BLUE BAR (BBCC SKILL HUB)
+    draw.rectangle([(0, 0), (w, 120)], fill=(10, 37, 64))
+    draw.text((40, 20), "BBCC SKILL HUB", font=get_devanagari_font(46, bold=True), fill=(255, 222, 3))
+    draw.text((470, 32), "| दैनिक समाचार विशेषांक", font=font_bold_md, fill=(255, 255, 255))
+    draw.text((40, 78), "Learn • Grow • Build Your Future | हमारे पेज राउत जी को फॉलो करें", font=font_reg_sm, fill=(203, 213, 225))
     # Right Yellow Badge
-    draw.rounded_rectangle([w - 290, 22, w - 40, 85], radius=15, fill=(255, 222, 3))
-    draw.text((w - 165, 53), "Latest News Today", font=font_bold_md, fill=(10, 37, 64), anchor="mm")
+    draw.rounded_rectangle([w - 260, 24, w - 40, 92], radius=15, fill=(255, 222, 3))
+    draw.text((w - 150, 58), "ताज़ा न्यूज़ आज", font=font_bold_md, fill=(10, 37, 64), anchor="mm")
 
     # 2. NEWSPAPER MASTHEAD (DAINIK JAGRAN STYLE)
     paper_title = news_data.get("newspaper_title", "दैनिक जागरण")
@@ -770,10 +770,10 @@ def create_newspaper_graphic(
 
     # 8. BOTTOM NAVY FOOTER
     draw.rectangle([(0, h - 120), (w, h)], fill=(10, 37, 64))
-    draw.text((40, h - 85), f"RAUTH JEE HUB | अपने करियर की सही दिशा", font=font_bold_md, fill=(255, 255, 255))
-    draw.text((40, h - 45), f"रोज़ाना ताज़ा अपडेट के लिए फॉलो करें: {CREATOR_HANDLE}", font=font_reg_sm, fill=(203, 213, 225))
-    draw.rounded_rectangle([w - 320, h - 95, w - 40, h - 35], radius=15, fill=(255, 222, 3))
-    draw.text((w - 180, h - 65), f"Follow {CREATOR_HANDLE}", font=get_devanagari_font(22, bold=True), fill=(10, 37, 64), anchor="mm")
+    draw.text((40, h - 85), f"BBCC SKILL HUB | अपने करियर और ज्ञान की सही दिशा", font=font_bold_md, fill=(255, 255, 255))
+    draw.text((40, h - 45), f"रोज़ाना ताज़ा अपडेट के लिए हमारे पेज राउत जी को फॉलो करें (@rauth_jee)", font=font_reg_sm, fill=(203, 213, 225))
+    draw.rounded_rectangle([w - 360, h - 95, w - 40, h - 35], radius=15, fill=(255, 222, 3))
+    draw.text((w - 200, h - 65), f"पेज राउत जी", font=get_devanagari_font(24, bold=True), fill=(10, 37, 64), anchor="mm")
 
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     img.save(output_path, "PNG")
@@ -819,21 +819,35 @@ def generate_news_synth_music(music_path: str = "assets/music.wav", duration: fl
 
 def create_news_reel_video(
     news_data: Dict[str, Any],
+    ai_photo_path: Optional[str] = None,
     newspaper_img_path: str = "output/daily_tip.png",
     face_path: str = "assets/my_face.jpg",
     output_video_path: str = "output/daily_reel.mp4"
 ) -> Optional[str]:
     """
-    Renders breaking news video reel with Ken Burns zoom over the newspaper graphic,
-    pop-up highlighted subtitle cards (Bold Yellow & White), news ticker, and ElevenLabs voice.
+    Renders Google Flow / TV News Channel video reel:
+    - Top Masthead: BBCC SKILL HUB in gold & white with 🔴 LIVE NEWS broadcast badge.
+    - Full-Screen Visual: 8K Photorealistic AI Press Photo with smooth cinematic Ken Burns zoom.
+    - NO popup caption boxes (completely clean TV broadcast view).
+    - Authentic TV News Channel Lower-Third:
+      * Red Breaking Bar: 🔴 बड़ी खबर / ब्रेकिंग न्यूज़
+      * Main Headline Plate: Headline Line 1 (Gold) + Headline Line 2 (White) + Subtitle
+      * Bottom News Ticker Bar: ⚡ ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें
+    - ElevenLabs Studio Voiceover: Clear Hindi ending with 'हमारे पेज राउत जी को फॉलो करें!'
     """
-    logger.info("🎬 Rendering Breaking News Video Reel MP4 with ElevenLabs Audio...")
+    logger.info("🎬 Rendering TV News Channel (Google Flow / BBCC Skill Hub) Video Reel...")
     ffmpeg = get_ffmpeg_binary()
 
-    # 1. Voiceover
-    voice_script = news_data.get("reel_script")
+    # 1. Voiceover Script Formatting
+    voice_script = news_data.get("reel_script", "")
     if not voice_script:
-        voice_script = f"ब्रेकिंग न्यूज़! {news_data.get('headline_red', '')} {news_data.get('headline_black', '')}। पूरी जानकारी के लिए पोस्ट पढ़ें और फॉलो करें {CREATOR_HANDLE} को।"
+        voice_script = f"ब्रेकिंग न्यूज़! {news_data.get('headline_red', '')} {news_data.get('headline_black', '')}। पूरी जानकारी के लिए पोस्ट पढ़ें और ताज़ा अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें!"
+
+    # Ensure ending strictly has: "हमारे पेज राउत जी को फॉलो करें"
+    voice_script = voice_script.replace("@rauth_jee", "हमारे पेज राउत जी").replace("rauth_jee", "राउत जी")
+    if "हमारे पेज राउत जी" not in voice_script:
+        voice_script = voice_script.rstrip("!। ") + "। ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें!"
+
     voice_path, duration = generate_elevenlabs_voiceover(voice_script, "output/voiceover.mp3")
 
     # 2. Mix Voiceover + Music
@@ -850,79 +864,101 @@ def create_news_reel_video(
     ]
     subprocess.run(mix_cmd, capture_output=True)
 
-    # 3. Subtitles
-    phrases = news_data.get("reel_phrases")
-    if not phrases or not isinstance(phrases, list):
-        phrases = [
-            {"hook": "🚨 ब्रेकिंग न्यूज़!", "white": news_data.get("headline_red", "बड़ा फैसला"), "punch": news_data.get("headline_black", "आधिकारिक आदेश जारी!")},
-            {"hook": "📢 नया अपडेट", "white": news_data.get("lead_summary", "लाखों लोगों को राहत"), "punch": "पूरी रिपोर्ट जारी!"},
-            {"hook": "📌 मुख्य बातें", "white": "पात्रता और आवेदन की शर्तें", "punch": "विभागीय पोर्टल पर उपलब्ध!"},
-            {"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": CREATOR_HANDLE}
-        ]
-
-    # 4. Generate Animated Video Frames (24 FPS)
+    # 3. Setup Visual Components (TV News Layout)
     fps = 24
     total_frames = int(duration * fps)
     w, h = 1080, 1920
 
-    base_paper = Image.open(newspaper_img_path).convert("RGB")
-    font_bold_lg = get_devanagari_font(52, bold=True)
-    font_bold_md = get_devanagari_font(42, bold=True)
-    font_sub = get_devanagari_font(24, bold=False)
+    # Base background photo
+    photo_file = ai_photo_path if (ai_photo_path and os.path.exists(ai_photo_path)) else "output/news_photo.jpg"
+    if not os.path.exists(photo_file):
+        photo_file = newspaper_img_path
+
+    try:
+        base_photo = Image.open(photo_file).convert("RGB")
+    except Exception:
+        base_photo = Image.new("RGB", (w, 1200), (15, 23, 42))
+
+    font_logo = get_devanagari_font(46, bold=True)
+    font_sub = get_devanagari_font(22, bold=False)
+    font_badge = get_devanagari_font(26, bold=True)
+    font_hl_1 = get_devanagari_font(42, bold=True)
+    font_hl_2 = get_devanagari_font(38, bold=True)
+    font_desc = get_devanagari_font(24, bold=False)
+    font_ticker = get_devanagari_font(26, bold=True)
+
+    hl_red = news_data.get("headline_red", "🔴 बड़ी खबर: ताज़ा आदेश जारी")
+    hl_black = news_data.get("headline_black", "नियमों में हुआ बड़ा बदलाव")
+    lead_summary = news_data.get("lead_summary", "विभागीय पोर्टल पर आधिकारिक अधिसूचना जारी")[:80]
 
     frames_dir = "output/reel_frames"
     if os.path.exists(frames_dir):
         shutil.rmtree(frames_dir)
     os.makedirs(frames_dir, exist_ok=True)
 
-    logger.info(f"🎞️ Rendering {total_frames} news reel frames ({duration:.1f}s @ {fps}fps)...")
+    logger.info(f"🎞️ Rendering {total_frames} TV News Channel frames ({duration:.1f}s @ {fps}fps)...")
     t_start = time.time()
 
     for idx in range(total_frames):
-        t = idx / fps
-        progress = t / duration
-        phrase_idx = min(int(progress * len(phrases)), len(phrases) - 1)
-        p_data = phrases[phrase_idx]
+        progress = idx / total_frames
 
-        # Subtle Ken Burns zoom effect
-        zoom = 1.0 + 0.05 * progress
-        zw, zh = int(w * zoom), int(h * zoom)
-        crop_x = (zw - w) // 2
-        crop_y = int((zh - h) * 0.3 * progress)
-        resized = base_paper.resize((zw, zh), Image.Resampling.BILINEAR)
-        frame = resized.crop((crop_x, crop_y, crop_x + w, crop_y + h))
+        # Create canvas
+        frame = Image.new("RGB", (w, h), (10, 20, 35))
+
+        # Slow cinematic Ken Burns zoom on the press photo (middle area)
+        zoom = 1.0 + 0.12 * progress
+        pw_target = int(w * zoom)
+        ph_target = int(1220 * zoom)
+        photo_resized = base_photo.resize((pw_target, ph_target), Image.Resampling.BILINEAR)
+        crop_x = (pw_target - w) // 2
+        crop_y = int((ph_target - 1220) * 0.5)
+        photo_crop = photo_resized.crop((crop_x, crop_y, crop_x + w, crop_y + 1220))
+        frame.paste(photo_crop, (0, 160))
+
         draw = ImageDraw.Draw(frame)
 
+        # 1. TOP TV NEWS CHANNEL MASTHEAD (BBCC SKILL HUB)
+        draw.rectangle([(0, 0), (w, 160)], fill=(10, 25, 47))
+        draw.rectangle([(0, 154), (w, 160)], fill=(220, 38, 38)) # red accent line
+
+        draw.text((45, 35), "BBCC SKILL HUB", font=font_logo, fill=(255, 222, 3))
+        draw.text((45, 98), "दैनिक समाचार बुलेटिन • देश और बिहार की बड़ी खबरें", font=font_sub, fill=(203, 213, 225))
+
+        # Flashing Live Badge (Pulses every second)
+        is_live_pulse = (int(idx / (fps * 0.5)) % 2) == 0
+        badge_bg = (220, 38, 38) if is_live_pulse else (185, 28, 28)
+        draw.rounded_rectangle([w - 240, 45, w - 45, 115], radius=12, fill=badge_bg)
+        draw.text((w - 142, 80), "🔴 LIVE NEWS", font=font_badge, fill=(255, 255, 255), anchor="mm")
+
         # Top Red/Yellow Progress Bar
-        draw.rectangle([(0, 0), (int(w * progress), 12)], fill=(220, 38, 38))
+        draw.rectangle([(0, 0), (int(w * progress), 10)], fill=(255, 222, 3))
 
-        # Breaking News Pop-Up Subtitle Card (Yellow & White Highlight)
-        card_y = 750
-        draw.rounded_rectangle([60, card_y, w - 60, card_y + 350], radius=30, fill=(10, 37, 64), outline=(255, 222, 3), width=4)
+        # 2. TV NEWS CHANNEL LOWER THIRD (BOTTOM NEWS OVERLAY)
+        # Red Breaking Header Plate
+        draw.rectangle([(0, h - 460), (440, h - 395)], fill=(220, 38, 38))
+        draw.text((220, h - 428), "🔴 BREAKING NEWS", font=font_badge, fill=(255, 255, 255), anchor="mm")
 
-        # Line 1: Hook (Yellow #FFE600)
-        draw.text((w // 2 + 2, card_y + 68), p_data.get("hook", "🚨 ब्रेकिंग न्यूज़!"), font=font_bold_lg, fill=(0, 0, 0), anchor="mm")
-        draw.text((w // 2, card_y + 66), p_data.get("hook", "🚨 ब्रेकिंग न्यूज़!"), font=font_bold_lg, fill=(255, 222, 3), anchor="mm")
+        # Main Headline Card (Deep Navy Glass with Gold Border)
+        draw.rectangle([(0, h - 395), (w, h - 95)], fill=(10, 25, 47))
+        draw.line([(0, h - 395), (w, h - 395)], fill=(255, 222, 3), width=4)
 
-        # Line 2: White Text
-        draw.text((w // 2 + 2, card_y + 168), p_data.get("white", "दैनिक समाचार"), font=font_bold_md, fill=(0, 0, 0), anchor="mm")
-        draw.text((w // 2, card_y + 166), p_data.get("white", "दैनिक समाचार"), font=font_bold_md, fill=(255, 255, 255), anchor="mm")
+        # Headline Line 1 (Gold #FFDE03)
+        draw.text((45, h - 350), hl_red[:45], font=font_hl_1, fill=(255, 222, 3))
+        # Headline Line 2 (Crisp White #FFFFFF)
+        draw.text((45, h - 280), hl_black[:50], font=font_hl_2, fill=(255, 255, 255))
+        # Summary description
+        draw.text((45, h - 215), f"{lead_summary}...", font=font_desc, fill=(203, 213, 225))
 
-        # Line 3: Punch (Yellow #FFE600)
-        draw.text((w // 2 + 2, card_y + 268), p_data.get("punch", f"फॉलो करें {CREATOR_HANDLE}"), font=font_bold_md, fill=(0, 0, 0), anchor="mm")
-        draw.text((w // 2, card_y + 266), p_data.get("punch", f"फॉलो करें {CREATOR_HANDLE}"), font=font_bold_md, fill=(255, 222, 3), anchor="mm")
-
-        # Bottom News Ticker Bar
-        ticker_y = h - 180
-        draw.rectangle([(0, ticker_y), (w, ticker_y + 60)], fill=(220, 38, 38))
-        draw.text((w // 2, ticker_y + 30), f"⚡ ताज़ा अपडेट्स और सरकारी योजनाओं के लिए फॉलो करें: {CREATOR_HANDLE}", font=font_sub, fill=(255, 255, 255), anchor="mm")
+        # 3. BOTTOM TICKER BAR
+        draw.rectangle([(0, h - 95), (w, h)], fill=(220, 38, 38))
+        draw.text((w // 2, h - 48), "⚡ ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें", font=font_ticker, fill=(255, 255, 255), anchor="mm")
 
         frame.save(f"{frames_dir}/f_{idx:04d}.jpg", quality=85)
 
     logger.info(f"✅ Rendered {total_frames} frames in {time.time() - t_start:.2f}s.")
 
-    # 5. Assemble Video + Mixed Audio
-    logger.info("🎥 Encoding breaking news MP4 with FFmpeg...")
+    # 4. Assemble Video + Audio
+    logger.info("🎥 Encoding TV news channel MP4 with FFmpeg...")
     cmd_assemble = [
         ffmpeg, "-y",
         "-framerate", str(fps),
@@ -940,7 +976,7 @@ def create_news_reel_video(
     shutil.rmtree(frames_dir, ignore_errors=True)
 
     if os.path.exists(output_video_path):
-        logger.info(f"✅ Breaking News Reel rendered: {output_video_path} (Duration: {duration:.1f}s)")
+        logger.info(f"✅ TV News Channel Reel rendered: {output_video_path} (Duration: {duration:.1f}s)")
         return output_video_path
     return None
 
@@ -1113,7 +1149,7 @@ def main():
         save_posted_topic(raw_news["title"])
 
     hashtags_str = " ".join(news_data.get("hashtags", VIRAL_HASHTAGS))
-    full_caption = f"{news_data.get('caption', '')}\n\n.\n.\n{hashtags_str}\n\n📰 रोज़ाना अख़बार की ताज़ा खबरों के लिए फॉलो करें: {CREATOR_HANDLE}"
+    full_caption = f"{news_data.get('caption', '')}\n\n.\n.\n{hashtags_str}\n\n📰 रोज़ाना ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी को फॉलो करें: {CREATOR_HANDLE}"
 
     # 3. Generate 8K Photorealistic Press Photo via FLUX.1 AI
     ai_img_prompt = news_data.get("ai_image_prompt", f"editorial photojournalism for news: {news_data.get('headline_red')}")
@@ -1124,9 +1160,9 @@ def main():
     face_path = "assets/my_face.jpg"
     create_newspaper_graphic(news_data, ai_photo_path=ai_photo_path, output_path=poster_path, face_path=face_path)
 
-    # 5. Render Breaking News Video Reel (ElevenLabs Voiceover + Zoom + Subtitles)
+    # 5. Render TV News Channel Video Reel (Google Flow / BBCC Skill Hub Style)
     reel_path = "output/daily_reel.mp4"
-    create_news_reel_video(news_data, newspaper_img_path=poster_path, face_path=face_path, output_video_path=reel_path)
+    create_news_reel_video(news_data, ai_photo_path=ai_photo_path, newspaper_img_path=poster_path, face_path=face_path, output_video_path=reel_path)
 
     if DRY_RUN:
         logger.info("⚡ DRY_RUN active. Media created successfully. Skipping publishing.")
