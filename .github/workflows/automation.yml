@@ -1,14 +1,9 @@
-name: Daily 3x Cyber Security Social Media Bot (Hindi)
+name: BBCC Skill Hub Breaking News & Reels Automation Bot
 
 on:
-  # Automated 3x Daily Schedule (Offset by 5 mins to avoid GitHub queue congestion):
-  # 1. 03:35 UTC -> 09:05 AM IST (Morning Tip)
-  # 2. 09:05 UTC -> 02:35 PM IST (Afternoon Tip)
-  # 3. 15:05 UTC -> 08:35 PM IST (Evening Tip)
+  # Automated Schedule: Every 10 minutes
   schedule:
-    - cron: '35 3 * * *'
-    - cron: '5 9 * * *'
-    - cron: '5 15 * * *'
+    - cron: '*/10 * * * *'
 
   # Manual Trigger Button in GitHub Actions Tab & External Webhook
   workflow_dispatch:
