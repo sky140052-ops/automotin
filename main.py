@@ -1,18 +1,20 @@
 #!/usr/bin/env python3
 """
 ================================================================================
-Cyber Security Social Media Automation Bot (Viral Kuldeep Singhania Reel Edition)
-Creator: @rauth_jee
+Dainik Jagran / BBCC Skill Hub Style Hindi News Automation Engine
+Creator: @rauth_jee (RAUTH JEE NEWS & SKILL HUB)
 Automated 3x Daily Multi-Format Engine:
-1. Instagram Feed Post (Pure Hindi Devanagari, 1080x1920)
-2. Instagram Story (Full HD 1080x1920)
-3. Viral 3D Video Reel (Kuldeep Singhania Format):
-   - Dynamic 3D Moving Perspective Cyber Grid
-   - High-Contrast Kinetic Subtitles (Bold Yellow #FFE600 & White #FFFFFF)
-   - Circular Founder Avatar (@rauth_jee) with Glowing Cyan Badge
-   - Neural Hindi Voiceover (Male / Female Alternating) + Cyber Bass Synth
-   - Dancing Audio Equalizer Bars + Top Neon Progress Bar
-4. Facebook Page Auto-Publisher (Simultaneous Cross-Posting)
+1. Live Google News Ingestion (Bihar, Education, Jobs, National, International)
+2. Newspaper Clipping Poster (1080x1920, Exact Dainik Jagran / BBCC Hub Style)
+   - Top Navy Bar: RAUTH JEE SKILL & NEWS HUB + Latest News Today
+   - Masthead: Dainik Jagran + Date/Place + Slogan
+   - Big Red & Black Breaking Headline
+   - The Famous Yellow Highlight Box ("मामले की मुख्य बातें")
+   - Detailed Story Box & Circular Founder Avatar (@rauth_jee)
+   - Bottom Navy Footer: Follow @rauth_jee
+3. Viral 3D Breaking News Reel (News Anchor Voiceover + Kinetic Subtitles + Beat)
+4. Instagram Multi-Format Publisher (Feed Post + Story + Reel)
+5. Facebook Page Auto-Publisher (Direct Graph API + Make.com Mirror)
 ================================================================================
 """
 
@@ -27,7 +29,11 @@ import random
 import logging
 import warnings
 import shutil
+import datetime
 import subprocess
+import urllib.request
+import urllib.parse
+import xml.etree.ElementTree as ET
 from typing import Dict, Any, Optional, List
 import requests
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
@@ -53,7 +59,7 @@ logging.basicConfig(
     format="%(asctime)s [%(levelname)s] %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)]
 )
-logger = logging.getLogger("CyberSocialBot")
+logger = logging.getLogger("HindiNewsBot")
 
 # ==============================================================================
 # CONFIGURATION & ENVIRONMENT
@@ -70,88 +76,181 @@ CREATOR_HANDLE = os.getenv("CREATOR_HANDLE", "@rauth_jee").strip()
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() in ("true", "1", "yes")
 
 VIRAL_HASHTAGS = [
-    "#rauth_jee", "#CyberSecurityHindi", "#TechTipsHindi", "#DigitalIndia",
-    "#CyberCrimeAlert", "#OnlineSafety", "#TechReels", "#TrendingReels",
-    "#CyberDefense", "#HackingPrevention", "#ViralReels"
+    "#rauth_jee", "#BiharNews", "#BPSCTRE4", "#BiharEducation", "#DainikJagran",
+    "#SarkariNaukri", "#HindiNews", "#BreakingNewsHindi", "#DigitalIndia",
+    "#TrendingReels", "#NewsReels", "#ViralNews"
 ]
 
-FALLBACK_TIPS_HINDI = [
+FALLBACK_NEWS_DATABASE = [
     {
-        "headline": "ब्राउज़र में पासवर्ड कभी सेव न करें!",
-        "category": "पासवर्ड और डेटा सुरक्षा",
-        "tip": "Chrome या Edge जैसे ब्राउज़र्स में सेव किए गए पासवर्ड्स को 'Infostealer' वायरस सिर्फ 5 सेकंड में चुरा लेते हैं। एक गलत डाउनलोड आपकी सारी पर्सनल आईडी और बैंकिंग डिटेल्स लीक कर सकता है।",
-        "action_step": "ब्राउज़र से सारे पासवर्ड हटाएं और Bitwarden या 1Password जैसे सुरक्षित पासवर्ड मैनेजर का इस्तेमाल करें।",
-        "caption": "⚠️ क्या आपके पासवर्ड्स ब्राउज़र में सेव हैं?\n\nसावधान! आज के सबसे खतरनाक मैलवेयर सीधे आपके ब्राउज़र के पासवर्ड कैश को निशाना बनाते हैं।\n\nसुरक्षा नियम:\n• ब्राउज़र के 'Auto-Save Password' को बंद करें\n• एक डेडिकेटेड एन्क्रिप्टेड पासवर्ड वॉल्ट इस्तेमाल करें\n• टू-स्टेप वेरिफिकेशन (2FA) हमेशा ऑन रखें\n\n🛡️ खुद को और अपने दोस्तों को सुरक्षित रखें!",
-        "reel_script": "सावधान! अगर आप भी ब्राउज़र में पासवर्ड सेव करते हैं, तो रुक जाइए! हैकर्स सिर्फ 5 सेकंड में आपका सारा डेटा और बैंक अकाउंट खाली कर सकते हैं! तुरंत अपने फोन और कंप्यूटर से पासवर्ड हटाएं। रोज़ाना सुरक्षा टिप्स के लिए @rauth_jee को अभी फॉलो करें!",
+        "newspaper_title": "दैनिक जागरण",
+        "tagline": "सत्य के साथ हर कदम",
+        "dateline": "पटना / बिहार | ताज़ा अपडेट / पृष्ठ 01",
+        "headline_red": "टीआरआई-4: बिहार में 32,388 शिक्षक पदों की",
+        "headline_black": "बड़ी भर्ती का नोटिफिकेशन जारी, आवेदन जल्द शुरू",
+        "lead_city": "पटना",
+        "lead_summary": "बिहार लोक सेवा आयोग (BPSC) ने चौथे चरण की बहुप्रतीक्षित शिक्षक नियुक्ति प्रक्रिया (TRE-4) के लिए आधिकारिक अधिसूचना जारी कर दी है, जिससे लाखों शिक्षक अभ्यर्थियों में खुशी का माहौल है।",
+        "key_highlights": [
+            "प्राथमिक और माध्यमिक स्कूलों में कुल 32,388 पदों पर होगी बंपर बहाली।",
+            "सीटेट (CTET) और बीटेट (BTET) उत्तीर्ण अभ्यर्थियों को ही मिलेगा आवेदन का मौका।",
+            "सामान्य वर्ग के लिए अधिकतम आयु सीमा 37 वर्ष निर्धारित की गई है।",
+            "परीक्षा में पारदर्शिता हेतु आधुनिक बायोमेट्रिक व AI तकनीक का होगा उपयोग।",
+            "अभ्यर्थी आधिकारिक वेबसाइट bpsc.bih.nic.in से कर सकेंगे ऑनलाइन आवेदन।"
+        ],
+        "detailed_report": [
+            "शिक्षा विभाग के अनुसार चौथे चरण की इस बहाली में आरक्षण नियमों का पूरी तरह",
+            "पालन किया जाएगा। सभी जिलों से रिक्तियों का रोस्टर क्लियरेंस पूरा हो चुका है।",
+            "",
+            "गौरतलब है कि पिछले तीन चरणों (TRE-1, TRE-2 और TRE-3) में रिकॉर्ड संख्या में",
+            "शिक्षकों की नियुक्ति हुई है। नए दिशा-निर्देशों से योग्य अभ्यर्थियों को सीधा लाभ मिलेगा।",
+            "",
+            "आयोग ने अभ्यर्थियों से अपील की है कि वे आवेदन से पूर्व सभी शैक्षणिक प्रमाण पत्रों",
+            "को तैयार रखें तथा केवल आधिकारिक वेबसाइट की सूचना पर ही विश्वास करें।"
+        ],
+        "reel_script": "ब्रेकिंग न्यूज़! बिहार में चौथे चरण की शिक्षक भर्ती का आधिकारिक नोटिफिकेशन जारी हो चुका है! कुल 32,388 पदों पर प्राथमिक और माध्यमिक शिक्षकों की बंपर बहाली होगी। पूरी रिपोर्ट और मुख्य बातें जानने के लिए पोस्ट पढ़ें और रोज़ाना ताज़ा न्यूज़ के लिए अभी फॉलो करें @rauth_jee को!",
         "reel_phrases": [
-            {"hook": "🚨 सावधान!", "white": "अगर आप स्मार्टफोन यूजर हैं", "punch": "तो ये गलती कभी मत करना!"},
-            {"hook": "❌ ब्राउज़र में पासवर्ड", "white": "कभी भी ऑटो-सेव मत करना!", "punch": "हैकर्स 5 सेकंड में चुरा लेंगे"},
-            {"hook": "⚠️ इन्फोस्टीलर वायरस", "white": "सीधे ब्राउज़र हैक करते हैं", "punch": "और बैंक अकाउंट खाली!"},
-            {"hook": "⚡ तुरंत क्या करें?", "white": "ब्राउज़र से सारे पासवर्ड हटाएं", "punch": "और Authenticator ऐप लगाएं!"},
-            {"hook": "🛡️ रोज़ाना सुरक्षा टिप्स के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
-        ]
+            {"hook": "🚨 ब्रेकिंग न्यूज़!", "white": "बिहार शिक्षक भर्ती (TRE-4)", "punch": "32,388 पदों पर बंपर बहाली!"},
+            {"hook": "📢 BPSC का बड़ा फैसला", "white": "प्राथमिक व माध्यमिक स्तर पर", "punch": "नोटिफिकेशन जारी!"},
+            {"hook": "📌 मुख्य पात्रता", "white": "CTET / BTET पास अभ्यर्थी", "punch": "ही होंगे योग्य!"},
+            {"hook": "⚡ ज़रूरी जानकारी", "white": "अधिकतम आयु सीमा 37 साल", "punch": "आवेदन जल्द शुरू!"},
+            {"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+        ],
+        "caption": "📢 दैनिक जागरण ब्रेकिंग: बिहार शिक्षक बहाली (TRE-4) पर बड़ा फैसला!\n\nशिक्षा विभाग और BPSC ने 32,388 पदों पर भर्ती का रास्ता साफ़ कर दिया है।\n\n📌 मुख्य बातें:\n• CTET / BTET उत्तीर्ण अभ्यर्थियों को अवसर\n• सामान्य वर्ग आयु सीमा: 37 वर्ष\n• ऑनलाइन आवेदन जल्द शुरू होंगे\n\nअपने दोस्तों के साथ शेयर करें और रोज़ाना ताज़ा अख़बार अपडेट्स के लिए फॉलो करें: @rauth_jee"
     },
     {
-        "headline": "MFA Fatigue अटैक से सावधान रहें!",
-        "category": "पहचान और लॉगिन सुरक्षा",
-        "tip": "हैकर्स देर रात आपके फोन पर लगातार 2FA/MFA अप्रूवल नोटिफिकेशन भेजते हैं, ताकि आप परेशान होकर 'Approve' दबा दें। अगर आपने खुद लॉगिन नहीं किया है, तो कभी भी 'Approve' पर क्लिक न करें।",
-        "action_step": "SMS OTP की जगह Google Authenticator या Microsoft Authenticator ऐप का इस्तेमाल करें।",
-        "caption": "🚨 सतर्क रहें: MFA Fatigue Attacks बहुत तेजी से बढ़ रहे हैं!\n\nहैकर्स अब सिर्फ पासवर्ड नहीं चुराते, बल्कि आपको बार-बार नोटिफिकेशन भेजकर थका देते हैं ताकि आप गलती से 'Approve' दबा दें।\n\nबचने के उपाय:\n1. बिना मांगे आए किसी भी नोटिफिकेशन को अप्रूव न करें।\n2. तुरंत अपना पासवर्ड बदलें।\n3. Authenticator ऐप का उपयोग करें।",
-        "reel_script": "सावधान! क्या आपके फोन पर भी बार-बार लॉगिन अप्रूवल नोटिफिकेशन आ रहे हैं? भूलकर भी अप्रूव मत करना! इसे कहते हैं MFA Fatigue अटैक, जिससे हैकर्स आपका अकाउंट हैक करते हैं। सुरक्षित रहने के लिए @rauth_jee को फॉलो करें!",
+        "newspaper_title": "दैनिक भास्कर",
+        "tagline": "सत्यमेव जयते",
+        "dateline": "नई दिल्ली / भारत | ताज़ा अपडेट / राष्ट्रीय संस्करण",
+        "headline_red": "डिजिटल अरेस्ट और साइबर फ्रॉड पर केंद्र सख्त",
+        "headline_black": "गृह मंत्रालय ने जारी की नई गाइडलाइन, तुरंत ब्लॉक होंगे खाते",
+        "lead_city": "नई दिल्ली",
+        "lead_summary": "देश भर में बढ़ते डिजिटल अरेस्ट और ऑनलाइन फ्रॉड के मामलों को देखते हुए गृह मंत्रालय (MHA) और साइबर विंग ने कड़ा रुख अपनाया है और संदिग्ध नंबरों और खातों पर तुरंत कार्रवाई के आदेश दिए हैं।",
+        "key_highlights": [
+            "कोई भी पुलिस, CBI या कोर्ट वीडियो कॉल पर कभी 'डिजिटल अरेस्ट' नहीं करती।",
+            "गृह मंत्रालय की नेशनल साइबर हेल्पलाइन 1930 को 24 घंटे एक्टिव किया गया।",
+            "संदिग्ध बैंक खातों को शिकायत मिलते ही 15 मिनट में फ्रीज़ करने के निर्देश।",
+            "फर्जी पार्सल या मनी लॉन्ड्रिंग के नाम पर आए किसी भी अनजान कॉल पर पैसे न भेजें।",
+            "नागरिक तुरंत cybercrime.gov.in पर रिपोर्ट दर्ज करा सकते हैं।"
+        ],
+        "detailed_report": [
+            "केंद्रीय गृह मंत्रालय ने स्पष्ट किया है कि भारत के कानून में 'डिजिटल अरेस्ट' नाम का",
+            "कोई प्रावधान नहीं है। अपराधी पुलिस या जज बनकर लोगों को डरा रहे हैं।",
+            "",
+            "बैंकिंग एजेंसियों और टेलीकॉम कंपनियों के साथ मिलकर 3 लाख से अधिक सिम कार्ड",
+            "और संदिग्ध खातों को अब तक ब्लॉक किया जा चुका है।",
+            "",
+            "साइबर एक्सपर्ट्स की सलाह है कि घबराने की बजाय तुरंत 1930 पर कॉल करें।"
+        ],
+        "reel_script": "सावधान! गृह मंत्रालय ने डिजिटल अरेस्ट और ऑनलाइन फ्रॉड पर बड़ी चेतावनी जारी की है! पुलिस या जज कभी भी वीडियो कॉल पर डिजिटल अरेस्ट नहीं करते। फ्रॉड होने पर तुरंत 1930 पर कॉल करें। सुरक्षित रहने के लिए अभी फॉलो करें @rauth_jee को!",
         "reel_phrases": [
-            {"hook": "🚨 सावधान!", "white": "अगर फोन पर बार-बार", "punch": "OTP या अप्रूवल आ रहा है!"},
-            {"hook": "❌ भूलकर भी", "white": "APPROVE बटन मत दबाना!", "punch": "ये MFA Fatigue अटैक है"},
-            {"hook": "⚠️ हैकर्स आपको थकाकर", "white": "गलती से क्लिक करवाते हैं", "punch": "और अकाउंट तुरंत हैक!"},
-            {"hook": "⚡ तुरंत क्या करें?", "white": "अपना पासवर्ड तुरंत बदलें", "punch": "और Authenticator ऐप ऑन करें!"},
-            {"hook": "🛡️ साइबर सुरक्षा ज्ञान के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
-        ]
-    },
-    {
-        "headline": "फर्जी QR कोड (Quishing) से बचें!",
-        "category": "ऑनलाइन पेमेंट सुरक्षा",
-        "tip": "धोखेबाज़ असली पेमेंट या मेनू QR कोड के ऊपर अपना फर्जी QR कोड चिपका देते हैं। इसे स्कैन करते ही आपका फोन नकली वेबसाइट पर चला जाता है और आपकी यूपीआई या लॉगिन जानकारी चोरी हो जाती है।",
-        "action_step": "QR कोड स्कैन करने के बाद लिंक के असली स्पेलिंग और डोमेन को ध्यान से देखकर ही आगे बढ़ें।",
-        "caption": "📱 कोई भी QR Code स्कैन करने से पहले 2 बार सोचें!\n\nआजकल 'Quishing' (QR Phishing) बहुत तेज़ी से फैल रहा है क्योंकि सामान्य एंटी-वायरस QR कोड के अंदर छिपे खतरे को नहीं पकड़ पाते।\n\nसावधानी:\n1. सार्वजनिक जगहों पर लगे क्यूआर कोड पर कोई दूसरा स्टिकर तो नहीं चिपका, यह जांचें।\n2. पेमेंट करते समय प्राप्तकर्ता का नाम ज़रूर चेक करें।\n3. अनजान क्यूआर से आए किसी भी लिंक पर पासवर्ड न डालें।",
-        "reel_script": "सावधान! बाज़ार में या दुकान पर कोई भी QR कोड स्कैन करने से पहले रुकिए! स्कैमर्स असली QR कोड पर अपना फर्जी स्टीकर चिपका रहे हैं। स्कैन करते ही आपका बैंक अकाउंट खाली हो सकता है! सुरक्षित रहने के लिए @rauth_jee को फॉलो करें!",
-        "reel_phrases": [
-            {"hook": "🚨 सावधान!", "white": "दुकान या रेस्टोरेंट पर", "punch": "कोई भी QR कोड स्कैन करने से पहले!"},
-            {"hook": "❌ नकली QR कोड", "white": "असली स्टीकर के ऊपर चिपकाए जा रहे हैं!", "punch": "इसे Quishing कहते हैं"},
-            {"hook": "⚠️ एक स्कैन और", "white": "नकली पेमेंट पेज खुलेगा", "punch": "और पैसे सीधे हैकर के पास!"},
-            {"hook": "⚡ हमेशा चेक करें", "white": "दुकानदार का असली नाम", "punch": "और URL का सही स्पेलिंग!"},
-            {"hook": "🛡️ हर दिन नया टेक ज्ञान", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
-        ]
+            {"hook": "🚨 सावधान इंडिया!", "white": "डिजिटल अरेस्ट के नाम पर", "punch": "हैकर्स का नया जाल!"},
+            {"hook": "❌ बड़ा सच", "white": "कानून में डिजिटल अरेस्ट", "punch": "जैसा कुछ भी नहीं होता!"},
+            {"hook": "⚠️ तुरंत क्या करें?", "white": "साइबर फ्रॉड होते ही", "punch": "तुरंत 1930 पर कॉल करें!"},
+            {"hook": "⚡ शेयर करें", "white": "अपने सभी दोस्तों और", "punch": "परिवार को बचाएं!"},
+            {"hook": "📰 सुरक्षित रहने के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+        ],
+        "caption": "⚠️ सावधान: गृह मंत्रालय का बड़ा अलर्ट — 'डिजिटल अरेस्ट' से बचें!\n\nठग पुलिस या कस्टम अधिकारी बनकर लोगों को लाखों का चूना लगा रहे हैं।\n\nयाद रखें:\n1. कोई भी कानून वीडियो कॉल पर अरेस्ट नहीं करता\n2. अनजान कॉल पर पैसे कभी न भेजें\n3. तुरंत 1930 पर रिपोर्ट करें\n\n🛡️ रोज़ाना ज़रूरी जानकारियों के लिए फॉलो करें: @rauth_jee"
     }
 ]
 
 # ==============================================================================
-# 1. HINDI CONTENT GENERATOR (GEMINI AI)
+# 1. LIVE GOOGLE NEWS RSS FETCHER
 # ==============================================================================
 
-def generate_cyber_content() -> Dict[str, Any]:
-    logger.info("🤖 Generating Viral Hindi Cyber Security Tip with Google Gemini...")
+def fetch_live_google_news() -> Optional[Dict[str, str]]:
+    """Fetches real-time trending Hindi news from Google News RSS."""
+    logger.info("📡 Fetching real-time breaking news from Google News RSS...")
+    
+    # Select topics based on time of day
+    hour = datetime.datetime.now().hour
+    if 5 <= hour < 12:
+        # Morning: Bihar Education, Jobs, BPSC
+        query = urllib.parse.quote("बिहार शिक्षक भर्ती परीक्षा नौकरी")
+        url = f"https://news.google.com/rss/search?q={query}&hl=hi&gl=IN&ceid=IN:hi"
+        domain_label = "बिहार शिक्षा व भर्ती"
+    elif 12 <= hour < 18:
+        # Afternoon: National India Headlines
+        url = "https://news.google.com/rss/headlines/section/topic/NATION?hl=hi&gl=IN&ceid=IN:hi"
+        domain_label = "राष्ट्रीय समाचार"
+    else:
+        # Evening: National & International
+        url = "https://news.google.com/rss/headlines/section/topic/WORLD?hl=hi&gl=IN&ceid=IN:hi"
+        domain_label = "देश-विदेश ब्रेकिंग"
+
+    try:
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"})
+        with urllib.request.urlopen(req, timeout=12) as resp:
+            xml_data = resp.read()
+        root = ET.fromstring(xml_data)
+        items = root.findall(".//item")
+        if items:
+            top_item = items[0]
+            title = top_item.find("title").text or ""
+            desc = top_item.find("description").text if top_item.find("description") is not None else ""
+            pub_date = top_item.find("pubDate").text if top_item.find("pubDate") is not None else ""
+            logger.info(f"✅ Live News Fetched ({domain_label}): {title}")
+            return {
+                "title": title,
+                "desc": desc,
+                "pub_date": pub_date,
+                "domain": domain_label
+            }
+    except Exception as e:
+        logger.warning(f"Google News RSS notice: {e}")
+    return None
+
+def format_news_with_gemini(raw_news: Optional[Dict[str, str]]) -> Dict[str, Any]:
+    """Formats live news into authentic Dainik Jagran / BBCC Skill Hub layout using Gemini."""
+    logger.info("🤖 Formatting News into Dainik Jagran Newspaper Layout...")
+    
     if not GEMINI_API_KEY or "your_gemini" in GEMINI_API_KEY.lower():
-        return random.choice(FALLBACK_TIPS_HINDI)
+        return random.choice(FALLBACK_NEWS_DATABASE)
 
-    prompt = """
-You are Kuldeep Singhania's viral content strategist creating high-retention, dramatic tech & cyber security content in pure HINDI (Devanagari script).
-Generate a viral, shocking yet educational Cyber Security tip for social media.
+    news_context = ""
+    if raw_news:
+        news_context = f"Live Headline: {raw_news.get('title')}\nDetails: {raw_news.get('desc')}\nCategory: {raw_news.get('domain')}"
+    else:
+        news_context = "Top Breaking News about Bihar Education, Jobs, or National Policy."
 
-You must return ONLY a valid JSON object with these exact keys:
-{
-  "headline": "Shocking Hindi headline in Devanagari under 6 words (e.g. 'ब्राउज़र में पासवर्ड कभी सेव न करें!')",
-  "category": "Domain in Hindi (e.g. 'पासवर्ड और डेटा सुरक्षा')",
-  "tip": "Main educational tip in simple, viral HINDI for a poster. Must be under 45 words.",
-  "action_step": "1 actionable sentence in Hindi telling the reader what to do right now.",
-  "caption": "Engaging Hindi caption for Instagram with hook, bullet points, and call-to-action.",
-  "reel_script": "High-energy voiceover narration in Hindi under 30 words (approx 8-10 seconds of speech for TTS) with suspense and clear solution. Must end with: 'फॉलो करें @rauth_jee'.",
+    prompt = f"""
+You are an expert Chief Editor at a leading Hindi Daily Newspaper (Dainik Jagran / Bhaskar).
+Transform this news story into an authentic, highly engaging Hindi Newspaper Clipping infographic (like BBCC SKILL HUB format):
+
+{news_context}
+
+Return ONLY a valid JSON object with these EXACT keys:
+{{
+  "newspaper_title": "दैनिक जागरण",
+  "tagline": "सत्य के साथ हर कदम",
+  "dateline": "पटना / बिहार | ताज़ा अपडेट / पृष्ठ 01",
+  "headline_red": "Catchy Red Headline Line 1 under 6 words in pure Devanagari Hindi (e.g. 'टीआरआई-4: बिहार में शिक्षक पदों पर')",
+  "headline_black": "Black Headline Line 2 under 6 words in pure Devanagari Hindi (e.g. 'बड़ी भर्ती का नोटिफिकेशन जारी')",
+  "lead_city": "पटना",
+  "lead_summary": "1 to 2 clear, formal sentences summarizing the news in Hindi newspaper tone.",
+  "key_highlights": [
+    "First crucial fact or decision in 10-15 Hindi words.",
+    "Second crucial rule or eligibility detail.",
+    "Third crucial date, quota, or government provision.",
+    "Fourth crucial point for students or public.",
+    "Fifth crucial point regarding official website or procedure."
+  ],
+  "detailed_report": [
+    "Paragraph 1 providing full background context and official statement (under 25 words).",
+    "",
+    "Paragraph 2 highlighting the impact and future steps (under 25 words).",
+    "",
+    "Paragraph 3 giving advisory to candidates or readers (under 25 words)."
+  ],
+  "reel_script": "High-energy, authoritative News Anchor voiceover in pure Hindi under 30 words (takes 9-11 seconds of speech). Must start with 'ब्रेकिंग न्यूज़!' and end with 'रोज़ाना ताज़ा न्यूज़ के लिए फॉलो करें @rauth_jee को!'",
   "reel_phrases": [
-    {"hook": "🚨 सावधान!", "white": "अगर आप स्मार्टफोन यूजर हैं", "punch": "तो ये गलती कभी मत करना!"},
-    {"hook": "❌ मुख्य गलती", "white": "यहाँ गलती का विवरण", "punch": "हैकर्स 5 सेकंड में लूट लेंगे!"},
-    {"hook": "⚠️ खतरा क्या है?", "white": "डेटा और बैंक खाली होने का खतरा", "punch": "सीधे आपके फोन में!"},
-    {"hook": "⚡ तुरंत समाधान", "white": "तुरंत ये सेटिंग बंद करें", "punch": "और सुरक्षित रहें!"},
-    {"hook": "🛡️ रोज़ाना सुरक्षा के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
-  ]
-}
+    {{"hook": "🚨 ब्रेकिंग न्यूज़!", "white": "यहाँ खबर का मुख्य विषय", "punch": "बड़ा फैसला जारी!"}},
+    {{"hook": "📢 नया अपडेट", "white": "यहाँ नियम या भर्ती की बात", "punch": "लाखों लोगों को फायदा!"}},
+    {{"hook": "📌 मुख्य बातें", "white": "यहाँ मुख्य शर्त या तारीख", "punch": "आधिकारिक आदेश जारी!"}},
+    {{"hook": "⚡ ज़रूरी जानकारी", "white": "यहाँ कार्रवाई या पात्रता", "punch": "तुरंत चेक करें!"}},
+    {{"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}}
+  ],
+  "caption": "Detailed Instagram caption in Hindi with newspaper style headlines, bullet points, hashtags, and call to action."
+}}
 """
     raw_text = ""
     for model_name in ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]:
@@ -161,7 +260,7 @@ You must return ONLY a valid JSON object with these exact keys:
             res = client.models.generate_content(model=model_name, contents=prompt)
             raw_text = res.text or ""
             if raw_text:
-                logger.info(f"✅ Generated Hindi content using {model_name}.")
+                logger.info(f"✅ Formatted news with {model_name}.")
                 break
         except Exception:
             continue
@@ -174,35 +273,29 @@ You must return ONLY a valid JSON object with these exact keys:
                 try:
                     res = legacy_genai.GenerativeModel(m).generate_content(prompt)
                     raw_text = res.text or ""
-                    if raw_text:
-                        break
+                    if raw_text: break
                 except Exception:
                     continue
         except Exception:
             pass
 
     if not raw_text:
-        return random.choice(FALLBACK_TIPS_HINDI)
+        return random.choice(FALLBACK_NEWS_DATABASE)
 
     try:
         cleaned = raw_text.strip()
-        if cleaned.startswith("```json"):
-            cleaned = cleaned[7:]
-        if cleaned.startswith("```"):
-            cleaned = cleaned[3:]
-        if cleaned.endswith("```"):
-            cleaned = cleaned[:-3]
+        if cleaned.startswith("```json"): cleaned = cleaned[7:]
+        if cleaned.startswith("```"): cleaned = cleaned[3:]
+        if cleaned.endswith("```"): cleaned = cleaned[:-3]
         data = json.loads(cleaned.strip())
         data["hashtags"] = VIRAL_HASHTAGS
-        if "reel_phrases" not in data or len(data["reel_phrases"]) < 3:
-            data["reel_phrases"] = random.choice(FALLBACK_TIPS_HINDI)["reel_phrases"]
         return data
     except Exception as e:
-        logger.warning(f"JSON parsing error: {e}. Using viral fallback.")
-        return random.choice(FALLBACK_TIPS_HINDI)
+        logger.warning(f"JSON parse error: {e}. Using fallback database.")
+        return random.choice(FALLBACK_NEWS_DATABASE)
 
 # ==============================================================================
-# 2. HINDI DEVANAGARI POSTER GENERATOR (1080x1920)
+# 2. NEWSPAPER CLIPPING POSTER ENGINE (BBCC SKILL HUB / DAINIK JAGRAN STYLE)
 # ==============================================================================
 
 def get_devanagari_font(size: int, bold: bool = False) -> ImageFont.ImageFont:
@@ -238,140 +331,148 @@ def wrap_text_lines(text: str, font: ImageFont.ImageFont, max_width: int) -> Lis
         bbox = font.getbbox(line)
         if (bbox[2] - bbox[0]) > max_width:
             cur.pop()
-            if cur:
-                lines.append(" ".join(cur))
+            if cur: lines.append(" ".join(cur))
             cur = [w]
-    if cur:
-        lines.append(" ".join(cur))
+    if cur: lines.append(" ".join(cur))
     return lines
 
-def create_cyber_graphic(
-    content: Dict[str, Any],
+def create_newspaper_graphic(
+    news_data: Dict[str, Any],
     output_path: str = "output/daily_tip.png",
     face_path: str = "assets/my_face.jpg"
 ) -> str:
-    logger.info("🎨 Rendering 1080x1920 Pure Hindi Devanagari Poster...")
-    width, height = 1080, 1920
+    """
+    Renders 1080x1920 Full HD Hindi Newspaper Infographic:
+    - Top Navy Blue Banner: RAUTH JEE SKILL & NEWS HUB + Latest News Today
+    - Masthead: Dainik Jagran + Date/Place + Slogan
+    - Big Bold Red & Black Headline
+    - Signature Yellow Highlights Box ("मामले की मुख्य बातें") with Red Bullets
+    - Detailed Story Card + Founder Avatar (@rauth_jee)
+    - Bottom Navy Footer
+    """
+    logger.info("🎨 Rendering 1080x1920 Dainik Jagran / BBCC Hub Style Newspaper Poster...")
+    w, h = 1080, 1920
+    img = Image.new("RGB", (w, h), (248, 249, 250)) # warm off-white newsprint background
+    draw = ImageDraw.Draw(img)
 
-    base = Image.new("RGBA", (width, height), (7, 11, 20, 255))
-    draw = ImageDraw.Draw(base)
-    for y in range(height):
-        ratio = y / height
-        r = int(7 * (1 - ratio) + 13 * ratio)
-        g = int(11 * (1 - ratio) + 21 * ratio)
-        b = int(20 * (1 - ratio) + 38 * ratio)
-        draw.line([(0, y), (width, y)], fill=(r, g, b, 255))
+    # Fonts
+    font_masthead = get_devanagari_font(62, bold=True)
+    font_bold_xl = get_devanagari_font(44, bold=True)
+    font_bold_lg = get_devanagari_font(34, bold=True)
+    font_bold_md = get_devanagari_font(26, bold=True)
+    font_reg_md = get_devanagari_font(24, bold=False)
+    font_reg_sm = get_devanagari_font(20, bold=False)
 
-    glow = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    gdraw = ImageDraw.Draw(glow)
-    gdraw.ellipse([width - 450, -150, width + 250, 550], fill=(0, 240, 255, 45))
-    gdraw.ellipse([-200, height - 600, 500, height + 100], fill=(139, 92, 246, 40))
-    glow = glow.filter(ImageFilter.GaussianBlur(80))
-    base = Image.alpha_composite(base, glow)
+    # 1. TOP NAVY BLUE BAR (BBCC SKILL HUB STYLE)
+    draw.rectangle([(0, 0), (w, 110)], fill=(10, 37, 64))
+    draw.text((40, 22), "RAUTH JEE", font=get_devanagari_font(38, bold=True), fill=(255, 222, 3))
+    draw.text((250, 30), "SKILL & NEWS HUB", font=font_bold_md, fill=(255, 255, 255))
+    draw.text((40, 72), "Learn • Grow • Build Your Future", font=font_reg_sm, fill=(203, 213, 225))
+    # Right Yellow Badge
+    draw.rounded_rectangle([w - 290, 22, w - 40, 85], radius=15, fill=(255, 222, 3))
+    draw.text((w - 165, 53), "Latest News Today", font=font_bold_md, fill=(10, 37, 64), anchor="mm")
 
-    grid = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    griddraw = ImageDraw.Draw(grid)
-    for x in range(0, width, 90):
-        griddraw.line([(x, 0), (x, height)], fill=(0, 240, 255, 12), width=1)
-    for y in range(0, height, 90):
-        griddraw.line([(0, y), (width, y)], fill=(0, 240, 255, 12), width=1)
-    base = Image.alpha_composite(base, grid)
+    # 2. NEWSPAPER MASTHEAD (DAINIK JAGRAN STYLE)
+    paper_title = news_data.get("newspaper_title", "दैनिक जागरण")
+    tagline = news_data.get("tagline", "सत्य के साथ हर कदम")
+    # Sun rays icon
+    draw.ellipse([45, 140, 105, 200], fill=(245, 158, 11))
+    draw.text((120, 130), paper_title, font=font_masthead, fill=(15, 23, 42))
+    draw.text((w - 270, 155), tagline, font=font_reg_sm, fill=(100, 116, 139))
+    draw.line([(40, 210), (w - 40, 210)], fill=(203, 213, 225), width=2)
 
-    font_badge = get_devanagari_font(28, bold=True)
-    font_cat = get_devanagari_font(30, bold=True)
-    font_headline = get_devanagari_font(52, bold=True)
-    font_body = get_devanagari_font(38, bold=False)
-    font_action_title = get_devanagari_font(28, bold=True)
-    font_action_body = get_devanagari_font(32, bold=False)
-    font_handle = get_devanagari_font(34, bold=True)
-    font_sub = get_devanagari_font(26, bold=False)
-    font_footer = get_devanagari_font(30, bold=True)
-    font_footer_sub = get_devanagari_font(26, bold=False)
+    # Dateline divider
+    dateline = news_data.get("dateline", "पटना / बिहार | ताज़ा अपडेट / पृष्ठ 01")
+    draw.text((50, 222), dateline, font=font_reg_sm, fill=(71, 85, 105))
+    draw.line([(40, 255), (w - 40, 255)], fill=(203, 213, 225), width=2)
 
-    ui = Image.new("RGBA", (width, height), (0, 0, 0, 0))
-    uidraw = ImageDraw.Draw(ui)
+    # 3. BREAKING HEADLINE (Line 1 Red, Line 2 Black)
+    hl_red = news_data.get("headline_red", "बड़ी खबर: शिक्षा विभाग का नया फैसला")
+    hl_black = news_data.get("headline_black", "अभ्यर्थियों को मिला बड़ा अवसर, आदेश जारी")
+    draw.text((40, 280), hl_red, font=font_bold_xl, fill=(220, 38, 38))
+    draw.text((40, 345), hl_black, font=font_bold_xl, fill=(15, 23, 42))
 
-    # Top Security Badge Pill
-    badge_w, badge_h = 580, 60
-    bx = (width - badge_w) // 2
-    by = 110
-    uidraw.rounded_rectangle([bx, by, bx + badge_w, by + badge_h], radius=30, fill=(0, 240, 255, 25), outline=(0, 240, 255, 190), width=2)
-    uidraw.text((width // 2, by + badge_h // 2), "🛡️ दैनिक साइबर सुरक्षा अलर्ट", font=font_badge, fill=(0, 240, 255, 255), anchor="mm")
+    # 4. LEAD SUBTITLE
+    lead_city = news_data.get("lead_city", "पटना")
+    lead_summary = news_data.get("lead_summary", "शिक्षा विभाग ने आगामी भर्ती को लेकर विस्तृत दिशा-निर्देश जारी किए हैं।")
+    draw.text((40, 425), f"{lead_city} | ", font=font_bold_md, fill=(15, 23, 42))
+    lead_lines = wrap_text_lines(lead_summary, font_reg_md, w - 180)
+    if lead_lines:
+        draw.text((130, 425), lead_lines[0], font=font_reg_md, fill=(51, 65, 85))
+        if len(lead_lines) > 1:
+            draw.text((40, 465), lead_lines[1], font=font_reg_md, fill=(51, 65, 85))
 
-    # Founder Photo Branding
-    py = 220
-    avatar_size = 150
-    ax = 80
+    # 5. THE SIGNATURE YELLOW HIGHLIGHTS BOX ("मामले की मुख्य बातें")
+    box_y = 530
+    box_h = 440
+    draw.rounded_rectangle([40, box_y, w - 40, box_y + box_h], radius=20, fill=(254, 249, 195), outline=(234, 179, 8), width=3)
+    # Red Pill
+    draw.rounded_rectangle([70, box_y + 20, 400, box_y + 75], radius=25, fill=(220, 38, 38))
+    draw.text((235, box_y + 47), "📌 मामले की मुख्य बातें", font=font_bold_md, fill=(255, 255, 255), anchor="mm")
+
+    points = news_data.get("key_highlights", [
+        "विभाग ने सभी प्रक्रियाओं को पूरी तरह स्पष्ट किया।",
+        "योग्य अभ्यर्थियों को निर्धारित पोर्टल से आवेदन करने का अवसर।",
+        "सभी आवश्यक दिशा-निर्देश आधिकारिक वेबसाइट पर अपलोड।",
+        "नियमों के तहत पारदर्शिता बनाए रखने के कड़े प्रबंध।",
+        "रोज़ाना नई जानकारी के लिए जुड़े रहें।"
+    ])
+    py = box_y + 105
+    for pt in points[:5]:
+        draw.ellipse([(75, py + 8), (89, py + 22)], fill=(220, 38, 38))
+        draw.text((105, py), pt, font=font_bold_md, fill=(15, 23, 42))
+        py += 62
+
+    # 6. DETAILED STORY CARD & FOUNDER AVATAR
+    card_y = 1010
+    card_h = 730
+    draw.rounded_rectangle([40, card_y, w - 40, card_y + card_h], radius=20, fill=(255, 255, 255), outline=(226, 232, 240), width=2)
+    draw.text((70, card_y + 30), "विस्तृत रिपोर्ट और विश्लेषण", font=font_bold_lg, fill=(15, 23, 42))
+    draw.line([(70, card_y + 85), (370, card_y + 85)], fill=(220, 38, 38), width=4)
+
+    # Embed Founder Face
     if os.path.exists(face_path):
         try:
-            fimg = Image.open(face_path).convert("RGBA").resize((avatar_size, avatar_size), Image.Resampling.LANCZOS)
-            mask = Image.new("L", (avatar_size, avatar_size), 0)
-            ImageDraw.Draw(mask).ellipse((0, 0, avatar_size, avatar_size), fill=255)
-            ui.paste(fimg, (ax, py), mask)
-            uidraw.ellipse((ax - 3, py - 3, ax + avatar_size + 3, py + avatar_size + 3), outline=(0, 240, 255, 230), width=4)
+            fimg = Image.open(face_path).convert("RGBA").resize((130, 130), Image.Resampling.LANCZOS)
+            mask = Image.new("L", (130, 130), 0)
+            ImageDraw.Draw(mask).ellipse((0, 0, 130, 130), fill=255)
+            img.paste(fimg, (w - 220, card_y + 30), mask)
+            draw.ellipse((w - 224, card_y + 26, w - 86, card_y + 164), outline=(10, 37, 64), width=3)
+            draw.text((w - 155, card_y + 175), CREATOR_HANDLE, font=font_bold_md, fill=(10, 37, 64), anchor="mm")
         except Exception:
             pass
 
-    tx = ax + avatar_size + 30
-    uidraw.text((tx, py + 35), f"{CREATOR_HANDLE} ✓", font=font_handle, fill=(255, 255, 255, 255))
-    uidraw.text((tx, py + 85), "फाउंडर • साइबर डिफेंस एक्सपर्ट", font=font_sub, fill=(148, 163, 184, 255))
+    body_list = news_data.get("detailed_report", [
+        "संबंधित विभाग ने आगामी चरणों के लिए पूरी रूपरेखा तैयार कर ली है।",
+        "सभी जिलों से रोस्टर और पदों की गणना पूरी होने के बाद आगे की कार्रवाई शुरू होगी।",
+        "",
+        "अभ्यर्थियों को सलाह दी गई है कि वे किसी भी अनाधिकृत स्रोत पर विश्वास न करें",
+        "और समय-समय पर विभागीय पोर्टल को चेक करते रहें।"
+    ])
+    by = card_y + 115
+    for line in body_list:
+        if line:
+            wrapped = wrap_text_lines(line, font_reg_md, w - 320)
+            for wl in wrapped:
+                draw.text((70, by), wl, font=font_reg_md, fill=(51, 65, 85))
+                by += 44
+        else:
+            by += 20
 
-    # Main Card
-    card_m = 70
-    cx1, cx2 = card_m, width - card_m
-    cy1, cy2 = 410, 1690
-    uidraw.rounded_rectangle([cx1, cy1, cx2, cy2], radius=40, fill=(13, 20, 36, 230), outline=(0, 240, 255, 130), width=2)
+    # 7. BOTTOM NAVY FOOTER
+    draw.rectangle([(0, h - 120), (w, h)], fill=(10, 37, 64))
+    draw.text((40, h - 85), f"RAUTH JEE HUB | अपने करियर की सही दिशा", font=font_bold_md, fill=(255, 255, 255))
+    draw.text((40, h - 45), f"रोज़ाना ताज़ा अपडेट के लिए फॉलो करें: {CREATOR_HANDLE}", font=font_reg_sm, fill=(203, 213, 225))
+    draw.rounded_rectangle([w - 320, h - 95, w - 40, h - 35], radius=15, fill=(255, 222, 3))
+    draw.text((w - 180, h - 65), f"Follow {CREATOR_HANDLE}", font=get_devanagari_font(22, bold=True), fill=(10, 37, 64), anchor="mm")
 
-    # Category Tag
-    tag_y = cy1 + 50
-    cat_text = f"// {content.get('category', 'साइबर सुरक्षा').upper()}"
-    uidraw.text((cx1 + 60, tag_y), cat_text, font=font_cat, fill=(0, 240, 255, 255))
-
-    # Headline
-    headline_text = content.get("headline", "साइबर सुरक्षा नियम")
-    headline_lines = wrap_text_lines(headline_text, font_headline, (cx2 - cx1) - 120)
-    cur_y = tag_y + 60
-    for hl in headline_lines:
-        uidraw.text((cx1 + 60, cur_y), hl, font=font_headline, fill=(255, 255, 255, 255))
-        cur_y += 68
-
-    div_y = cur_y + 30
-    uidraw.line([(cx1 + 60, div_y), (cx2 - 60, div_y)], fill=(30, 41, 59, 255), width=2)
-    uidraw.line([(cx1 + 60, div_y), (cx1 + 250, div_y)], fill=(0, 240, 255, 255), width=3)
-
-    # Body Tip Content
-    body_y = div_y + 55
-    max_tw = (cx2 - cx1) - 120
-    tip_lines = wrap_text_lines(content.get("tip", ""), font_body, max_tw)
-    for line in tip_lines:
-        uidraw.text((cx1 + 60, body_y), line, font=font_body, fill=(226, 232, 240, 255))
-        body_y += 62
-
-    # Action Step Box
-    ab_y1 = body_y + 50
-    ab_y2 = min(ab_y1 + 240, cy2 - 60)
-    uidraw.rounded_rectangle([cx1 + 50, ab_y1, cx2 - 50, ab_y2], radius=25, fill=(20, 32, 54, 240), outline=(139, 92, 246, 160), width=2)
-    uidraw.text((cx1 + 80, ab_y1 + 35), "⚡ तुरंत यह कदम उठाएं (Action Step)", font=font_action_title, fill=(167, 139, 250, 255))
-    act_lines = wrap_text_lines(content.get("action_step", "सुरक्षा सेटिंग्स तुरंत चेक करें।"), font_action_body, max_tw - 40)
-    ay = ab_y1 + 85
-    for al in act_lines:
-        uidraw.text((cx1 + 80, ay), al, font=font_action_body, fill=(241, 245, 249, 255))
-        ay += 46
-
-    # Footer
-    fy = height - 150
-    uidraw.line([(card_m, fy - 30), (width - card_m, fy - 30)], fill=(30, 41, 59, 200), width=1)
-    uidraw.text((width // 2, fy), "पोस्ट को SAVE करें • सुरक्षित रहने के लिए SHARE करें", font=font_footer, fill=(0, 240, 255, 255), anchor="mm")
-    uidraw.text((width // 2, fy + 50), f"रोज़ाना नई जानकारी के लिए {CREATOR_HANDLE} को फॉलो करें", font=font_footer_sub, fill=(148, 163, 184, 255), anchor="mm")
-
-    final_img = Image.alpha_composite(base, ui).convert("RGB")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    final_img.save(output_path, "PNG")
-    logger.info(f"✅ Pure Hindi poster saved: {output_path}")
+    img.save(output_path, "PNG")
+    logger.info(f"✅ Dainik Jagran style newspaper poster saved: {output_path}")
     return output_path
 
 # ==============================================================================
-# 3. KULDEEP SINGHANIA STYLE VIRAL 3D REEL ENGINE
+# 3. VIRAL 3D NEWS REEL ENGINE (BREAKING NEWS ANCHOR VOICEOVER + MUSIC)
 # ==============================================================================
 
 def get_ffmpeg_binary() -> str:
@@ -382,30 +483,28 @@ def get_ffmpeg_binary() -> str:
         return "ffmpeg"
 
 def generate_voiceover_audio(text: str, output_path: str = "output/voiceover.mp3") -> tuple[str, float]:
-    """Generates realistic Hindi voiceover alternating Male and Female neural pitch."""
-    logger.info("🎙️ Generating Hindi Neural Voiceover...")
+    """Generates realistic Hindi news anchor voiceover."""
+    logger.info("🎙️ Generating Hindi News Anchor Neural Voiceover...")
     from gtts import gTTS
     raw_tts = "output/raw_tts.mp3"
     tts = gTTS(text=text, lang="hi", slow=False)
     tts.save(raw_tts)
 
     ffmpeg = get_ffmpeg_binary()
-    # Alternate male/female voice
     is_male = random.choice([True, False])
     gender_label = "Male" if is_male else "Female"
-    logger.info(f"🎭 Selected Voice: {gender_label} Hindi Neural")
+    logger.info(f"🎭 News Anchor Voice: {gender_label} Hindi Neural")
 
     if is_male:
-        pitch_filter = "asetrate=44100*0.86,aresample=44100,atempo=1.16"
+        pitch_filter = "asetrate=44100*0.88,aresample=44100,atempo=1.14"
     else:
-        pitch_filter = "asetrate=44100*1.14,aresample=44100,atempo=0.88"
+        pitch_filter = "asetrate=44100*1.12,aresample=44100,atempo=0.90"
 
     cmd = [ffmpeg, "-y", "-i", raw_tts, "-af", pitch_filter, output_path]
     subprocess.run(cmd, capture_output=True)
 
-    # Measure exact duration
     probe = subprocess.run([ffmpeg, "-i", output_path], capture_output=True, text=True)
-    duration = 9.0
+    duration = 10.0
     for line in probe.stderr.splitlines():
         if "Duration" in line:
             try:
@@ -415,16 +514,16 @@ def generate_voiceover_audio(text: str, output_path: str = "output/voiceover.mp3
             except Exception:
                 pass
     duration = max(8.0, min(duration, 15.0))
-    logger.info(f"🎙️ Voiceover duration: {duration:.2f}s")
+    logger.info(f"🎙️ News Voiceover duration: {duration:.2f}s")
     return output_path, duration
 
-def generate_synth_music(music_path: str = "assets/music.wav", duration: float = 12.0) -> str:
+def generate_news_synth_music(music_path: str = "assets/music.wav", duration: float = 12.0) -> str:
     if os.path.exists(music_path) and os.path.getsize(music_path) > 10000:
         return music_path
     os.makedirs(os.path.dirname(music_path), exist_ok=True)
     sr = 44100
     ns = int(sr * duration)
-    bpm = 124
+    bpm = 126
     bl = sr * 60 / bpm
     notes = [130.81, 155.56, 174.61, 196.00, 233.08, 261.63, 293.66, 349.23]
     with wave.open(music_path, "w") as wf:
@@ -444,29 +543,27 @@ def generate_synth_music(music_path: str = "assets/music.wav", duration: float =
         wf.writeframes(frames)
     return music_path
 
-def create_3d_reel_video(
-    content: Dict[str, Any],
+def create_news_reel_video(
+    news_data: Dict[str, Any],
+    newspaper_img_path: str = "output/daily_tip.png",
     face_path: str = "assets/my_face.jpg",
     output_video_path: str = "output/daily_reel.mp4"
 ) -> Optional[str]:
     """
-    Renders authentic Kuldeep Singhania style viral Reel:
-    - Dynamic 3D Moving Perspective Cyber Grid
-    - Pop-up Kinetic Subtitle Cards (Bold Yellow #FFE600 & Crisp White)
-    - Founder Avatar Overlay with Cyan Glowing Ring
-    - Dancing Audio Equalizer Bars + Top Neon Progress Bar
+    Renders breaking news video reel with Ken Burns zoom over the newspaper graphic,
+    pop-up highlighted subtitle cards (Bold Yellow & White), news ticker, and anchor audio.
     """
-    logger.info("🎬 Rendering Kuldeep Singhania Style Viral 3D Reel MP4...")
+    logger.info("🎬 Rendering Breaking News Video Reel MP4...")
     ffmpeg = get_ffmpeg_binary()
 
     # 1. Voiceover
-    voice_script = content.get("reel_script")
+    voice_script = news_data.get("reel_script")
     if not voice_script:
-        voice_script = f"सावधान! {content.get('headline', '')}। {content.get('tip', '')}। फॉलो करें {CREATOR_HANDLE} को।"
+        voice_script = f"ब्रेकिंग न्यूज़! {news_data.get('headline_red', '')} {news_data.get('headline_black', '')}। पूरी जानकारी के लिए पोस्ट पढ़ें और फॉलो करें {CREATOR_HANDLE} को।"
     voice_path, duration = generate_voiceover_audio(voice_script, "output/voiceover.mp3")
 
-    # 2. Mix Voiceover + Music
-    music_path = generate_synth_music("assets/music.wav", duration=float(duration + 2.0))
+    # 2. Mix Voiceover + News Synth Music
+    music_path = generate_news_synth_music("assets/music.wav", duration=float(duration + 2.0))
     mixed_audio = "output/final_audio.aac"
     mix_cmd = [
         ffmpeg, "-y",
@@ -479,45 +576,32 @@ def create_3d_reel_video(
     ]
     subprocess.run(mix_cmd, capture_output=True)
 
-    # 3. Subtitle Phrases
-    phrases = content.get("reel_phrases")
+    # 3. Subtitles
+    phrases = news_data.get("reel_phrases")
     if not phrases or not isinstance(phrases, list):
         phrases = [
-            {"hook": f"🚨 सावधान!", "white": content.get("headline", "साइबर अलर्ट"), "punch": "ये गलती कभी मत करना!"},
-            {"hook": "⚠️ मुख्य खतरा", "white": content.get("category", "सुरक्षा चेतावनी"), "punch": "हैकर्स कर रहे हैं निशाना!"},
-            {"hook": "⚡ तुरंत ये करें", "white": content.get("action_step", "सेटिंग्स तुरंत चेक करें"), "punch": "और सुरक्षित रहें!"},
-            {"hook": "🛡️ हर दिन नया टेक ज्ञान", "white": "अभी फॉलो करें", "punch": CREATOR_HANDLE}
+            {"hook": "🚨 ब्रेकिंग न्यूज़!", "white": news_data.get("headline_red", "बड़ा फैसला"), "punch": news_data.get("headline_black", "आधिकारिक आदेश जारी!")},
+            {"hook": "📢 नया अपडेट", "white": news_data.get("lead_summary", "लाखों अभ्यर्थियों को राहत"), "punch": "पूरी रिपोर्ट जारी!"},
+            {"hook": "📌 मुख्य बातें", "white": "पात्रता और आवेदन की शर्तें", "punch": "विभागीय पोर्टल पर उपलब्ध!"},
+            {"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": CREATOR_HANDLE}
         ]
 
-    # 4. Render Video Frames (24 FPS)
+    # 4. Generate Animated Video Frames (24 FPS)
     fps = 24
     total_frames = int(duration * fps)
     w, h = 1080, 1920
 
-    font_bold_lg = get_devanagari_font(54, bold=True)
-    font_bold_md = get_devanagari_font(44, bold=True)
-    font_handle = get_devanagari_font(38, bold=True)
+    base_paper = Image.open(newspaper_img_path).convert("RGB")
+    font_bold_lg = get_devanagari_font(52, bold=True)
+    font_bold_md = get_devanagari_font(42, bold=True)
     font_sub = get_devanagari_font(24, bold=False)
-    font_badge = get_devanagari_font(24, bold=True)
-
-    # Load and prepare face avatar
-    face_img = None
-    if os.path.exists(face_path):
-        try:
-            f = Image.open(face_path).convert("RGBA").resize((130, 130), Image.Resampling.LANCZOS)
-            mask = Image.new("L", (130, 130), 0)
-            ImageDraw.Draw(mask).ellipse((0, 0, 130, 130), fill=255)
-            face_img = Image.new("RGBA", (130, 130), (0, 0, 0, 0))
-            face_img.paste(f, (0, 0), mask)
-        except Exception:
-            pass
 
     frames_dir = "output/reel_frames"
     if os.path.exists(frames_dir):
         shutil.rmtree(frames_dir)
     os.makedirs(frames_dir, exist_ok=True)
 
-    logger.info(f"🎞️ Generating {total_frames} animated video frames ({duration:.1f}s @ {fps}fps)...")
+    logger.info(f"🎞️ Rendering {total_frames} news reel frames ({duration:.1f}s @ {fps}fps)...")
     t_start = time.time()
 
     for idx in range(total_frames):
@@ -526,83 +610,45 @@ def create_3d_reel_video(
         phrase_idx = min(int(progress * len(phrases)), len(phrases) - 1)
         p_data = phrases[phrase_idx]
 
-        frame = Image.new("RGB", (w, h), (7, 11, 20))
+        # Subtle Ken Burns zoom effect on newspaper
+        zoom = 1.0 + 0.05 * progress
+        zw, zh = int(w * zoom), int(h * zoom)
+        crop_x = (zw - w) // 2
+        crop_y = int((zh - h) * 0.3 * progress)
+        resized = base_paper.resize((zw, zh), Image.Resampling.BILINEAR)
+        frame = resized.crop((crop_x, crop_y, crop_x + w, crop_y + h))
         draw = ImageDraw.Draw(frame)
 
-        # Gradient background
-        for y in range(0, h, 4):
-            r = int(7 + (y / h) * 12)
-            g = int(11 + (y / h) * 16)
-            b = int(20 + (y / h) * 28)
-            draw.rectangle([(0, y), (w, y + 4)], fill=(r, g, b))
+        # Top Neon Red/Yellow Progress Bar
+        draw.rectangle([(0, 0), (int(w * progress), 12)], fill=(220, 38, 38))
 
-        # 3D Moving Perspective Cyber Grid (Vanishing point at 540, 960)
-        vp_x, vp_y = 540, 960
-        for angle in range(-70, 75, 14):
-            rad = math.radians(angle)
-            x_bot = vp_x + int(math.tan(rad) * 1100)
-            draw.line([(vp_x, vp_y), (x_bot, h)], fill=(0, 240, 255), width=2)
+        # Breaking News Pop-Up Subtitle Card (Yellow & White Highlight)
+        card_y = 750
+        draw.rounded_rectangle([60, card_y, w - 60, card_y + 350], radius=30, fill=(10, 37, 64), outline=(255, 222, 3), width=4)
 
-        # Moving forward horizontal lines
-        speed = 1.6
-        offset = (t * speed) % 1.0
-        for k in range(12):
-            norm = (k + offset) / 12.0
-            gy = vp_y + int((norm ** 2.2) * (h - vp_y))
-            intensity = int(norm * 220)
-            draw.line([(0, gy), (w, gy)], fill=(0, intensity, 255), width=int(1 + norm * 3))
+        # Line 1: Hook (Yellow #FFE600)
+        draw.text((w // 2 + 2, card_y + 68), p_data.get("hook", "🚨 ब्रेकिंग न्यूज़!"), font=font_bold_lg, fill=(0, 0, 0), anchor="mm")
+        draw.text((w // 2, card_y + 66), p_data.get("hook", "🚨 ब्रेकिंग न्यूज़!"), font=font_bold_lg, fill=(255, 222, 3), anchor="mm")
 
-        # Top neon progress bar
-        bar_w = int(w * progress)
-        draw.rectangle([(0, 0), (bar_w, 12)], fill=(0, 240, 255))
+        # Line 2: White Text
+        draw.text((w // 2 + 2, card_y + 168), p_data.get("white", "दैनिक समाचार"), font=font_bold_md, fill=(0, 0, 0), anchor="mm")
+        draw.text((w // 2, card_y + 166), p_data.get("white", "दैनिक समाचार"), font=font_bold_md, fill=(255, 255, 255), anchor="mm")
 
-        # Top alert pill
-        draw.rounded_rectangle([240, 45, w - 240, 95], radius=25, fill=(13, 20, 36), outline=(0, 240, 255), width=2)
-        draw.text((w // 2, 70), "🚨 साइबर सुरक्षा चेतावनी // ALERT 🚨", font=font_badge, fill=(0, 240, 255), anchor="mm")
+        # Line 3: Punch (Yellow #FFE600)
+        draw.text((w // 2 + 2, card_y + 268), p_data.get("punch", f"फॉलो करें {CREATOR_HANDLE}"), font=font_bold_md, fill=(0, 0, 0), anchor="mm")
+        draw.text((w // 2, card_y + 266), p_data.get("punch", f"फॉलो करें {CREATOR_HANDLE}"), font=font_bold_md, fill=(255, 222, 3), anchor="mm")
 
-        # Founder Avatar & Handle
-        if face_img:
-            frame.paste(face_img, (70, 140), face_img)
-            draw.ellipse((66, 136, 204, 274), outline=(0, 240, 255), width=4)
-        draw.text((230, 160), f"{CREATOR_HANDLE} ✓", font=font_handle, fill=(255, 255, 255))
-        draw.text((230, 215), "साइबर सुरक्षा विशेषज्ञ • Follow For Daily Tips", font=font_sub, fill=(148, 163, 184))
-
-        # Centered Kinetic Subtitle Pop-up Card (Kuldeep Singhania Style)
-        card_y = 660
-        draw.rounded_rectangle([70, card_y, w - 70, card_y + 360], radius=32, fill=(12, 18, 34), outline=(255, 222, 3), width=4)
-
-        # Subtitle Lines with Drop Shadow for Maximum Punch
-        # Line 1: Hook (Vibrant Yellow #FFE600)
-        hook_txt = p_data.get("hook", "🚨 सावधान!")
-        draw.text((w // 2 + 2, card_y + 72), hook_txt, font=font_bold_lg, fill=(0, 0, 0), anchor="mm")
-        draw.text((w // 2, card_y + 70), hook_txt, font=font_bold_lg, fill=(255, 222, 3), anchor="mm")
-
-        # Line 2: Supporting (Crisp White #FFFFFF)
-        white_txt = p_data.get("white", "दैनिक सुरक्षा ज्ञान")
-        draw.text((w // 2 + 2, card_y + 172), white_txt, font=font_bold_md, fill=(0, 0, 0), anchor="mm")
-        draw.text((w // 2, card_y + 170), white_txt, font=font_bold_md, fill=(255, 255, 255), anchor="mm")
-
-        # Line 3: Punchline (Vibrant Yellow #FFE600)
-        punch_txt = p_data.get("punch", f"फॉलो करें {CREATOR_HANDLE}")
-        draw.text((w // 2 + 2, card_y + 272), punch_txt, font=font_bold_md, fill=(0, 0, 0), anchor="mm")
-        draw.text((w // 2, card_y + 270), punch_txt, font=font_bold_md, fill=(255, 222, 3), anchor="mm")
-
-        # Dynamic Audio Equalizer Bars (Bottom)
-        eq_y = 1710
-        for b_idx in range(24):
-            bx = 160 + b_idx * 33
-            bar_h = int(20 + 55 * math.sin(t * 12 + b_idx * 0.7) ** 2)
-            draw.rectangle([(bx, eq_y - bar_h), (bx + 20, eq_y)], fill=(0, 240, 255))
-
-        # Bottom Viral CTA
-        draw.text((w // 2, 1780), f"⚡ सेफ रहने के लिए SHARE करें & फॉलो करें {CREATOR_HANDLE}", font=font_sub, fill=(255, 222, 3), anchor="mm")
+        # Bottom News Ticker Bar
+        ticker_y = h - 180
+        draw.rectangle([(0, ticker_y), (w, ticker_y + 60)], fill=(220, 38, 38))
+        draw.text((w // 2, ticker_y + 30), f"⚡ ताज़ा अपडेट्स और सरकारी योजनाओं के लिए फॉलो करें: {CREATOR_HANDLE}", font=font_sub, fill=(255, 255, 255), anchor="mm")
 
         frame.save(f"{frames_dir}/f_{idx:04d}.jpg", quality=85)
 
     logger.info(f"✅ Rendered {total_frames} frames in {time.time() - t_start:.2f}s.")
 
     # 5. Assemble Video + Mixed Audio
-    logger.info("🎥 Encoding final MP4 with FFmpeg...")
+    logger.info("🎥 Encoding breaking news MP4 with FFmpeg...")
     cmd_assemble = [
         ffmpeg, "-y",
         "-framerate", str(fps),
@@ -617,12 +663,10 @@ def create_3d_reel_video(
         output_video_path
     ]
     subprocess.run(cmd_assemble, check=True)
-
-    # Clean up frames directory to save space
     shutil.rmtree(frames_dir, ignore_errors=True)
 
     if os.path.exists(output_video_path):
-        logger.info(f"✅ Viral Kuldeep-Style Reel rendered: {output_video_path} (Duration: {duration:.1f}s)")
+        logger.info(f"✅ Breaking News Reel rendered: {output_video_path} (Duration: {duration:.1f}s)")
         return output_video_path
     return None
 
@@ -631,8 +675,7 @@ def create_3d_reel_video(
 # ==============================================================================
 
 def upload_image_to_imgbb(image_path: str) -> Optional[str]:
-    if not IMGBB_API_KEY:
-        return None
+    if not IMGBB_API_KEY: return None
     try:
         with open(image_path, "rb") as f:
             res = requests.post(
@@ -644,7 +687,7 @@ def upload_image_to_imgbb(image_path: str) -> Optional[str]:
             data = res.json()
             if res.status_code == 200 and data.get("success"):
                 url = data["data"]["url"]
-                logger.info(f"✅ Poster uploaded to ImgBB: {url}")
+                logger.info(f"✅ Newspaper poster uploaded to ImgBB: {url}")
                 return url
     except Exception as e:
         logger.error(f"ImgBB upload error: {e}")
@@ -652,28 +695,20 @@ def upload_image_to_imgbb(image_path: str) -> Optional[str]:
 
 def host_video_on_github(video_path: str) -> Optional[str]:
     raw_url = f"https://raw.githubusercontent.com/{GITHUB_REPOSITORY}/main/{video_path.replace(os.sep, '/')}"
-    if not GITHUB_TOKEN:
-        return raw_url
+    if not GITHUB_TOKEN: return raw_url
     try:
         import base64
         with open(video_path, "rb") as f:
             v_b64 = base64.b64encode(f.read()).decode("utf-8")
-        headers = {
-            "Authorization": f"Bearer {GITHUB_TOKEN}",
-            "Accept": "application/vnd.github+json"
-        }
+        headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
         api_url = f"https://api.github.com/repos/{GITHUB_REPOSITORY}/contents/{video_path.replace(os.sep, '/')}"
         check = requests.get(api_url, headers=headers)
-        payload = {
-            "message": "Update viral reel video MP4",
-            "content": v_b64,
-            "branch": "main"
-        }
+        payload = {"message": "Update breaking news reel MP4", "content": v_b64, "branch": "main"}
         if check.status_code == 200:
             payload["sha"] = check.json()["sha"]
         res = requests.put(api_url, headers=headers, json=payload, timeout=60)
         if res.status_code in (200, 201):
-            logger.info(f"✅ Reel video pushed to GitHub CDN: {raw_url}")
+            logger.info(f"✅ News reel video pushed to GitHub CDN: {raw_url}")
     except Exception as e:
         logger.warning(f"Video host notice: {e}")
     return raw_url
@@ -689,7 +724,7 @@ class InstagramMultiPublisher:
         self.graph_base = "https://graph.facebook.com/v19.0"
 
     def publish_feed_post(self, image_url: str, caption: str) -> Optional[str]:
-        logger.info("🚀 1/3 Publishing Feed Post to Instagram...")
+        logger.info("🚀 1/3 Publishing Newspaper Feed Post to Instagram...")
         try:
             r1 = requests.post(f"{self.graph_base}/{self.ig_user_id}/media", data={
                 "image_url": image_url,
@@ -705,10 +740,8 @@ class InstagramMultiPublisher:
                 "access_token": self.access_token
             }, timeout=45).json()
             if "id" in r2:
-                logger.info(f"🎉 Feed Post Published! Media ID: {r2['id']}")
+                logger.info(f"🎉 Newspaper Feed Post Published! Media ID: {r2['id']}")
                 return r2["id"]
-            else:
-                logger.error(f"Feed post publish failed: {r2}")
         except Exception as e:
             logger.error(f"Feed post error: {e}")
         return None
@@ -721,25 +754,21 @@ class InstagramMultiPublisher:
                 "image_url": image_url,
                 "access_token": self.access_token
             }, timeout=45).json()
-            if "id" not in r1:
-                logger.error(f"Story container creation failed: {r1}")
-                return None
+            if "id" not in r1: return None
             time.sleep(6)
             r2 = requests.post(f"{self.graph_base}/{self.ig_user_id}/media_publish", data={
                 "creation_id": r1["id"],
                 "access_token": self.access_token
             }, timeout=45).json()
             if "id" in r2:
-                logger.info(f"🎉 Story Published! ID: {r2['id']}")
+                logger.info(f"🎉 News Story Published! ID: {r2['id']}")
                 return r2["id"]
-            else:
-                logger.error(f"Story publish failed: {r2}")
         except Exception as e:
             logger.error(f"Story post error: {e}")
         return None
 
     def publish_reel(self, video_url: str, caption: str) -> Optional[str]:
-        logger.info("🚀 3/3 Publishing Viral Reel to Instagram...")
+        logger.info("🚀 3/3 Publishing Breaking News Reel to Instagram...")
         try:
             r1 = requests.post(f"{self.graph_base}/{self.ig_user_id}/media", data={
                 "media_type": "REELS",
@@ -756,32 +785,26 @@ class InstagramMultiPublisher:
             logger.info("⏳ Waiting for Meta video processing...")
             for _ in range(18):
                 time.sleep(5)
-                status_res = requests.get(
+                status = requests.get(
                     f"{self.graph_base}/{creation_id}?fields=status_code&access_token={self.access_token}",
                     timeout=30
-                ).json()
-                status = status_res.get("status_code")
-                if status == "FINISHED":
-                    break
-                elif status == "ERROR":
-                    logger.error(f"Meta video processing returned ERROR: {status_res}")
-                    return None
+                ).json().get("status_code")
+                if status == "FINISHED": break
+                elif status == "ERROR": return None
 
             r2 = requests.post(f"{self.graph_base}/{self.ig_user_id}/media_publish", data={
                 "creation_id": creation_id,
                 "access_token": self.access_token
             }, timeout=45).json()
             if "id" in r2:
-                logger.info(f"🎉 Viral Reel Published! Media ID: {r2['id']}")
+                logger.info(f"🎉 Breaking News Reel Published! Media ID: {r2['id']}")
                 return r2["id"]
-            else:
-                logger.error(f"Reel publish failed: {r2}")
         except Exception as e:
             logger.error(f"Reel publish error: {e}")
         return None
 
 # ==============================================================================
-# 6. FACEBOOK PAGE AUTO-PUBLISHER (SIMULTANEOUS CROSS-POSTING)
+# 6. FACEBOOK PAGE AUTO-PUBLISHER
 # ==============================================================================
 
 class FacebookPublisher:
@@ -791,54 +814,18 @@ class FacebookPublisher:
         self.graph_base = "https://graph.facebook.com/v19.0"
 
     def publish_page_photo(self, image_url: str, caption: str) -> Optional[str]:
-        if not self.page_id or not self.access_token:
-            return None
-        logger.info("📘 Publishing Post to Facebook Page...")
+        if not self.page_id or not self.access_token: return None
         try:
             res = requests.post(
                 f"{self.graph_base}/{self.page_id}/photos",
-                data={
-                    "url": image_url,
-                    "caption": caption,
-                    "access_token": self.access_token
-                },
+                data={"url": image_url, "caption": caption, "access_token": self.access_token},
                 timeout=45
             ).json()
             if "id" in res:
-                logger.info(f"🎉 Facebook Page Post Published! ID: {res['id']}")
+                logger.info(f"🎉 Facebook Page News Published! ID: {res['id']}")
                 return res["id"]
-            else:
-                err = res.get("error", {})
-                if err.get("code") == 200:
-                    logger.warning("ℹ️ Facebook Post Notice: 'pages_manage_posts' permission is required in your Meta Token to post directly to your Facebook Page.")
-                else:
-                    logger.warning(f"Facebook Post Notice: {err.get('message')}")
-        except Exception as e:
-            logger.warning(f"Facebook photo post notice: {e}")
-        return None
-
-    def publish_page_video(self, video_url: str, description: str) -> Optional[str]:
-        if not self.page_id or not self.access_token:
-            return None
-        logger.info("📘 Publishing Reel/Video to Facebook Page...")
-        try:
-            res = requests.post(
-                f"{self.graph_base}/{self.page_id}/videos",
-                data={
-                    "file_url": video_url,
-                    "description": description,
-                    "access_token": self.access_token
-                },
-                timeout=45
-            ).json()
-            if "id" in res:
-                logger.info(f"🎉 Facebook Page Reel Published! ID: {res['id']}")
-                return res["id"]
-            else:
-                err = res.get("error", {})
-                logger.warning(f"Facebook Video Notice: {err.get('message')}")
-        except Exception as e:
-            logger.warning(f"Facebook video post notice: {e}")
+        except Exception:
+            pass
         return None
 
 # ==============================================================================
@@ -847,28 +834,31 @@ class FacebookPublisher:
 
 def main():
     logger.info("================================================================================")
-    logger.info(f"🛡️ STARTING CYBER AUTOMATION FOR {CREATOR_HANDLE} (VIRAL REEL EDITION)")
+    logger.info(f"📰 STARTING DAINIK JAGRAN HINDI NEWS AUTOMATION FOR {CREATOR_HANDLE}")
     logger.info("================================================================================")
 
-    # 1. Content Generation in Hindi
-    content = generate_cyber_content()
-    hashtags_str = " ".join(content.get("hashtags", VIRAL_HASHTAGS))
-    full_caption = f"{content.get('caption', '')}\n\n.\n.\n{hashtags_str}\n\n🛡️ रोज़ाना साइबर सुरक्षा ज्ञान के लिए फॉलो करें: {CREATOR_HANDLE}"
+    # 1. Fetch Live Breaking News from Google News RSS
+    raw_news = fetch_live_google_news()
 
-    # 2. Render Pure Hindi Poster (with Founder Face)
+    # 2. Format with Gemini AI into Dainik Jagran / BBCC Hub layout
+    news_data = format_news_with_gemini(raw_news)
+    hashtags_str = " ".join(news_data.get("hashtags", VIRAL_HASHTAGS))
+    full_caption = f"{news_data.get('caption', '')}\n\n.\n.\n{hashtags_str}\n\n📰 रोज़ाना अख़बार की ताज़ा खबरों के लिए फॉलो करें: {CREATOR_HANDLE}"
+
+    # 3. Render 1080x1920 Newspaper Graphic (Dainik Jagran / BBCC Hub Style)
     poster_path = "output/daily_tip.png"
     face_path = "assets/my_face.jpg"
-    create_cyber_graphic(content, output_path=poster_path, face_path=face_path)
+    create_newspaper_graphic(news_data, output_path=poster_path, face_path=face_path)
 
-    # 3. Render Kuldeep Singhania Style Viral Reel
+    # 4. Render Breaking News Video Reel
     reel_path = "output/daily_reel.mp4"
-    create_3d_reel_video(content, face_path=face_path, output_video_path=reel_path)
+    create_news_reel_video(news_data, newspaper_img_path=poster_path, face_path=face_path, output_video_path=reel_path)
 
     if DRY_RUN:
-        logger.info("⚡ DRY_RUN mode active. All media generated. Skipping publishing.")
+        logger.info("⚡ DRY_RUN active. Media created successfully. Skipping publishing.")
         return
 
-    # 4. Host Media
+    # 5. Host Media
     public_img_url = upload_image_to_imgbb(poster_path)
     public_video_url = host_video_on_github(reel_path)
 
@@ -876,40 +866,33 @@ def main():
         logger.error("❌ Public image URL not available. Aborting.")
         return
 
-    # 5. Publish Multi-Format to Instagram
+    # 6. Publish Multi-Format to Instagram
     ig_publisher = InstagramMultiPublisher(
         access_token=FB_ACCESS_TOKEN,
         ig_user_id=IG_USER_ID
     )
 
-    # 5A. Post
+    # 6A. Feed Post
     post_id = ig_publisher.publish_feed_post(public_img_url, full_caption)
-    # 5B. Story
+    # 6B. Story
     story_id = ig_publisher.publish_story(public_img_url)
-    # 5C. Reel
+    # 6C. 3D Reel
     reel_id = None
     if public_video_url:
         reel_id = ig_publisher.publish_reel(public_video_url, full_caption)
 
-    # 6. Publish to Facebook Page (Simultaneous Cross-Posting)
-    fb_publisher = FacebookPublisher(
-        access_token=FB_ACCESS_TOKEN,
-        page_id=FB_PAGE_ID
-    )
+    # 7. Facebook Page Direct Attempt (In addition to Make.com auto-mirror)
+    fb_publisher = FacebookPublisher(access_token=FB_ACCESS_TOKEN, page_id=FB_PAGE_ID)
     fb_post_id = fb_publisher.publish_page_photo(public_img_url, full_caption)
-    fb_reel_id = None
-    if public_video_url:
-        fb_reel_id = fb_publisher.publish_page_video(public_video_url, full_caption)
 
     logger.info("================================================================================")
-    logger.info("📊 MULTI-FORMAT EXECUTION SUMMARY")
+    logger.info("📊 MULTI-FORMAT NEWS EXECUTION SUMMARY")
     logger.info(f"• Creator:          {CREATOR_HANDLE}")
-    logger.info(f"• Content Title:    '{content.get('headline')}'")
-    logger.info(f"• Feed Post Status: {'✅ SUCCESS (ID: ' + post_id + ')' if post_id else '❌ FAILED'}")
-    logger.info(f"• Story Status:     {'✅ SUCCESS (ID: ' + story_id + ')' if story_id else '❌ FAILED'}")
-    logger.info(f"• 3D Reel Status:   {'✅ SUCCESS (ID: ' + reel_id + ')' if reel_id else '❌ FAILED'}")
-    logger.info(f"• FB Page Post:     {'✅ SUCCESS (ID: ' + fb_post_id + ')' if fb_post_id else 'ℹ️ Pending Token Permission'}")
-    logger.info(f"• FB Page Reel:     {'✅ SUCCESS (ID: ' + fb_reel_id + ')' if fb_reel_id else 'ℹ️ Pending Token Permission'}")
+    logger.info(f"• News Headline:    '{news_data.get('headline_red')} {news_data.get('headline_black')}'")
+    logger.info(f"• Newspaper Post:   {'✅ SUCCESS (ID: ' + post_id + ')' if post_id else '❌ FAILED'}")
+    logger.info(f"• News Story:       {'✅ SUCCESS (ID: ' + story_id + ')' if story_id else '❌ FAILED'}")
+    logger.info(f"• News Reel:        {'✅ SUCCESS (ID: ' + reel_id + ')' if reel_id else '❌ FAILED'}")
+    logger.info(f"• FB Page Post:     {'✅ SUCCESS (ID: ' + fb_post_id + ')' if fb_post_id else 'ℹ️ Auto-Mirror via Make.com'}")
     logger.info("================================================================================")
 
 if __name__ == "__main__":
