@@ -90,25 +90,40 @@ def generate_story(candidate):
 
     resp = request_model(model)
     if resp.status_code == 404:
-        # Model availability differs by API project; discover models for this key.
+        # Discover only text-capable Gemini models; image models are unsuitable here.
         catalog = requests.get(f"{base}/models", params={"key": key}, timeout=20)
         if catalog.ok:
-            available = [
-                item.get("name", "").removeprefix("models/")
-                for item in catalog.json().get("models", [])
-                if "generateContent" in item.get("supportedGenerationMethods", [])
-                and "gemini" in item.get("name", "").lower()
-            ]
-            available.sort(key=lambda n: (0 if n == "gemini-2.5-flash" else
-                                          1 if "2.5-flash" in n else
-                                          2 if "flash" in n.lower() else 3, n))
+            available = []
+            for item in catalog.json().get("models", []):
+                full_name = item.get("name", "")
+                name = full_name.removeprefix("models/")
+                if ("generateContent" not in item.get("supportedGenerationMethods", [])
+                    or "gemini" not in name.lower()
+                    or "image" in name.lower()):
+                    continue
+                available.append(name)
+            available.sort(key=lambda n: (
+                0 if n == "gemini-2.5-flash" else
+                1 if n == "gemini-2.0-flash" else
+                2 if "flash" in n.lower() and "preview" not in n.lower() else
+                3 if "flash" in n.lower() else 4,
+                n
+            ))
             alternate = next((name for name in available if name and name != model), None)
             if alternate:
-                LOG.warning("Configured Gemini model returned 404; retrying discovered model %s", alternate)
+                LOG.warning("Configured Gemini model returned 404; retrying text model %s", alternate)
                 model = alternate
                 resp = request_model(model)
+            else:
+                raise RuntimeError(
+                    "Gemini model returned 404 and this API key lists no non-image Gemini model "
+                    "supporting generateContent. Check the Gemini API project's enabled models."
+                )
         else:
-            LOG.error("Gemini model list request failed with HTTP %s", catalog.status_code)
+            raise RuntimeError(
+                f"Gemini model returned 404 and model discovery failed with HTTP {catalog.status_code}. "
+                "Check API access and enabled models."
+            )
     if not resp.ok:
         try:
             detail = resp.json().get("error", {}).get("message", resp.text)
