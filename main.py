@@ -86,6 +86,7 @@ CREATOR_HANDLE = os.getenv("CREATOR_HANDLE", "@rauth_jee").strip()
 DRY_RUN = os.getenv("DRY_RUN", "false").lower() in ("true", "1", "yes")
 
 POSTED_TOPICS_FILE = "output/posted_topics.json"
+REPLIED_COMMENTS_FILE = "output/replied_comments.json"
 
 VIRAL_HASHTAGS = [
     "#rauth_jee", "#BiharNews", "#BPSCTRE4", "#BiharEducation", "#DainikJagran",
@@ -675,20 +676,26 @@ def create_newspaper_graphic(
     draw.rounded_rectangle([w - 260, 24, w - 40, 92], radius=15, fill=(255, 222, 3))
     draw.text((w - 150, 58), "ताज़ा न्यूज़ आज", font=font_bold_md, fill=(10, 37, 64), anchor="mm")
 
-    # 2. NEWSPAPER MASTHEAD (DAINIK JAGRAN STYLE)
+    # 2. NEWSPAPER MASTHEAD (AUTHENTIC DAINIK JAGRAN STYLE)
     paper_title = news_data.get("newspaper_title", "दैनिक जागरण")
-    tagline = news_data.get("tagline", "सत्य के साथ हर कदम")
-    draw.ellipse([45, 140, 105, 200], fill=(245, 158, 11))
-    draw.text((120, 130), paper_title, font=font_masthead, fill=(15, 23, 42))
-    draw.text((w - 270, 155), tagline, font=font_reg_sm, fill=(100, 116, 139))
-    draw.line([(40, 210), (w - 40, 210)], fill=(203, 213, 225), width=2)
+    tagline = news_data.get("tagline", "सत्य के साथ हर कदम | विश्व का सर्वाधिक पढ़ा जाने वाला दैनिक")
 
-    dateline = news_data.get("dateline", "पटना / बिहार | ताज़ा अपडेट / पृष्ठ 01")
-    draw.text((50, 222), dateline, font=font_reg_sm, fill=(71, 85, 105))
-    draw.line([(40, 255), (w - 40, 255)], fill=(203, 213, 225), width=2)
+    # Double rule above masthead
+    draw.line([(35, 128), (w - 35, 128)], fill=(15, 23, 42), width=3)
+    draw.line([(35, 134), (w - 35, 134)], fill=(15, 23, 42), width=1)
 
-    # 3. BREAKING HEADLINE (Line 1 Red, Line 2 Black)
-    hl_red = news_data.get("headline_red", "बड़ी खबर: बड़ा प्रशासनिक फैसला")
+    draw.ellipse([45, 142, 105, 202], fill=(245, 158, 11))
+    draw.text((120, 132), paper_title, font=font_masthead, fill=(15, 23, 42))
+    draw.text((w - 360, 158), tagline, font=font_reg_sm, fill=(100, 116, 139))
+
+    # Double rule under masthead with dateline
+    draw.line([(35, 215), (w - 35, 215)], fill=(15, 23, 42), width=1)
+    dateline = news_data.get("dateline", "पटना / बिहार | शनिवार, 24 अक्टूबर 2026 | वर्ष 24, अंक 23 | पृष्ठ 01")
+    draw.text((45, 224), dateline, font=font_reg_sm, fill=(30, 41, 59))
+    draw.line([(35, 258), (w - 35, 258)], fill=(15, 23, 42), width=3)
+
+    # 3. BREAKING HEADLINE (Line 1 Red Kicker, Line 2 Black Title)
+    hl_red = news_data.get("headline_red", "🔴 बड़ी खबर: बड़ा प्रशासनिक फैसला")
     hl_black = news_data.get("headline_black", "आधिकारिक आदेश जारी, नियमों में राहत")
     draw.text((40, 275), hl_red, font=font_bold_xl, fill=(220, 38, 38))
     draw.text((40, 335), hl_black, font=font_bold_xl, fill=(15, 23, 42))
@@ -696,7 +703,7 @@ def create_newspaper_graphic(
     # 4. LEAD SUBTITLE
     lead_city = news_data.get("lead_city", "पटना")
     lead_summary = news_data.get("lead_summary", "संबंधित विभाग ने इस विषय पर आधिकारिक स्पष्टीकरण जारी कर दिया है।")
-    draw.text((40, 410), f"{lead_city} | {lead_summary[:85]}...", font=font_reg_md, fill=(51, 65, 85))
+    draw.text((40, 410), f"{lead_city} (विशेष संवाददाता) | {lead_summary[:85]}...", font=font_reg_md, fill=(51, 65, 85))
 
     # 5. EMBED REAL FLUX AI PRESS PHOTO
     photo_top = 460
@@ -705,21 +712,21 @@ def create_newspaper_graphic(
         try:
             ai_img = Image.open(ai_photo_path).convert("RGB").resize((w - 80, photo_h), Image.Resampling.LANCZOS)
             mask = Image.new("L", (w - 80, photo_h), 0)
-            ImageDraw.Draw(mask).rounded_rectangle([(0, 0), (w - 80, photo_h)], radius=20, fill=255)
+            ImageDraw.Draw(mask).rounded_rectangle([(0, 0), (w - 80, photo_h)], radius=15, fill=255)
             img.paste(ai_img, (40, photo_top), mask)
-            draw.rounded_rectangle([(40, photo_top), (w - 40, photo_top + photo_h)], radius=20, outline=(226, 232, 240), width=3)
+            draw.rounded_rectangle([(40, photo_top), (w - 40, photo_top + photo_h)], radius=15, outline=(15, 23, 42), width=2)
             # Photo badge
-            draw.rounded_rectangle([60, photo_top + photo_h - 45, 360, photo_top + photo_h - 10], radius=10, fill=(10, 37, 64))
-            draw.text((70, photo_top + photo_h - 40), "📷 विशेष रिपोर्ट • फोटो: AI प्रेस ब्यूरो", font=font_reg_sm, fill=(255, 255, 255))
+            draw.rounded_rectangle([55, photo_top + photo_h - 40, 380, photo_top + photo_h - 10], radius=8, fill=(10, 37, 64))
+            draw.text((65, photo_top + photo_h - 36), "📷 विशेष रिपोर्ट • फोटो: ब्यूरो / AI प्रेस", font=font_reg_sm, fill=(255, 255, 255))
         except Exception:
             pass
 
     # 6. SIGNATURE YELLOW HIGHLIGHT BOX ("मामले की मुख्य बातें")
     box_y = photo_top + photo_h + 20
     box_h = 390
-    draw.rounded_rectangle([40, box_y, w - 40, box_y + box_h], radius=20, fill=(254, 249, 195), outline=(234, 179, 8), width=3)
-    draw.rounded_rectangle([70, box_y + 16, 410, box_y + 68], radius=25, fill=(220, 38, 38))
-    draw.text((240, box_y + 42), "📌 मामले की मुख्य बातें", font=font_bold_md, fill=(255, 255, 255), anchor="mm")
+    draw.rounded_rectangle([40, box_y, w - 40, box_y + box_h], radius=16, fill=(254, 249, 195), outline=(217, 119, 6), width=3)
+    draw.rounded_rectangle([70, box_y + 16, 420, box_y + 68], radius=25, fill=(220, 38, 38))
+    draw.text((245, box_y + 42), "📌 मामले की मुख्य बातें", font=font_bold_md, fill=(255, 255, 255), anchor="mm")
 
     points = news_data.get("key_highlights", [
         "विभाग ने सभी नियमों को स्पष्ट करते हुए दिशा-निर्देश जारी किए।",
@@ -737,9 +744,9 @@ def create_newspaper_graphic(
     # 7. DETAILED STORY CARD & FOUNDER AVATAR
     card_y = box_y + box_h + 20
     card_h = h - 140 - card_y
-    draw.rounded_rectangle([40, card_y, w - 40, card_y + card_h], radius=20, fill=(255, 255, 255), outline=(226, 232, 240), width=2)
-    draw.text((70, card_y + 20), "विस्तृत रिपोर्ट और विश्लेषण", font=font_bold_lg, fill=(15, 23, 42))
-    draw.line([(70, card_y + 62), (370, card_y + 62)], fill=(220, 38, 38), width=4)
+    draw.rounded_rectangle([40, card_y, w - 40, card_y + card_h], radius=16, fill=(255, 255, 255), outline=(203, 213, 225), width=2)
+    draw.text((70, card_y + 20), "विस्तृत रिपोर्ट एवं मुख्य विश्लेषण", font=font_bold_lg, fill=(15, 23, 42))
+    draw.line([(70, card_y + 62), (430, card_y + 62)], fill=(220, 38, 38), width=3)
 
     # Embed Founder Face
     if os.path.exists(face_path):
@@ -1023,21 +1030,70 @@ def host_video_on_github(video_path: str) -> Optional[str]:
         logger.warning(f"Video host notice: {e}")
     return raw_url
 
-def persist_posted_topics_to_github():
-    if not GITHUB_TOKEN or not os.path.exists(POSTED_TOPICS_FILE): return
+def persist_github_file(file_path: str, commit_msg: str):
+    if not GITHUB_TOKEN or not os.path.exists(file_path): return
     try:
         import base64
-        with open(POSTED_TOPICS_FILE, "rb") as f:
+        with open(file_path, "rb") as f:
             c_b64 = base64.b64encode(f.read()).decode("utf-8")
         headers = {"Authorization": f"Bearer {GITHUB_TOKEN}", "Accept": "application/vnd.github+json"}
-        api_url = f"https://api.github.com/repos/{GITHUB_REPOSITORY}/contents/{POSTED_TOPICS_FILE.replace(os.sep, '/')}"
+        api_url = f"https://api.github.com/repos/{GITHUB_REPOSITORY}/contents/{file_path.replace(os.sep, '/')}"
         check = requests.get(api_url, headers=headers)
-        payload = {"message": "Sync posted topics history", "content": c_b64, "branch": "main"}
+        payload = {"message": commit_msg, "content": c_b64, "branch": "main"}
         if check.status_code == 200:
             payload["sha"] = check.json()["sha"]
         requests.put(api_url, headers=headers, json=payload, timeout=30)
     except Exception:
         pass
+
+def persist_posted_topics_to_github():
+    persist_github_file(POSTED_TOPICS_FILE, "Sync posted topics history")
+    persist_github_file(REPLIED_COMMENTS_FILE, "Sync replied comments history")
+
+def auto_reply_to_instagram_comments(access_token: str, ig_user_id: str):
+    """Automatically scans recent Instagram posts and replies to new user comments."""
+    if not access_token or not ig_user_id:
+        return
+    logger.info("💬 Checking Instagram comments for automated replies...")
+    os.makedirs(os.path.dirname(REPLIED_COMMENTS_FILE), exist_ok=True)
+    replied = []
+    if os.path.exists(REPLIED_COMMENTS_FILE):
+        try:
+            with open(REPLIED_COMMENTS_FILE, "r", encoding="utf-8") as f:
+                replied = json.load(f)
+        except Exception:
+            pass
+
+    url = f"https://graph.facebook.com/v19.0/{ig_user_id}/media?fields=id,comments{{id,text,from,timestamp}}&limit=10&access_token={access_token}"
+    try:
+        r = requests.get(url, timeout=30).json()
+        items = r.get("data", [])
+        new_replies = 0
+
+        for media in items:
+            comments_data = media.get("comments", {}).get("data", [])
+            for c in comments_data:
+                cid = c.get("id")
+                c_text = c.get("text", "")
+                author = c.get("from", {}).get("username", "")
+
+                if not cid or cid in replied or author == "rauth_jee":
+                    continue
+
+                reply_msg = f"नमस्ते @{author}! कमेंट के लिए धन्यवाद। ताज़ा खबरों और सरकारी अपडेट्स के लिए हमारे पेज राउत जी से जुड़े रहें 🙏"
+                reply_url = f"https://graph.facebook.com/v19.0/{cid}/replies"
+                resp = requests.post(reply_url, data={"message": reply_msg, "access_token": access_token}, timeout=30).json()
+                if "id" in resp:
+                    logger.info(f"✅ Replied to @{author}: {resp['id']}")
+                    replied.append(cid)
+                    new_replies += 1
+
+        with open(REPLIED_COMMENTS_FILE, "w", encoding="utf-8") as f:
+            json.dump(replied, f, ensure_ascii=False, indent=2)
+        if new_replies > 0:
+            logger.info(f"🎉 Replied to {new_replies} new user comments on Instagram!")
+    except Exception as e:
+        logger.warning(f"Comment auto-reply notice: {e}")
 
 # ==============================================================================
 # 9. META INSTAGRAM MULTI-FORMAT PUBLISHER
@@ -1193,6 +1249,10 @@ def main():
     if public_video_url:
         reel_id = ig_publisher.publish_reel(public_video_url, full_caption)
 
+    # 8. Auto-Reply to Comments on Instagram
+    auto_reply_to_instagram_comments(FB_ACCESS_TOKEN, IG_USER_ID)
+    persist_posted_topics_to_github()
+
     logger.info("================================================================================")
     logger.info("📊 MULTI-FORMAT NEWS EXECUTION SUMMARY")
     logger.info(f"• Creator:          {CREATOR_HANDLE}")
@@ -1202,7 +1262,8 @@ def main():
     logger.info(f"• Newspaper Post:   {'✅ SUCCESS (ID: ' + post_id + ')' if post_id else '❌ FAILED'}")
     logger.info(f"• News Story:       {'✅ SUCCESS (ID: ' + story_id + ')' if story_id else '❌ FAILED'}")
     logger.info(f"• News Reel:        {'✅ SUCCESS (ID: ' + reel_id + ')' if reel_id else '❌ FAILED'}")
-    logger.info(f"• FB Auto-Mirror:   ✅ ACTIVE via Make.com Scenario")
+    logger.info(f"• Comment Auto-Bot: ✅ ACTIVE (Scanning & Replying to comments)")
+    logger.info(f"• FB Auto-Mirror:   ✅ ACTIVE via Meta Accounts Center / Make.com")
     logger.info("================================================================================")
 
 if __name__ == "__main__":
