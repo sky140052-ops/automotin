@@ -211,7 +211,8 @@ def main():
         raise RuntimeError("No fresh news found in RSS sources (last 48 hours); no fallback will be published.")
     candidate = next((c for c in candidates if hashlib.sha256(c["url"].encode()).hexdigest() not in published), None)
     if not candidate:
-        raise RuntimeError("All current source items were already processed; no duplicate will be published.")
+        LOG.info("No unseen source items among the fresh headlines; successful no-op, no duplicate will be published.")
+        return
     story = generate_story(candidate)
     poster = make_poster(story)
     reel = make_reel(story, poster)
