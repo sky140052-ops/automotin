@@ -1,16 +1,16 @@
 name: Daily 3x Cyber Security Social Media Bot (Hindi)
 
 on:
-  # Automated 3x Daily Schedule:
-  # 1. 03:30 UTC -> 09:00 AM IST (Morning Tip)
-  # 2. 09:00 UTC -> 02:30 PM IST (Afternoon Tip)
-  # 3. 15:00 UTC -> 08:30 PM IST (Evening Tip)
+  # Automated 3x Daily Schedule (Offset by 5 mins to avoid GitHub queue congestion):
+  # 1. 03:35 UTC -> 09:05 AM IST (Morning Tip)
+  # 2. 09:05 UTC -> 02:35 PM IST (Afternoon Tip)
+  # 3. 15:05 UTC -> 08:35 PM IST (Evening Tip)
   schedule:
-    - cron: '30 3 * * *'
-    - cron: '0 9 * * *'
-    - cron: '0 15 * * *'
+    - cron: '35 3 * * *'
+    - cron: '5 9 * * *'
+    - cron: '5 15 * * *'
 
-  # Manual Trigger Button in GitHub Actions Tab
+  # Manual Trigger Button in GitHub Actions Tab & External Webhook
   workflow_dispatch:
     inputs:
       dry_run:
