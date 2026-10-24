@@ -134,7 +134,7 @@ FALLBACK_NEWS_DATABASE = [
         "newspaper_title": "दैनिक भास्कर",
         "tagline": "सत्यमेव जयते",
         "dateline": "नई दिल्ली / भारत | ताज़ा अपडेट / राष्ट्रीय संस्करण",
-        "headline_red": "डिजिटल अरेस्ट और ऑनलाइन फ्रॉड पर बड़ा फैसला",
+        "headline_red": "डिजिटल अरेस्ट और ऑनलाइन फ्रॉड पर बड़ा फैसला:",
         "headline_black": "गृह मंत्रालय ने जारी की सख्त गाइडलाइन, खाते होंगे सीज",
         "lead_city": "नई दिल्ली",
         "lead_summary": "देश भर में बढ़ते डिजिटल अरेस्ट और ऑनलाइन फ्रॉड के मामलों को देखते हुए गृह मंत्रालय (MHA) और साइबर विंग ने कड़ा रुख अपनाया है और संदिग्ध नंबरों और खातों पर तुरंत कार्रवाई के आदेश दिए हैं।",
@@ -164,6 +164,68 @@ FALLBACK_NEWS_DATABASE = [
             {"hook": "📰 सुरक्षित रहने के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
         ],
         "caption": "⚠️ सावधान: गृह मंत्रालय का बड़ा अलर्ट — 'डिजिटल अरेस्ट' से बचें!\n\nठग पुलिस या कस्टम अधिकारी बनकर लोगों को लाखों का चूना लगा रहे हैं।\n\nयाद रखें:\n1. कोई भी कानून वीडियो कॉल पर अरेस्ट नहीं करता\n2. अनजान कॉल पर पैसे कभी न भेजें\n3. तुरंत 1930 पर रिपोर्ट करें\n\n🛡️ रोज़ाना ज़रूरी जानकारियों के लिए फॉलो करें: @rauth_jee"
+    },
+    {
+        "newspaper_title": "दैनिक जागरण",
+        "tagline": "सत्य के साथ हर कदम",
+        "dateline": "नई दिल्ली | ताज़ा अपडेट / पृष्ठ 01",
+        "headline_red": "रेलवे का बड़ा तोहफा: 50 नई सुपरफास्ट",
+        "headline_black": "ट्रेनें चलाने का ऐलान, किराया भी होगा सस्ता",
+        "lead_city": "नई दिल्ली",
+        "lead_summary": "भारतीय रेलवे ने देश भर के प्रमुख और व्यस्त मार्गों पर 50 नई सुपरफास्ट और आधुनिक वंदे भारत ट्रेनें चलाने की घोषणा की है, जिससे करोड़ों रेल यात्रियों को कन्फर्म सीट मिलेगी।",
+        "ai_image_prompt": "modern indian passenger train departing railway station, indian passengers, cinematic lighting, photojournalism, 8k",
+        "key_highlights": [
+            "प्रमुख रूटों पर दौड़ेंगी 50 नई सुपरफास्ट व वंदे भारत ट्रेनें।",
+            "किराए में 10 से 15 प्रतिशत तक की राहत देने का प्रस्ताव।",
+            "त्योहारों व छुट्टियों में कन्फर्म टिकट मिलना होगा आसान।",
+            "आधुनिक बायो-टॉयलेट, वाई-फाई और जीपीएस से लैस होंगी बोगियां।",
+            "आईआरसीटीसी (IRCTC) पोर्टल पर जल्द शुरू होगी टिकट बुकिंग।"
+        ],
+        "detailed_report": [
+            "रेल मंत्रालय ने यात्रियों की भारी भीड़ को देखते हुए यह महत्वपूर्ण फैसला लिया है।",
+            "पटना-दिल्ली, मुंबई-अहमदाबाद समेत प्रमुख रूटों को प्राथमिकता दी जाएगी।",
+            "",
+            "सभी कोचों में आधुनिक सुरक्षा उपकरण और सीसीटीवी कैमरे स्थापित किए जाएंगे।"
+        ],
+        "reel_script": "ब्रेकिंग न्यूज़! भारतीय रेलवे ने 50 नई सुपरफास्ट ट्रेनें चलाने का बड़ा ऐलान किया है! किराया भी सस्ता होगा और टिकट भी आसानी से मिलेगा। पूरी खबर जानने के लिए पोस्ट पढ़ें और ताज़ा अपडेट्स के लिए अभी फॉलो करें @rauth_jee को!",
+        "reel_phrases": [
+            {"hook": "🚨 रेलवे का बड़ा फैसला!", "white": "50 नई सुपरफास्ट ट्रेनें", "punch": "रूट्स का हुआ ऐलान!"},
+            {"hook": "📢 आम जनता को राहत", "white": "किराया होगा सस्ता", "punch": "कन्फर्म टिकट मिलेगा!"},
+            {"hook": "⚡ बुकिंग अपडेट", "white": "IRCTC पर जल्द", "punch": "टिकट उपलब्ध होंगे!"},
+            {"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+        ],
+        "caption": "🚆 भारतीय रेलवे का बड़ा तोहफा: 50 नई सुपरफास्ट ट्रेनें जल्द!\n\nसफर होगा आसान और किराया भी सस्ता।\n\nफॉलो करें: @rauth_jee"
+    },
+    {
+        "newspaper_title": "दैनिक जागरण",
+        "tagline": "सत्य के साथ हर कदम",
+        "dateline": "पटना / बिहार | विकास बुलेटिन / पृष्ठ 01",
+        "headline_red": "पटना मेट्रो प्रोजेक्ट में आई तेजी:",
+        "headline_black": "अगले साल से दौड़ेगी ट्रेन, ट्रायल रन शुरू",
+        "lead_city": "पटना",
+        "lead_summary": "राजधानी पटना में बहुप्रतीक्षित मेट्रो परियोजना का कार्य रिकॉर्ड गति से आगे बढ़ रहा है और प्राथमिक कॉरिडोर पर अंडरग्राउंड टनलिंग कार्य पूरा कर लिया गया है।",
+        "ai_image_prompt": "modern patna metro train on elevated track in bihar, urban skyline, bright daylight, realistic press photo",
+        "key_highlights": [
+            "प्राथमिक कॉरिडोर पर पटरी बिछाने और इलेक्ट्रिफिकेशन का काम शुरू।",
+            "मीठापुर से आईएसबीटी (ISBT) बस स्टैंड तक सबसे पहले चलेगी मेट्रो।",
+            "प्रतिदिन 5 लाख से अधिक यात्रियों को जाम से मिलेगी स्थायी मुक्ति।",
+            "आधुनिक ऑटोमैटिक फेयर कलेक्शन व स्मार्ट कार्ड की सुविधा उपलब्ध होगी।",
+            "पर्यावरण अनुकूल ग्रीन एनर्जी से संचालित होंगे सभी मेट्रो स्टेशन।"
+        ],
+        "detailed_report": [
+            "बिहार सरकार और मेट्रो रेल कॉरपोरेशन ने निर्माण कार्य की समीक्षा के बाद",
+            "संतुष्टि जताई है। सभी सुरक्षा मानकों का कड़ाई से पालन किया जा रहा है।",
+            "",
+            "पटनावासियों के लिए यह परियोजना यातायात के क्षेत्र में ऐतिहासिक मील का पत्थर बनेगी।"
+        ],
+        "reel_script": "बड़ी खुशखबरी! पटना मेट्रो का काम पूरा होने के करीब है! अगले साल से प्राथमिक रूट पर मेट्रो दौड़ने लगेगी जिससे जाम से पूरी राहत मिलेगी। पूरी रिपोर्ट पढ़ने के लिए पोस्ट देखें और रोज़ाना ताज़ा खबरों के लिए फॉलो करें @rauth_jee को!",
+        "reel_phrases": [
+            {"hook": "🚨 पटना मेट्रो अपडेट!", "white": "टनलिंग का काम पूरा", "punch": "ट्रायल रन जल्द शुरू!"},
+            {"hook": "🚆 जाम से मिलेगी मुक्ति", "white": "मीठापुर से ISBT तक", "punch": "सबसे पहले दौड़ेगी मेट्रो!"},
+            {"hook": "⚡ ग्रीन व स्मार्ट सिटी", "white": "स्मार्ट कार्ड व QR कोड", "punch": "से मिलेगा टिकट!"},
+            {"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+        ],
+        "caption": "🚆 पटना मेट्रो की बड़ी प्रगति: अगले साल से दौड़ेगी ट्रेन!\n\nराजधानीवासियों को जाम से मिलेगी मुक्ति।\n\nफॉलो करें: @rauth_jee"
     }
 ]
 
@@ -183,19 +245,20 @@ def load_posted_topics() -> List[str]:
 
 def save_posted_topic(title: str):
     topics = load_posted_topics()
-    cleaned = title.strip()[:60]
-    if cleaned not in topics:
+    cleaned = title.strip()[:80]
+    if cleaned and cleaned not in topics:
         topics.append(cleaned)
-        if len(topics) > 100:
-            topics = topics[-100:]
+        if len(topics) > 150:
+            topics = topics[-150:]
         try:
             with open(POSTED_TOPICS_FILE, "w", encoding="utf-8") as f:
                 json.dump(topics, f, ensure_ascii=False, indent=2)
+            logger.info(f"💾 Added topic to deduplication database: '{cleaned}'")
         except Exception as e:
             logger.warning(f"Could not save posted topics: {e}")
 
 # ==============================================================================
-# 2. LIVE GOOGLE NEWS INGESTION (ANTI-DUPLICATION)
+# 2. LIVE GOOGLE NEWS INGESTION (STRICT ZERO-DUPLICATION)
 # ==============================================================================
 
 def fetch_unique_live_news() -> Optional[Dict[str, str]]:
@@ -203,12 +266,15 @@ def fetch_unique_live_news() -> Optional[Dict[str, str]]:
     logger.info("📡 Scanning Google News RSS for fresh, unposted breaking news...")
     posted_topics = load_posted_topics()
 
-    # Queries across diverse high-interest topics
+    # 7 Diverse, high-interest news search categories
     queries = [
-        ("बिहार शिक्षा भर्ती नौकरी", "बिहार शिक्षा व भर्ती"),
-        ("भारत सरकार बड़ी योजना नया नियम", "राष्ट्रीय बड़ी खबर"),
+        ("बिहार शिक्षा भर्ती शिक्षक परीक्षा रिजल्ट", "बिहार शिक्षा व भर्ती"),
+        ("भारत सरकार बड़ी घोषणा नया नियम योजना", "राष्ट्रीय बड़ी खबर"),
         ("साइबर सुरक्षा डिजिटल फ्रॉड ऑनलाइन अलर्ट", "डिजिटल सुरक्षा अलर्ट"),
-        ("टेक्नोलॉजी एआई नया आविष्कार मोबाइल", "टेक्नोलॉजी समाचार")
+        ("भारतीय रेलवे वंदे भारत नया रूट ट्रेन", "भारतीय रेलवे"),
+        ("इसरो विज्ञान अंतरिक्ष नया मिशन टेक्नोलॉजी", "विज्ञान व अंतरिक्ष"),
+        ("आरबीआई बैंक नया नियम यूपीआई वित्तीय अलर्ट", "बैंकिंग व वित्त"),
+        ("बिहार विकास योजना पटना मेट्रो बड़ी खबर", "बिहार विकास")
     ]
     random.shuffle(queries)
 
@@ -221,27 +287,27 @@ def fetch_unique_live_news() -> Optional[Dict[str, str]]:
                 xml_data = resp.read()
             root = ET.fromstring(xml_data)
             items = root.findall(".//item")
-            for item in items[:6]:
+            for item in items[:8]:
                 raw_title = item.find("title").text or ""
-                # Strip newspaper suffix e.g. " - Jagran"
                 clean_title = raw_title.split(" - ")[0].strip()
                 desc = item.find("description").text if item.find("description") is not None else ""
                 pub_date = item.find("pubDate").text if item.find("pubDate") is not None else ""
 
-                # Check if this topic was already posted
+                if len(clean_title) < 15:
+                    continue
+
+                # Strict check against all posted topics
                 is_duplicate = False
+                title_words = set([w for w in clean_title.split() if len(w) >= 3])
                 for prev in posted_topics:
-                    # check word overlap
-                    words_clean = set(clean_title.split())
-                    words_prev = set(prev.split())
-                    overlap = len(words_clean.intersection(words_prev))
-                    if overlap >= 4 or clean_title[:40] in prev:
+                    prev_words = set([w for w in prev.split() if len(w) >= 3])
+                    overlap = len(title_words.intersection(prev_words))
+                    if overlap >= 3 or clean_title[:35] in prev or prev[:35] in clean_title:
                         is_duplicate = True
                         break
 
-                if not is_duplicate and len(clean_title) > 15:
+                if not is_duplicate:
                     logger.info(f"✅ Found Fresh Unique Story ({domain_label}): {clean_title}")
-                    save_posted_topic(clean_title)
                     return {
                         "title": clean_title,
                         "desc": desc,
@@ -252,16 +318,105 @@ def fetch_unique_live_news() -> Optional[Dict[str, str]]:
             logger.warning(f"Error querying Google News ({domain_label}): {e}")
             continue
 
+    logger.warning("No unposted live stories found in current RSS queries. Will pick unique from fallback.")
     return None
 
 # ==============================================================================
-# 3. GEMINI AI NEWS FORMATTER
+# 3. GEMINI AI NEWS FORMATTER (WITH RESILIENT REST & DYNAMIC FALLBACK)
 # ==============================================================================
+
+def call_gemini_rest(prompt: str) -> Optional[str]:
+    """Direct REST call to Gemini 3.5 / 3.8 Flash, bypassing SDK incompatibilities."""
+    if not GEMINI_API_KEY or "your_gemini" in GEMINI_API_KEY.lower():
+        return None
+
+    # Modern production models in Google AI Studio
+    models = ["gemini-3.5-flash", "gemini-3.8-flash", "gemini-2.0-flash-exp"]
+    for m in models:
+        url = f"https://generativelanguage.googleapis.com/v1beta/models/{m}:generateContent?key={GEMINI_API_KEY}"
+        payload = {"contents": [{"parts": [{"text": prompt}]}]}
+        try:
+            r = requests.post(url, json=payload, timeout=25)
+            if r.status_code == 200:
+                data = r.json()
+                text = data["candidates"][0]["content"]["parts"][0]["text"]
+                if text:
+                    logger.info(f"✅ News structured with Gemini AI ({m})")
+                    return text
+            else:
+                logger.warning(f"Gemini {m} returned HTTP {r.status_code}")
+        except Exception as e:
+            logger.warning(f"Gemini {m} call error: {e}")
+    return None
+
+def dynamically_format_live_news(raw_news: Dict[str, str]) -> Dict[str, Any]:
+    """Dynamically structures raw Google News into Dainik Jagran layout if Gemini is unavailable."""
+    title = raw_news.get("title", "")
+    domain = raw_news.get("domain", "ताज़ा बड़ी खबर")
+    words = title.split()
+
+    if len(words) > 6:
+        split_idx = min(6, len(words) // 2 + 1)
+        headline_red = " ".join(words[:split_idx]) + ":"
+        headline_black = " ".join(words[split_idx:])
+    else:
+        headline_red = "बड़ी खबर:"
+        headline_black = title
+
+    lead_city = "पटना" if ("बिहार" in title or "पटना" in title) else "नई दिल्ली"
+    
+    # Keyword-based AI Image prompt
+    t_lower = title.lower()
+    if any(k in t_lower for k in ["ट्रेन", "रेलवे", "रेल", "वंदे"]):
+        ai_prompt = "indian railways passenger train departing modern station, indian passengers, cinematic lighting, 8k photojournalism"
+    elif any(k in t_lower for k in ["शिक्षक", "स्कूल", "भर्ती", "bpsc", "परीक्षा"]):
+        ai_prompt = "indian government examination hall, young students taking test, official bihar education board, realistic photojournalism"
+    elif any(k in t_lower for k in ["साइबर", "फ्रॉड", "अरेस्ट", "हैक"]):
+        ai_prompt = "indian cyber security police officers examining digital data on computer monitors, cyber cell crime branch, dramatic lighting"
+    elif any(k in t_lower for k in ["इसरो", "स्पेस", "रॉकेट", "मिशन"]):
+        ai_prompt = "isro satellite rocket launch pad sriharikota india, dramatic exhaust smoke, space exploration, photorealistic 8k"
+    elif any(k in t_lower for k in ["मेट्रो", "पुल", "सड़क"]):
+        ai_prompt = "modern elevated metro train running in indian city, urban infrastructure, bright daylight photo"
+    else:
+        ai_prompt = "indian government press conference room, officials addressing press media with microphones, realistic news photo"
+
+    return {
+        "newspaper_title": "दैनिक जागरण",
+        "tagline": "सत्य के साथ हर कदम",
+        "dateline": f"{lead_city} | ताज़ा अपडेट / पृष्ठ 01",
+        "headline_red": headline_red[:35],
+        "headline_black": headline_black[:45],
+        "lead_city": lead_city,
+        "lead_summary": f"{title}। इस संबंध में संबंधित विभाग द्वारा आधिकारिक दिशा-निर्देश जारी कर दिए गए हैं।",
+        "ai_image_prompt": ai_prompt,
+        "key_highlights": [
+            f"{headline_black[:40]} पर बड़ा फैसला।",
+            "संबंधित विभाग ने नियमों व शर्तों की पूरी रूपरेखा तैयार की।",
+            "आम नागरिकों और अभ्यर्थियों को मिलेगा सीधा लाभ।",
+            "पारदर्शिता और सुविधा के लिए डिजिटल माध्यमों का होगा उपयोग।",
+            "आधिकारिक पोर्टल पर विस्तृत अधिसूचना व जानकारी उपलब्ध।"
+        ],
+        "detailed_report": [
+            f"{title} को लेकर व्यापक तैयारियां पूरी कर ली गई हैं।",
+            "",
+            "वरिष्ठ अधिकारियों के अनुसार नई व्यवस्था से लोगों को बड़ी सुविधा और राहत मिलेगी।",
+            "",
+            "सभी नागरिकों से अपील की गई है कि वे केवल आधिकारिक सूचनाओं पर ही भरोसा करें।"
+        ],
+        "reel_script": f"ब्रेकिंग न्यूज़! {headline_red} {headline_black}! पूरी रिपोर्ट जानने के लिए इस पोस्ट को ध्यान से पढ़ें और रोज़ाना ताज़ा खबरों के लिए अभी फॉलो करें @rauth_jee को!",
+        "reel_phrases": [
+            {"hook": "🚨 ब्रेकिंग न्यूज़!", "white": headline_red.replace(":", ""), "punch": headline_black[:30]},
+            {"hook": "📢 बड़ा फैसला", "white": "आधिकारिक सूचना जारी", "punch": "नियम लागू!"},
+            {"hook": "📌 मुख्य बातें", "white": "पूरी जानकारी के लिए", "punch": "पोस्ट पढ़ें!"},
+            {"hook": "📰 हर दिन ताज़ा न्यूज़ के लिए", "white": "अभी फॉलो करें", "punch": "@rauth_jee"}
+        ],
+        "caption": f"📢 दैनिक जागरण ब्रेकिंग: {title}\n\n📌 मुख्य बातें:\n• पूरी रिपोर्ट जारी\n• आधिकारिक पोर्टल पर अधिसूचना उपलब्ध\n\nऐसी ही हर ताज़ा खबर के लिए फॉलो करें: @rauth_jee",
+        "hashtags": VIRAL_HASHTAGS
+    }
 
 def format_news_with_gemini(raw_news: Optional[Dict[str, str]]) -> Dict[str, Any]:
     logger.info("🤖 Formatting News into Dainik Jagran Newspaper Layout...")
-    if not GEMINI_API_KEY or "your_gemini" in GEMINI_API_KEY.lower():
-        return random.choice(FALLBACK_NEWS_DATABASE)
+    posted_topics = load_posted_topics()
 
     news_context = ""
     if raw_news:
@@ -312,56 +467,65 @@ IMPORTANT RULES:
   "caption": "Detailed Instagram caption with headlines, bullet points, hashtags, and call to action."
 }}
 """
-    raw_text = ""
-    for model_name in ["gemini-2.5-flash", "gemini-2.0-flash", "gemini-1.5-flash"]:
+    raw_text = call_gemini_rest(prompt)
+
+    if raw_text:
         try:
-            from google import genai
-            client = genai.Client(api_key=GEMINI_API_KEY)
-            res = client.models.generate_content(model=model_name, contents=prompt)
-            raw_text = res.text or ""
-            if raw_text:
-                logger.info(f"✅ Formatted news with {model_name}.")
-                break
-        except Exception:
-            continue
+            cleaned = raw_text.strip()
+            if cleaned.startswith("```json"): cleaned = cleaned[7:]
+            if cleaned.startswith("```"): cleaned = cleaned[3:]
+            if cleaned.endswith("```"): cleaned = cleaned[:-3]
+            data = json.loads(cleaned.strip())
+            data["hashtags"] = VIRAL_HASHTAGS
+            return data
+        except Exception as e:
+            logger.warning(f"JSON parse error from Gemini: {e}")
 
-    if not raw_text:
-        return random.choice(FALLBACK_NEWS_DATABASE)
+    # If Gemini unavailable but we have live Google News, dynamically build it!
+    if raw_news:
+        logger.info("⚡ Dynamically structuring live Google News story...")
+        return dynamically_format_live_news(raw_news)
 
-    try:
-        cleaned = raw_text.strip()
-        if cleaned.startswith("```json"): cleaned = cleaned[7:]
-        if cleaned.startswith("```"): cleaned = cleaned[3:]
-        if cleaned.endswith("```"): cleaned = cleaned[:-3]
-        data = json.loads(cleaned.strip())
-        data["hashtags"] = VIRAL_HASHTAGS
-        return data
-    except Exception as e:
-        logger.warning(f"JSON parse error: {e}. Using fallback database.")
-        return random.choice(FALLBACK_NEWS_DATABASE)
+    # Pick an unposted story from fallback database
+    for story in FALLBACK_NEWS_DATABASE:
+        full_h = f"{story.get('headline_red')} {story.get('headline_black')}"
+        if not any(full_h[:30] in p for p in posted_topics):
+            story["hashtags"] = VIRAL_HASHTAGS
+            return story
+
+    return FALLBACK_NEWS_DATABASE[0]
 
 # ==============================================================================
-# 4. FLUX.1 AI PHOTO GENERATOR (CHATGPT / MIDJOURNEY QUALITY)
+# 4. FLUX.1 / POLLINATIONS AI PHOTO GENERATOR (CHATGPT / MIDJOURNEY QUALITY)
 # ==============================================================================
 
 def generate_flux_ai_photo(prompt: str, output_path: str = "output/news_photo.jpg") -> Optional[str]:
-    """Generates authentic 8K photorealistic press photos via FLUX.1 AI."""
-    logger.info("🎨 Generating 8K Photorealistic Press Photo via FLUX.1 AI...")
+    """Generates authentic 8K photorealistic press photos via AI."""
+    logger.info("🎨 Generating 8K Photorealistic Press Photo via AI...")
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     full_prompt = f"{prompt}, award winning photojournalism, cinematic lighting, ultra realistic, 8k resolution, canon eos r5"
     encoded_prompt = urllib.parse.quote(full_prompt)
-    url = f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1000&height=500&model=flux&nologo=true"
-    try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=25) as resp:
-            data = resp.read()
-        if len(data) > 5000:
-            with open(output_path, "wb") as f:
-                f.write(data)
-            logger.info(f"✅ FLUX AI Photo generated: {output_path} ({len(data)} bytes)")
-            return output_path
-    except Exception as e:
-        logger.warning(f"FLUX AI generation notice: {e}")
+
+    # Resilient multi-endpoint fallback
+    endpoints = [
+        f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1000&height=500&nologo=true",
+        f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1000&height=500&model=turbo&nologo=true",
+        f"https://image.pollinations.ai/prompt/{encoded_prompt}?width=1000&height=500&model=flux&nologo=true"
+    ]
+
+    for url in endpoints:
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+            with urllib.request.urlopen(req, timeout=15) as resp:
+                data = resp.read()
+            if len(data) > 5000:
+                with open(output_path, "wb") as f:
+                    f.write(data)
+                logger.info(f"✅ AI Press Photo generated: {output_path} ({len(data)} bytes)")
+                return output_path
+        except Exception as e:
+            logger.warning(f"AI photo generation retry: {e}")
+
     return None
 
 # ==============================================================================
@@ -943,6 +1107,11 @@ def main():
 
     # 2. Format with Gemini AI into Dainik Jagran / BBCC Hub layout
     news_data = format_news_with_gemini(raw_news)
+    final_headline = f"{news_data.get('headline_red', '')} {news_data.get('headline_black', '')}".strip()
+    save_posted_topic(final_headline)
+    if raw_news and raw_news.get("title"):
+        save_posted_topic(raw_news["title"])
+
     hashtags_str = " ".join(news_data.get("hashtags", VIRAL_HASHTAGS))
     full_caption = f"{news_data.get('caption', '')}\n\n.\n.\n{hashtags_str}\n\n📰 रोज़ाना अख़बार की ताज़ा खबरों के लिए फॉलो करें: {CREATOR_HANDLE}"
 
