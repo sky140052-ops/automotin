@@ -10,6 +10,10 @@ on:
         description: 'Run in Dry-Run mode? (false to post live)'
         required: false
         default: 'false'
+      force_run:
+        description: 'Force run even outside active hours?'
+        required: false
+        default: 'true'
 
 permissions:
   contents: write
@@ -56,6 +60,7 @@ jobs:
           GITHUB_REPOSITORY: ${{ github.repository }}
           CREATOR_HANDLE: ${{ secrets.CREATOR_HANDLE || '@rauth_jee' }}
           DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          FORCE_RUN: ${{ inputs.force_run || 'false' }}
         run: |
           python main.py
 

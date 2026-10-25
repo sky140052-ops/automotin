@@ -934,7 +934,8 @@ def run_single_cycle() -> bool:
     logger.info("STARTING BBCC NEWSPAPER & OPTION 3 REEL GENERATION CYCLE")
     logger.info("=" * 80)
 
-    if not is_within_publishing_hours():
+    force = "--force" in sys.argv or os.getenv("FORCE_RUN", "false").lower() in ("true", "1", "yes")
+    if not force and not is_within_publishing_hours():
         ist = get_ist_now()
         logger.info(f"Current IST: {ist.strftime('%H:%M:%S')}. Outside active window (06:00 AM - 06:30 PM IST). Skipping.")
         return True
