@@ -1,0 +1,47 @@
+name: BBCC Skill Hub Newspaper
+on:
+  schedule:
+    - cron: "30-59/5 0 * * *"
+    - cron: "*/5 1-11 * * *"
+    - cron: "0-30/5 12 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+concurrency:
+  group: bbcc-newspaper
+  cancel-in-progress: false
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 4
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+      - name: Generate timestamped edition in newpepar/
+        run: python scripts/make_newspaper.py
+      - name: Commit and push edition
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add newpepar/ latest.html
+          if ! git diff --cached --quiet; then
+            git commit -m "Newspaper edition $(TZ=Asia/Kolkata date '+%Y-%m-%d %H:%M IST')"
+            git push
+          else
+            echo "No changes to commit."
+          fi
+      - name: Publish daily 06:00 edition to Meta (optional)
+        if: github.event_name == 'schedule' && github.event.schedule == '30-59/5 0 * * *'
+        env:
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          FB_PAGE_ACCESS_TOKEN: ${{ secrets.FB_PAGE_ACCESS_TOKEN }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          META_GRAPH_VERSION: ${{ vars.META_GRAPH_VERSION }}
+          PUBLIC_SITE_URL: ${{ vars.PUBLIC_SITE_URL }}
+        run: python scripts/publish_meta.py
