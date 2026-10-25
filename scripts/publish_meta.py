@@ -2,9 +2,9 @@ import os, sys
 from pathlib import Path
 from datetime import datetime, timedelta, timezone
 import requests
+if os.getenv("ALLOW_SOCIAL_PUBLISH") != "true" and os.getenv("FORCE_SOCIAL_PUBLISH") != "true":
+    print("Social posting skipped: only the designated 06:00 IST workflow may publish."); sys.exit(0)
 IST=timezone(timedelta(hours=5,minutes=30)); now=datetime.now(IST)
-if now.strftime("%H:%M")!="06:00" and os.getenv("FORCE_SOCIAL_PUBLISH")!="true":
-    print("Social posting skipped: only the 06:00 IST edition is eligible."); sys.exit(0)
 page_id=os.getenv("FB_PAGE_ID","").strip(); token=os.getenv("FB_PAGE_ACCESS_TOKEN","").strip(); ig_id=os.getenv("IG_USER_ID","").strip()
 version=os.getenv("META_GRAPH_VERSION","v23.0").strip(); public=os.getenv("PUBLIC_SITE_URL","").strip().rstrip("/")
 if not (page_id and token and public): print("Social posting skipped: configure FB_PAGE_ID, FB_PAGE_ACCESS_TOKEN and PUBLIC_SITE_URL."); sys.exit(0)
