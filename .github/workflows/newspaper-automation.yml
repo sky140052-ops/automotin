@@ -69,11 +69,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git pull --rebase origin main || true
           git add output/posted_topics.json output/sector_history.json output/story_history.json || true
           if ! git diff --cached --quiet; then
-            git commit -m "Auto-post history update $(TZ=Asia/Kolkata date '+%Y-%m-%d %H:%M IST') [skip ci]"
-            git push origin main
+            git commit -m "Auto-post history update $(TZ=Asia/Kolkata date '+%Y-%m-%d %H:%M IST') [skip ci]" || true
+            git pull --rebase --autostash origin main || true
+            git push origin main || true
           else
             echo "No history changes to commit."
           fi
