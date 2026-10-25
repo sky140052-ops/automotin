@@ -27,8 +27,8 @@ def collect():
             for e in feed.entries[:15]:
                 title,link=clean(e.get("title","")),e.get("link","")
                 if not title or not link or title.casefold() in seen: continue
-                seen.add(title.casefold()); source=clean((e.get("source") or {}).get("title","")) or "Google News feed"
-                items.append({"section":section,"category":cat,"title":title,"url":link,"source":source,"published":published_at(e),"summary":clean(re.sub(r"<[^>]*>"," ",e.get("summary","")))[:500],"official_domain":official_domain(link)})
+                seen.add(title.casefold()); source_info=e.get("source") or {}; source=clean(source_info.get("title","")) or "Google News feed"; source_url=source_info.get("href","")
+                items.append({"section":section,"category":cat,"title":title,"url":link,"source":source,"source_url":source_url,"published":published_at(e),"summary":clean(re.sub(r"<[^>]*>"," ",e.get("summary","")))[:500],"official_domain":official_domain(source_url)})
         except Exception as exc: print(f"RSS error ({section}): {exc}")
     return items
 def make_page(items):
