@@ -5,11 +5,6 @@ on:
     # Runs every 10 minutes from 00:20 UTC to 13:00 UTC (05:50 AM to 06:30 PM IST)
     - cron: '*/10 0-13 * * *'
   workflow_dispatch:
-    inputs:
-      dry_run:
-        description: 'Run in Dry-Run mode? (false to post live)'
-        required: false
-        default: 'false'
 
 permissions:
   contents: write
@@ -55,7 +50,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           CREATOR_HANDLE: ${{ secrets.CREATOR_HANDLE || '@rauth_jee' }}
-          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          # Safety: generate assets, but never publish without a separate approval workflow.
+          DRY_RUN: 'true'
         run: |
           python main.py
 
