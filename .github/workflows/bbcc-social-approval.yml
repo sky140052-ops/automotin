@@ -1,0 +1,64 @@
+name: BBCC Social Media Post Queue
+
+on:
+  schedule:
+    # India Standard Time (UTC+5:30): 08:00, 12:00, 16:00, 20:00
+    - cron: "30 2 * * *"
+    - cron: "30 6 * * *"
+    - cron: "30 10 * * *"
+    - cron: "30 14 * * *"
+  workflow_dispatch:
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  create-post-request:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Create approval request
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const now = new Date();
+            const ist = new Date(now.getTime() + 330 * 60 * 1000);
+            const stamp = ist.toISOString().replace('T', ' ').slice(0, 16);
+            const date = ist.toISOString().slice(0, 10);
+            const hour = ist.getUTCHours();
+            const slot = hour < 10 ? 'सुबह 8 बजे' : hour < 14 ? 'दोपहर 12 बजे' : hour < 18 ? 'शाम 4 बजे' : 'रात 8 बजे';
+            const title = '📸 पोस्ट अनुमोदन: ' + date + ' — ' + slot;
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              per_page: 100
+            });
+            if (existing.data.some(i => i.title === title)) {
+              core.info('Approval request already exists; skipping duplicate.');
+              return;
+            }
+            const body = [
+              '## BBCC Social Media पोस्ट अनुरोध',
+              '',
+              '- **समय (IST):** ' + slot,
+              '- **तैयार किया गया:** ' + stamp + ' IST',
+              '- **स्थिति:** फोटो और कैप्शन की प्रतीक्षा',
+              '',
+              '### अगला कदम',
+              '1. ChatGPT में इस अनुरोध का संदर्भ देकर फोटो बनवाएँ।',
+              '2. फोटो और कैप्शन का Preview जाँचें।',
+              '3. मालिक की स्पष्ट OK अनुमति मिलने के बाद ही Meta Graph API से Facebook और Instagram पर प्रकाशित करें।',
+              '',
+              '> यह workflow केवल approval request बनाता है। यह फोटो खुद नहीं बनाता और बिना स्पष्ट अनुमति कोई पोस्ट प्रकाशित नहीं करता।',
+              '',
+              '### पोस्ट विषय',
+              'BAL BHARTI COACHING CENTER / BBCC Skill Hub के लिए आज की उपयोगी, मौलिक और आकर्षक सोशल मीडिया पोस्ट।'
+            ].join('\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: []
+            });
