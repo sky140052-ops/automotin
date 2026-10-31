@@ -2,8 +2,11 @@ name: BBCC Skill Hub Newspaper & Option 3 AI Reel Automation
 
 on:
   schedule:
-    # Runs every 10 minutes from 00:20 UTC to 13:00 UTC (05:50 AM to 06:30 PM IST)
-    - cron: '*/10 0-13 * * *'
+    # India Standard Time: 06:00, 10:00, 14:00, 18:00
+    - cron: '30 0 * * *'
+    - cron: '30 4 * * *'
+    - cron: '30 8 * * *'
+    - cron: '30 12 * * *'
   workflow_dispatch:
 
 permissions:
@@ -50,8 +53,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           GITHUB_REPOSITORY: ${{ github.repository }}
           CREATOR_HANDLE: ${{ secrets.CREATOR_HANDLE || '@rauth_jee' }}
-          # Safety: generate assets, but never publish without a separate approval workflow.
+          # Generate and upload assets only; social publishing requires approval.
           DRY_RUN: 'true'
+          FORCE_RUN: 'true'
         run: |
           python main.py
 
