@@ -1,0 +1,113 @@
+name: BBCC Publish Approved Social Post
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "social-media/approved/2026-11-01-text-post.md"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: bbcc-approved-post-2026-11-01
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout approved post
+        uses: actions/checkout@v4
+
+      - name: Publish to Instagram and Facebook
+        env:
+          FB_ACCESS_TOKEN: ${{ secrets.FB_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FB_PAGE_ID }}
+          IG_USER_ID: ${{ secrets.IG_USER_ID }}
+          IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
+          GRAPH_VERSION: v26.0
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          import os, re, sys, json, time, requests
+          from pathlib import Path
+
+          token = os.environ.get("FB_ACCESS_TOKEN", "")
+          page_id = os.environ.get("FB_PAGE_ID", "")
+          ig_id = os.environ.get("IG_USER_ID", "")
+          imgbb_key = os.environ.get("IMGBB_API_KEY", "")
+          version = os.environ.get("GRAPH_VERSION", "v26.0")
+          required = {"FB_ACCESS_TOKEN": token, "FB_PAGE_ID": page_id,
+                      "IG_USER_ID": ig_id, "IMGBB_API_KEY": imgbb_key}
+          missing = [k for k,v in required.items() if not v]
+          if missing:
+              sys.exit("Missing required GitHub Secrets: " + ", ".join(missing))
+
+          p = Path("social-media/approved/2026-11-01-text-post.md")
+          raw = p.read_text(encoding="utf-8")
+          if "Status: APPROVED_TO_PUBLISH" not in raw:
+              sys.exit("Post is not explicitly marked APPROVED_TO_PUBLISH; refusing to publish.")
+          m = re.search(r"## Caption\s+(.*?)\s+## Attached image", raw, re.S)
+          if not m:
+              sys.exit("Caption section not found.")
+          caption = m.group(1).strip()
+          caption = re.sub(r"\*\*(.*?)\*\*", r"\1", caption)
+          caption = re.sub(r"\*(.*?)\*", r"\1", caption)
+          image_path = Path("social-media/assets/bbcc-skill-hub-library.jpg")
+          if not image_path.exists():
+              sys.exit("Approved image asset missing.")
+          
+          # Upload the repository's approved JPEG to ImgBB to obtain a public media URL.
+          with image_path.open("rb") as f:
+              up = requests.post("https://api.imgbb.com/1/upload",
+                  data={"key": imgbb_key}, files={"image": f}, timeout=60)
+          up.raise_for_status()
+          image_url = up.json().get("data", {}).get("url")
+          if not image_url:
+              sys.exit("Image host did not return a public URL.")
+
+          base = f"https://graph.facebook.com/{version}"
+          # Instagram: create image container, then publish it.
+          r = requests.post(f"{base}/{ig_id}/media",
+              data={"image_url": image_url, "caption": caption, "access_token": token},
+              timeout=60)
+          r.raise_for_status()
+          creation_id = r.json().get("id")
+          if not creation_id:
+              sys.exit("Instagram did not return a media container ID.")
+          ready = False
+          for _ in range(12):
+              s = requests.get(f"{base}/{creation_id}",
+                  params={"fields":"status_code", "access_token":token}, timeout=30)
+              s.raise_for_status()
+              status = s.json().get("status_code")
+              if status == "FINISHED":
+                  ready = True
+                  break
+              if status == "ERROR":
+                  sys.exit("Instagram reported a media processing error.")
+              time.sleep(10)
+          if not ready:
+              sys.exit("Instagram media processing did not finish in time.")
+          pub = requests.post(f"{base}/{ig_id}/media_publish",
+              data={"creation_id":creation_id, "access_token":token}, timeout=60)
+          pub.raise_for_status()
+          ig_post_id = pub.json().get("id")
+          if not ig_post_id:
+              sys.exit("Instagram publish response did not include a post ID.")
+
+          # Facebook Page photo post.
+          fb = requests.post(f"{base}/{page_id}/photos",
+              data={"url":image_url, "caption":caption, "access_token":token}, timeout=60)
+          fb.raise_for_status()
+          fb_post_id = fb.json().get("post_id") or fb.json().get("id")
+          if not fb_post_id:
+              sys.exit("Facebook publish response did not include a post ID.")
+
+          # Do not print credentials or public image URL; only non-secret post IDs.
+          print("Instagram published. Media ID:", ig_post_id)
+          print("Facebook Page published. Post ID:", fb_post_id)
+          PY
