@@ -1,12 +1,12 @@
-name: BBCC Social Media Post Queue
+name: BBCC Newspaper Approval Queue
 
 on:
   schedule:
-    # India Standard Time (UTC+5:30): 08:00, 12:00, 16:00, 20:00
-    - cron: "30 2 * * *"
-    - cron: "30 6 * * *"
-    - cron: "30 10 * * *"
-    - cron: "30 14 * * *"
+    # India Standard Time: 06:00, 10:00, 14:00, 18:00
+    - cron: "30 0 * * *"
+    - cron: "30 4 * * *"
+    - cron: "30 8 * * *"
+    - cron: "30 12 * * *"
   workflow_dispatch:
 
 permissions:
@@ -26,8 +26,8 @@ jobs:
             const stamp = ist.toISOString().replace('T', ' ').slice(0, 16);
             const date = ist.toISOString().slice(0, 10);
             const hour = ist.getUTCHours();
-            const slot = hour < 10 ? 'सुबह 8 बजे' : hour < 14 ? 'दोपहर 12 बजे' : hour < 18 ? 'शाम 4 बजे' : 'रात 8 बजे';
-            const title = '📸 पोस्ट अनुमोदन: ' + date + ' — ' + slot;
+            const slot = hour < 10 ? 'सुबह 6 बजे' : hour < 14 ? 'सुबह 10 बजे' : hour < 18 ? 'दोपहर 2 बजे' : 'शाम 6 बजे';
+            const title = '📰 BBCC समाचार अनुमोदन: ' + date + ' — ' + slot;
             const existing = await github.rest.issues.listForRepo({
               owner: context.repo.owner,
               repo: context.repo.repo,
@@ -39,21 +39,21 @@ jobs:
               return;
             }
             const body = [
-              '## BBCC Social Media पोस्ट अनुरोध',
+              '## BBCC Skill Hub समाचार संस्करण की जाँच',
               '',
               '- **समय (IST):** ' + slot,
-              '- **तैयार किया गया:** ' + stamp + ' IST',
-              '- **स्थिति:** फोटो और कैप्शन की प्रतीक्षा',
+              '- **अनुरोध बनाया गया:** ' + stamp + ' IST',
+              '- **स्थिति:** समीक्षा की प्रतीक्षा',
               '',
-              '### अगला कदम',
-              '1. ChatGPT में इस अनुरोध का संदर्भ देकर फोटो बनवाएँ।',
-              '2. फोटो और कैप्शन का Preview जाँचें।',
-              '3. मालिक की स्पष्ट OK अनुमति मिलने के बाद ही Meta Graph API से Facebook और Instagram पर प्रकाशित करें।',
+              '### आपकी अनुमति',
+              '1. GitHub Actions में इसी समय का newspaper run पूरा हुआ है या नहीं, जाँचें।',
+              '2. output/daily_newspaper.png और उपलब्ध समाचार/स्रोत लिंक जाँचें।',
+              '3. सब सही होने पर इस Issue पर OK टिप्पणी करें; गलती हो तो HOLD लिखें।',
               '',
-              '> यह workflow केवल approval request बनाता है। यह फोटो खुद नहीं बनाता और बिना स्पष्ट अनुमति कोई पोस्ट प्रकाशित नहीं करता।',
+              '> यह Issue समीक्षा/अनुमति माँगता है। यह अपने-आप Facebook या Instagram पर पोस्ट प्रकाशित नहीं करता।',
               '',
-              '### पोस्ट विषय',
-              'BAL BHARTI COACHING CENTER / BBCC Skill Hub के लिए आज की उपयोगी, मौलिक और आकर्षक सोशल मीडिया पोस्ट।'
+              '### संस्करण',
+              'BAL BHARTI COACHING CENTER / BBCC Skill Hub — बिहार समाचार, सरकारी नौकरी और शिक्षा अपडेट।'
             ].join('\n');
             await github.rest.issues.create({
               owner: context.repo.owner,
