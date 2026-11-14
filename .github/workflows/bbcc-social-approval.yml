@@ -1,13 +1,6 @@
 name: BBCC Newspaper Approval Queue
 
-on:
-  schedule:
-    # India Standard Time: 06:00, 10:00, 14:00, 18:00
-    - cron: "30 0 * * *"
-    - cron: "30 4 * * *"
-    - cron: "30 8 * * *"
-    - cron: "30 12 * * *"
-  workflow_dispatch:
+on: {}
 
 permissions:
   issues: write
