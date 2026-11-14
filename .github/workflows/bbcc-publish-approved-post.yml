@@ -1,11 +1,6 @@
 name: BBCC Publish Approved Social Post
 
-on:
-  push:
-    branches: [main]
-    paths:
-      - "social-media/approved/2026-11-01-text-post.md"
-  workflow_dispatch:
+on: {}
 
 permissions:
   contents: read
